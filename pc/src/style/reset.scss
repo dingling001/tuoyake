@@ -1,0 +1,326 @@
+/* rebot */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  -ms-tap-highlight-color: transparent;
+}
+
+/* reset */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1;
+  font-family: "PingFangSC-Regular", "Microsoft YaHei", "Helvetica", "STHeiTi",
+  "sans-serif";
+  /*移动端页面支持流畅滚动*/
+  -webkit-overflow-scrolling: touch;
+  /*让页面里的字体变清晰，变细*/
+  -webkit-font-smoothing: antialiased;
+
+  font-size: 14px;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+/*去掉 a，input 在移动端浏览器中的默认样式*/
+
+a,
+button,
+input,
+optgroup,
+select,
+textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
+}
+
+a,
+img {
+  -webkit-touch-callout: none;
+  /*禁止长按链接与图片弹出菜单*/
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+  font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: couriernew, courier, monospace;
+}
+
+small {
+  font-size: 12px;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+
+  &:hover,
+  &:visited,
+  &:active,
+  &:focus {
+    color: #000;
+  }
+}
+
+sup {
+  vertical-align: text-top;
+}
+
+sub {
+  vertical-align: text-bottom;
+}
+
+legend {
+  color: #000;
+}
+
+fieldset,
+img {
+  border: 0 none;
+  outline: 0 none;
+}
+
+.fit img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+.tap {
+  position: relative;
+}
+
+.tap::before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: inherit;
+  border-color: #000;
+  background-color: #000;
+  border-radius: inherit;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.tap:active::before {
+  opacity: 0.1;
+}
+
+/* 字体两端对齐 */
+.text_jusify {
+  text-indent: 2em;
+  letter-spacing: 2px;
+  text-align: justify;
+  /*IE*/
+  text-justify: inter-ideograph;
+}
+
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+  background-color: #f5f5f5;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  background-color: #f5f5f5;
+}
+
+/*定义滑块 内阴影+圆角*/
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+
+/*多行文本超出后省略号代替方案*/
+
+.three-line-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+input,
+select {
+  outline: none;
+  border: 0;
+}
+
+/*去掉input为number类型时的上下箭头*/
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/*弹窗-屏幕居中定位*/
+
+.fixed-center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
+  z-index: 1202;
+}
+
+.select_bg {
+  cursor: pointer;
+  /*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+  border: solid 1px #000;
+  /*很关键：将默认的select选择框样式清除*/
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  /*在选择框的最右侧中间显示小箭头图片*/
+  background: url("../img/active/down_triangle.png") no-repeat scroll 183px center transparent;
+  /*为下拉小箭头留出一点位置，避免被文字覆盖*/
+  padding-right: 14px;
+}
+
+/*清除ie的默认选择框样式清除，隐藏下拉箭头*/
+
+.select_bg::-ms-expand {
+  display: none;
+}
+
+/*错误提示弹窗样式*/
+.tip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  line-height: 40px;
+  font-size: 16px;
+  color: #fff;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 0 20px;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+}
+
+.forbid_click {
+  pointer-events: none;
+  background: #ccc !important;
+  border: 0;
+}
+
+/*单行文本超出后省略号代替方案*/
+
+.single-line-text {
+  overflow: hidden;
+  /*内容超出后隐藏*/
+  text-overflow: ellipsis;
+  /* 超出内容显示为省略号*/
+  white-space: nowrap;
+  /*文本不进行换行*/
+}
+
+//fan
+.el-message {
+  top: 50%!important;
+}
