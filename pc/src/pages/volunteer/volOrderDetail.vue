@@ -121,7 +121,6 @@
 		position: absolute;
 		top: -58px;
 		right: -128px;
-		background: url(../../../../wx/src/img/volunteer/vol_close_icon.png) no-repeat;
 		background-size: 54px 54px;
 		cursor: pointer;
 	}

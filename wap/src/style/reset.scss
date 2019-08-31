@@ -1,0 +1,267 @@
+:root {
+  --theme_color: #cc974c; //
+  --calendar_bgcolor: #F0E5D5; //
+}
+
+[v-cloak] {
+  display: none;
+}
+
+/* rebot */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  -ms-tap-highlight-color: transparent;
+}
+
+/* reset */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  direction: ltr;
+  background: #fff;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1;
+  font-family: "Microsoft YaHei", "Helvetica", "STHeiTi", "sans-serif";
+  /*移动端页面支持流畅滚动*/
+  -webkit-overflow-scrolling: touch;
+  /*让页面里的字体变清晰，变细*/
+  -webkit-font-smoothing: antialiased;
+
+  font-size: 14px;
+  /*禁止页面复制*/
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+
+/*去掉 a，input 在移动端浏览器中的默认样式*/
+
+a,
+button,
+input,
+optgroup,
+select,
+textarea {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
+}
+
+a,
+img {
+  -webkit-touch-callout: none;
+  /*禁止长按链接与图片弹出菜单*/
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+  font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: couriernew, courier, monospace;
+}
+
+small {
+  font-size: 12px;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+
+  &:hover,
+  &:visited,
+  &:active,
+  &:focus {
+    color: #000;
+  }
+}
+
+sup {
+  vertical-align: text-top;
+}
+
+sub {
+  vertical-align: text-bottom;
+}
+
+legend {
+  color: #000;
+}
+
+fieldset,
+img {
+  border: 0;
+}
+
+.fit img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+.tap {
+  position: relative;
+}
+
+.tap::before {
+  content: " ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  border: inherit;
+  border-color: #000;
+  background-color: #000;
+  border-radius: inherit;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.tap:active::before {
+  opacity: 0.1;
+}
+
+/* 字体两端对齐 */
+.text_jusify {
+  text-indent: 2em;
+  letter-spacing: 2px;
+  text-align: justify;
+  /*IE*/
+  text-justify: inter-ideograph;
+}
+
+/*单行文本超出后省略号代替方案*/
+
+.single-line-text {
+  overflow: hidden;
+  /*内容超出后隐藏*/
+  text-overflow: ellipsis;
+  /* 超出内容显示为省略号*/
+  white-space: nowrap;
+  /*文本不进行换行*/
+}
+
+/*多行文本超出后省略号代替方案*/
+
+.two-line-text {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/*弹窗-屏幕居中定位*/
+
+.fixed-center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* IE 9 */
+  -webkit-transform: translate(-50%, -50%);
+  /* Safari and Chrome */
+  -o-transform: translate(-50%, -50%);
+  /* Opera */
+  -moz-transform: translate(-50%, -50%);
+  /* Firefox */
+  z-index: 1202;
+}
+
+// 票务微信端  mint-ui样式自定义
+.pw-wx-mint-confirm-btn,
+.pw-wx-mint-msgbox-confirm {
+  color: #cc974c !important;
+}
+
+//yt.nie 20190523
+//修改confirm弹窗内容行高
+.mint-msgbox-message {
+  line-height: 25px !important;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+}
+//弹出提示多行时，行高过低问题
+.mint-toast-text{
+  line-height: 20px;
+}

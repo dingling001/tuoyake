@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
+    <meta name="author" content="www.hymuseum.org.cn">
+    <meta name="keywords" content="国家海洋博物馆,国家海洋博物馆官网,国家海洋博物馆预约,国家海洋博物馆门票,中国海洋博物馆,天津国家海洋博物馆,天津海洋博物馆,国家海洋馆,海洋馆,海博,天津海洋馆,海博官网">
+    <meta name="description" content="国家海洋博物馆以“海洋与人类”为主题，具有中国海洋文化特色，以收藏、研究、展示、教育为主要功能，是一座融展示与教育、收藏与研究、文化与休闲、科学与艺术于一体的现代化、综合性海洋类博物馆。">
+    <title></title>
+    <link
+      rel="stylesheet"
+      href="//at.alicdn.com/t/font_1112493_5ivdnyusfkr.css"
+    />
+    <script
+      type="text/javascript"
+      src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"
+    ></script>
+    <script>
+      var  PLAT = "t";
+      var  browser = {
+        versions: (function() {
+          var u = navigator.userAgent,
+            app = navigator.appVersion;
+          return {
+            //移动终端浏览器版本信息
+            trident: u.indexOf("Trident") > -1, //IE内核
+            presto: u.indexOf("Presto") > -1, //opera内核
+            webKit: u.indexOf("AppleWebKit") > -1, //苹果、谷歌内核
+            gecko: u.indexOf("Gecko") > -1 && u.indexOf("KHTML") == -1, //火狐内核
+            mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+            ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+            android: u.indexOf("Android") > -1 || u.indexOf("Linux") > -1, //android终端或uc浏览器
+            iPhone: u.indexOf("iPhone") > -1, //是否为iPhone或者QQHD浏览器
+            iPad: u.indexOf("iPad") > -1, //是否iPad
+            webApp: u.indexOf("Safari") == -1 //是否web应该程序，没有头部与底部
+          };
+        })(),
+        language: (
+          navigator.browserLanguage || navigator.language
+        ).toLowerCase()
+      };
+      if (browser.versions.mobile) {
+        var ua = navigator.userAgent.toLowerCase();
+        //在微信中打开
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+          wx.miniProgram.getEnv(function(res) {
+            if (res.miniprogram) {
+              // 小程序环境下逻辑
+              PLAT = "wxmini";
+            } else {
+              //微信环境
+              PLAT = "wx";
+            }
+          });
+        }
+      }
+    </script>
+    <script type="text/javascript">
+   // var BASEURL = "https://www.hymuseum.org.cn"
+   // var STATIC_WEB_URL = "https://www.hymuseum.org.cn/";
+   // var STATIC_ACTIVE_URL = "https://active.hymuseum.org.cn"
+   // var STATIC_VOLUNTEER_URL = "https://volunteer.hymuseum.org.cn"
+   // var STATIC_PW_URL = "https://pw.hymuseum.org.cn"
+   // var STATIC_CINEMA_URL = "https://cinema.hymuseum.org.cn"
+   // var STATIC_GUIDE_URL = "https://guide.hymuseum.org.cn"
+   // var STATIC_KELIU_URL = "https://hbkeliu.smartechnology.com.cn";
+   //
+      var BASEURL = "https://hbweb.smartechnology.com.cn"
+      var STATIC_WEB_URL = "https://hbweb.smartechnology.com.cn";
+      var STATIC_ACTIVE_URL = "https://hbactive.smartechnology.com.cn"
+      var STATIC_VOLUNTEER_URL = "https://hbvolunteer.smartechnology.com.cn"
+      var STATIC_PW_URL = "https://hbpw.smartechnology.com.cn"
+      var STATIC_CINEMA_URL = "https://hbcinema.smartechnology.com.cn"
+      var STATIC_GUIDE_URL = "https://hbguide.smartechnology.com.cn"
+      var STATIC_KELIU_URL = "https://hbkeliu.smartechnology.com.cn";
+
+      var _hmt = _hmt || [];
+      (function() {
+        var domain = window.location.host;
+        var hm = document.createElement("script");
+        var localUrl =
+          "https://hm.baidu.com/hm.js?b9eb91462bfbdd7ecca2b18811b745cd";
+        var onlineUrl =
+          "https://hm.baidu.com/hm.js?7185dbe59d96691d6a81a39db056707d";
+        hm.src =
+          domain === "hbweb.smartechnology.com.cn" ? localUrl : onlineUrl;
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+      })();
+    </script>
+    <style>
+       [v-cloak]{ display:none}
+    </style>
+  </head>
+
+  <body ontouchstart>
+    <div id="app" v-cloak>
+      <app></app>
+    </div>
+  </body>
+</html>
