@@ -38,11 +38,11 @@ module.exports = {
   build: {
     // Template for index.html
     // index: path.resolve(__dirname, '../dist/index.html'),
-    index: path.resolve(__dirname, "../dist/wap_home.blade.php"),
-    template: path.resolve(__dirname, "../wap_home.blade.php"),
+    index: path.resolve(__dirname, "../dist/index.html"),
+    template: path.resolve(__dirname, "../index.html"),
     // Paths
     assetsRoot: path.resolve(__dirname, "../dist"),
-    assetsSubDirectory: "wapp",
+    assetsSubDirectory: "app",
     assetsPublicPath: "/",
 
     /**
