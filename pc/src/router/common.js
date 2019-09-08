@@ -4,7 +4,7 @@ export default [
   {
     path: "/",
     name: "index",
-    component: resolve => require(["../pages/home/home"], resolve),
+    component: resolve => require(["../pages/home"], resolve),
     meta: {
       title: "首页",
       cur: 0

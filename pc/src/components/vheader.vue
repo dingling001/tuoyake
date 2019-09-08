@@ -35,7 +35,7 @@
       </div>
       <div class="tnavbottom">
         <div :class="cur==index?'tnavitem tnavitemactive':'tnavitem'" :key="index"
-             v-for="(item,index) in navs">{{item.name}}
+             v-for="(item,index) in navs" @click="gonav(item.path)">{{item.name}}
         </div>
       </div>
     </div>
@@ -79,6 +79,10 @@
       // 切换城市
       changCity() {
         console.log('切换城市')
+      },
+      // 跳转
+      gonav(path){
+        this.$router.push({path:path})
       },
       handleScroll() {
         this.top =
