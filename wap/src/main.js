@@ -10,7 +10,6 @@ import "lib-flexible";
 import "@/style/reset.scss";
 import "./theme.js";
 
-import "mint-ui/lib/style.css";
 import VueWechatTitle from "vue-wechat-title";
 import moment from 'moment';
 import 'video.js/dist/video-js.css'
@@ -25,11 +24,7 @@ import VueQrcode from "@xkeshi/vue-qrcode";
 
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;
-Vue.prototype.$toThumbsimg = toThumbsimg;
 Vue.prototype.$web = STATIC_WEB_URL;
-Vue.prototype.$active = STATIC_ACTIVE_URL;
-Vue.prototype.$vol = STATIC_VOLUNTEER_URL;
-Vue.prototype.$moive = STATIC_CINEMA_URL;
 Vue.use(api);
 
 Vue.use(VueWechatTitle);

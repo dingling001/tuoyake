@@ -411,7 +411,7 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-@import '@/style/mixin.scss';
+@import '@/style/mixin';
 
 .fill {
   min-height: calc(100vh - 60px);

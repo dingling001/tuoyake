@@ -76,7 +76,7 @@
   </div>
 </template>
 <script>
-import uNav from '../.././components/uNav';
+import uNav from '../../components/uNav';
 import pagination from '@/components/pcpaging';
 
 export default {

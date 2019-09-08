@@ -1,13 +1,13 @@
 
 <template>
   <div>
-    <div class="topbar-wrapper">
-      <div class="topbar">
-        <a href="/">{{$t('navs[0].name')}}</a>
-        »
-        <a href="javaScript:;">{{$t('navs[1].name')}}</a>
-      </div>
-    </div>
+    <!--<div class="topbar-wrapper">-->
+      <!--<div class="topbar">-->
+        <!--<a href="/">{{$t('navs[0].name')}}</a>-->
+        <!--»-->
+        <!--<a href="javaScript:;">{{$t('navs[1].name')}}</a>-->
+      <!--</div>-->
+    <!--</div>-->
     <div class="container">
       <div class="main-content">
         <div class="title">

@@ -1,4 +1,15 @@
 export default [
+
+  // 首页
+  {
+    path: "/",
+    name: "index",
+    component: resolve => require(["../pages/home/home"], resolve),
+    meta: {
+      title: "首页",
+      cur: 0
+    }
+  },
   // 404
   {
     path: "*",
@@ -9,14 +20,4 @@ export default [
       menus: false
     }
   },
-  // 首页
-  {
-    path: "/",
-    name: "index",
-    component: resolve => require(["../pages/home/home"], resolve),
-    meta: {
-      title: "首页",
-      cur: 0
-    }
-  }
 ];

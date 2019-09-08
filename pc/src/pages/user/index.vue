@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import uNav from "../.././components/uNav";
+import uNav from "../../components/uNav";
 export default {
   name: "center",
   data() {
