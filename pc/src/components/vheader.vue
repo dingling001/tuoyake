@@ -101,10 +101,8 @@
 
 <style scoped lang="scss">
   @import "../style/reset";
-
   .thead {
     background-color: #f4f4f4;
-
     .taddress {
       width: 1200px;
       margin: 0 auto;

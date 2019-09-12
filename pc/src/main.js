@@ -6,12 +6,12 @@ import Element from "element-ui";
 import VueI18n from "vue-i18n";
 
 import "@/style/reset.scss";
-import "swiper/dist/css/swiper.css";
 import "element-ui/lib/theme-chalk/index.css";
 import "video.js/dist/video-js.css";
 import "vue-video-player/src/custom-theme.css";
 import api from "./http";
 import store from "./store";
+import 'swiper/dist/css/swiper.min.css'
 import VueQrcode from "@xkeshi/vue-qrcode";
 import '@/style/animate.css';
 Vue.component(VueQrcode.name, VueQrcode);

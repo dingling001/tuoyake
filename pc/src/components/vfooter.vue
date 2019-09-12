@@ -20,10 +20,11 @@
   .footer {
     width: 100%;
     background: #222;
-    position: relative;
-    z-index: 4;
     color: #fff;
     padding-top: 40px;
+    position: relative;
+    height: 111px;
+
   }
 
   .footer p {
