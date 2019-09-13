@@ -81,24 +81,6 @@ module.exports = {
       name: "馆藏精粹",
       path: "/collection"
     },
-    {
-      name: "教育活动",
-      path: "/activeW",
-      // childs: [
-      //   {
-      //     name: "最新活动",
-      //     id: "intro"
-      //   },
-      //   {
-      //     name: "活动回顾",
-      //     id: "zixun"
-      //   }
-      //   // {
-      //   //   name: "网上展览",
-      //   //   id: "about"
-      //   // }
-      // ]
-    },
     { name: "影院影讯", path: "/wen" },
     {
       name: "海博大讲堂",

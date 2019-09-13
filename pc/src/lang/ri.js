@@ -62,7 +62,6 @@ module.exports = {
         }
       ] },
     { name: "所蔵品", path: "/collection" },
-    // { name: "教育活动", path: "/active" },
     { name: "シネマ ", path: "/film/film_lang" }
     // { name: "海博文创", path: "/" },
     // { name: "海博大讲堂", path: "/" }

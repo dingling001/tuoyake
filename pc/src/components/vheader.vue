@@ -35,7 +35,7 @@
       </div>
       <div class="tnavbottom">
         <div :class="cur==index?'tnavitem tnavitemactive':'tnavitem'" :key="index"
-             v-for="(item,index) in navs" @click="gonav(item.path)">{{item.name}}
+             v-for="(item,index) in navs" @click="gonav(index,item.path)">{{item.name}}
         </div>
       </div>
     </div>
@@ -57,19 +57,19 @@
           },
           {
             name: '电竞馆',
-            path: './index'
+            path: '/competition'
           },
           {
             name: '电竞学院',
-            path: './index'
+            path: '/school'
           },
           {
             name: '电竞俱乐部',
-            path: './index'
+            path: '/club'
           },
           {
             name: '关于我们',
-            path: './index'
+            path: '/about'
           },
         ]
       };
@@ -81,8 +81,9 @@
         console.log('切换城市')
       },
       // 跳转
-      gonav(path){
-        this.$router.push({path:path})
+      gonav(index, path) {
+        this.cur = index;
+        this.$router.push({path: path})
       },
       handleScroll() {
         this.top =
@@ -91,9 +92,16 @@
           document.body.scrollTop;
       }
     },
+    beforeRouteEnter(to, form, next) {
+      console.log(this)
+      if (to.meta.cur) {
+        next.cur = to.cur;
+      }
+      next()
+    },
     mounted() {
       window.addEventListener("scroll", this.handleScroll);
-      document.title = '托亚克 | ' + this.city
+      document.title = '托亚克 | ' + this.city;
     }
   };
 </script>
@@ -101,6 +109,7 @@
 
 <style scoped lang="scss">
   @import "../style/reset";
+
   .thead {
     background-color: #f4f4f4;
     .taddress {

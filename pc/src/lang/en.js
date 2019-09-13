@@ -62,7 +62,7 @@ module.exports = {
         }
       ] },
     { name: "Collection", path: "/collection" },
-    // { name: "教育活动", path: "/active" },
+
     { name: "Cinema ", path: "/film/film_lang" }
     // { name: "海博文创", path: "/" },
     // { name: "海博大讲堂", path: "/" }
@@ -141,5 +141,5 @@ module.exports = {
 Try another key word~`,
   eintroS: "A Brief Introduction to the Exhibition",
   hyp:"Another Batch"
-  
+
 };

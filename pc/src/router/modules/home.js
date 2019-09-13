@@ -126,7 +126,7 @@ export default [
       footer: false,
       cur:6,
     },
-    component: resolve => require(["../../pages/home/wen"], resolve)
+    component: resolve => require(["../../components/wen"], resolve)
   },
    {
     path: "/activeW",
