@@ -1,9 +1,7 @@
 <template>
   <div class="footer">
     <p class="copyright">
-      CopyRight 2016 {{$t('copyright')}}
-      <a href="http://www.beian.miit.gov.cn">津ICP备19003219号</a>
-      {{$t('line')}}：022-67185138
+      <a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action;jsessionid=PjAlxu21ql9vTut7sJMAEHxDT1V91UUTkhUMjar8XFGpWQeZtll8!1935156451">CopyRight 2019 北京澎龙科技有限公司 京ICP备19041153号-1</a>
     </p>
   </div>
 </template>
