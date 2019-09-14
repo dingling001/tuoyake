@@ -9,14 +9,5 @@ export default [
       footer: false,
       nav: false
     }
-  },
-  // 首页
-  {
-    path: "/",
-    name: "index",
-    component: resolve => require(["../pages/home/home"], resolve),
-    meta: {
-      title: "首页",
-    }
   }
 ];

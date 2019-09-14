@@ -8,18 +8,18 @@ import router from "./router";
 import "lib-flexible";
 
 import "@/style/reset.scss";
-import "./theme.js";
+// import "./theme.js";
 
 import VueWechatTitle from "vue-wechat-title";
 import moment from 'moment';
-import 'video.js/dist/video-js.css'
-import 'vue-video-player/src/custom-theme.css'
-import VideoPlayer from 'vue-video-player'
+// import 'video.js/dist/video-js.css'
+// import 'vue-video-player/src/custom-theme.css'
+// import VideoPlayer from 'vue-video-player'
 
-Vue.use(VideoPlayer);
+// Vue.use(VideoPlayer);
 //导入 http 文件夹下的 index.js
 import api from "./http";
-import "swiper/dist/css/swiper.css";
+// import "swiper/dist/css/swiper.min.css";
 import VueQrcode from "@xkeshi/vue-qrcode";
 
 Vue.component(VueQrcode.name, VueQrcode);
