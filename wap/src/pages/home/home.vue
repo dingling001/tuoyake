@@ -3,19 +3,20 @@
         <div v-wechat-title="title"></div>
         <div class="index_top">
             <div class="htop">
-                <router-link to="/home/competition" tag="span" :class="{'activespan':index==0}">
-                    电竞馆
-                    <span class="border_b" v-if="index==0"></span>
-                </router-link>
-                <router-link to="/home/club" tag="span" :class="{'activespan':index==1}">俱乐部
-                    <span class="border_b" v-if="index==1"></span>
-                </router-link>
-                <router-link to="/home/school" tag="span" :class="{'activespan':index==2}">学院
-                    <span class="border_b" v-if="index==2"></span>
-
-                </router-link>
+                <div class="htopleft">
+                    <router-link to="/home/competition" tag="span" :class="{'activespan':index==0}">
+                        电竞馆
+                        <span class="border_b" v-if="index==0"></span>
+                    </router-link>
+                    <router-link to="/home/club" tag="span" :class="{'activespan':index==1}">俱乐部
+                        <span class="border_b" v-if="index==1"></span>
+                    </router-link>
+                    <router-link to="/home/school" tag="span" :class="{'activespan':index==2}">学院
+                        <span class="border_b" v-if="index==2"></span>
+                    </router-link>
+                </div>
+                <div class="index_address">{{city}}</div>
             </div>
-            <div class="index_address">{{city}}</div>
         </div>
         <transition :name="transitionName">
             <keep-alive>
@@ -59,43 +60,48 @@
 <style scoped lang="scss">
     .index {
         .index_top {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            /*display: flex;*/
+            /*align-items: center;*/
+            /*justify-content: space-between;*/
             padding: 22px 15px;
             background-color: #222;
-
+            height: 256px;
             .htop {
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
+                .htopleft {
+                    span {
+                        font-size: 15px;
+                        /*px*/
+                        margin-right: 28px;
+                        position: relative;
+                        color: #fff;
 
-                span {
-                    font-size: 15px;
-                    /*px*/
-                    margin-right: 28px;
-                    position: relative;
-                    color: #fff;
+                        &:last-child {
+                            margin: 0;
+                        }
 
-                    &:last-child {
-                        margin: 0;
+                        .border_b {
+                            position: absolute;
+                            width: 30px;
+                            height: 4px;
+                            background: linear-gradient(90deg, #2F61D2, #D0313E);
+                            border-radius: 3px;
+                            left: 0;
+                            bottom: -6px;
+                            z-index: 1;
+                        }
                     }
 
-                    .border_b {
-                        position: absolute;
-                        width: 30px;
-                        height: 4px;
-                        background: linear-gradient(90deg, #2F61D2, #D0313E);
-                        border-radius: 3px;
-                        left: 0;
-                        bottom: -6px;
-                        z-index: 1;
+                    .activespan {
+                        font-weight: bold;
+                        font-size: 17px;
+                        /*px*/
                     }
                 }
-
-                .activespan {
-                    font-weight: bold;
-                    font-size: 17px;
-                    /*px*/
+                .index_address {
+                    color: #fff;
                 }
             }
         }
