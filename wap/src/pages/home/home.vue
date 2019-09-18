@@ -42,7 +42,7 @@
 
         },
         mounted() {
-            this.index = this.$route.meta.index;
+            this.index = this.$route.meta.index||0;
         },
         watch: {
             '$route'(to, from) {
