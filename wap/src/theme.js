@@ -12,8 +12,8 @@
  */
 const setColorByRoot = () => {
   let property = {
-    '--theme_color': '#EE8E41',
-    '--calendar_bgcolor': '#FCE8D9',
+    '--theme_color': '#F2313B',
+    '--calendar_bgcolor': '#2F61D2',
   }
 
   for (let [key, value] of Object.entries(property)) {

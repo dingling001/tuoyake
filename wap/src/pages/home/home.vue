@@ -15,14 +15,10 @@
                         <span class="border_b" v-if="index==2"></span>
                     </router-link>
                 </div>
-                <div class="index_address">{{city}}</div>
+                <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
             </div>
         </div>
-        <transition :name="transitionName">
-            <keep-alive>
-                <router-view class="transitionBody"></router-view>
-            </keep-alive>
-        </transition>
+        <router-view class="transitionBody"></router-view>
     </div>
 </template>
 
@@ -42,7 +38,7 @@
 
         },
         mounted() {
-            this.index = this.$route.meta.index||0;
+            this.index = this.$route.meta.index || 0;
         },
         watch: {
             '$route'(to, from) {
@@ -58,6 +54,8 @@
 </script>
 
 <style scoped lang="scss">
+    @import "../../style/reset";
+
     .index {
         .index_top {
             /*display: flex;*/
@@ -66,10 +64,12 @@
             padding: 22px 15px;
             background-color: #222;
             height: 256px;
+
             .htop {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+
                 .htopleft {
                     span {
                         font-size: 15px;
@@ -86,7 +86,7 @@
                             position: absolute;
                             width: 30px;
                             height: 4px;
-                            background: linear-gradient(90deg, #2F61D2, #D0313E);
+                            background: linear-gradient(90deg, $baseBlue, $baseRed);
                             border-radius: 3px;
                             left: 0;
                             bottom: -6px;
@@ -100,8 +100,17 @@
                         /*px*/
                     }
                 }
+
                 .index_address {
                     color: #fff;
+                    padding: 4px 8px;
+                    background-color: $baseRed;
+                    border-radius:12px;
+                    display: flex;
+                    align-items: center;
+                    .iconfont{
+                        margin-right: 2px;
+                    }
                 }
             }
         }

@@ -23,6 +23,7 @@
     "px2rem-loader": "^0.1.9",
     "qs": "^6.7.0",
     "swiper": "^3.4.0",
+    "vant": "^1.6.25",
     "velocity-animate": "^1.5.2",
     "vue": "^2.6.10",
     "vue-baidu-map": "^0.21.20",

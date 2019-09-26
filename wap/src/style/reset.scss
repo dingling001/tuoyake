@@ -1,6 +1,6 @@
 :root {
-  --theme_color: #cc974c; //
-  --calendar_bgcolor: #F0E5D5; //
+  --theme_color: #F2313B; //
+  --calendar_bgcolor: #2F61D2; //
 }
 
 [v-cloak] {
@@ -245,24 +245,12 @@ li {
   z-index: 1202;
 }
 
-// 票务微信端  mint-ui样式自定义
-.pw-wx-mint-confirm-btn,
-.pw-wx-mint-msgbox-confirm {
-  color: #cc974c !important;
-}
 
-//yt.nie 20190523
-//修改confirm弹窗内容行高
-.mint-msgbox-message {
-  line-height: 25px !important;
-}
 
 #app {
   width: 100%;
   height: 100%;
 }
-//弹出提示多行时，行高过低问题
-.mint-toast-text{
-  line-height: 20px;
-}
-$baseRed:#F2313B
+
+$baseRed:#F2313B;
+$baseBlue:#2F61D2
