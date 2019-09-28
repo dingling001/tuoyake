@@ -4,25 +4,31 @@
         <div class="index_top">
             <div class="htop">
                 <div class="htopleft">
-                    <router-link to="/home/competition" tag="span" :class="{'activespan':index==0}">
+                    <span @click="tabhome(0,'/home/competition')" :class="{'activespan':ind==0}">
                         电竞馆
-                        <span class="border_b" v-if="index==0"></span>
-                    </router-link>
-                    <router-link to="/home/club" tag="span" :class="{'activespan':index==1}">俱乐部
-                        <span class="border_b" v-if="index==1"></span>
-                    </router-link>
-                    <router-link to="/home/school" tag="span" :class="{'activespan':index==2}">学院
-                        <span class="border_b" v-if="index==2"></span>
-                    </router-link>
+                        <span class="border_b" v-if="ind==0"></span>
+                    </span>
+                    <span @click="tabhome(1,'/home/club')" :class="{'activespan':ind==1}">俱乐部
+                        <span class="border_b" v-if="ind==1"></span>
+                    </span>
+                    <span @click="tabhome(2,'/home/school')" :class="{'activespan':ind==2}">学院
+                        <span class="border_b border_b1" v-if="ind==2"></span>
+                    </span>
                 </div>
                 <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
             </div>
+            <div class="searchinput"><span class="iconfont iconsousuo1"></span><span></span></div>
         </div>
-        <router-view class="transitionBody"></router-view>
+        <!--<router-view class="router-view"></router-view>-->
+        <keep-alive>
+            <router-view class="router-view"></router-view>
+        </keep-alive>
     </div>
 </template>
 
 <script>
+    import Club from './club'
+
     export default {
         name: "home",
         data() {
@@ -30,27 +36,31 @@
                 transitionName: 'transitionLeft',
                 title: '',
                 city: '天津',
-                index: 0
+                ind: 0,
+                keyword: ''
             }
+        },
+        components: {
+            Club
         },
         created() {
             this.title = '托亚克 | ' + this.city;
 
         },
-        mounted() {
-            this.index = this.$route.meta.index || 0;
-        },
-        watch: {
-            '$route'(to, from) {
-                const arr = ['home', '/home/competition', '/home/club', '/home/school']
-                const compare = arr.indexOf(to.path) > arr.indexOf(from.path)
-                // console.log(to)
-                this.index = to.meta.index;
-                this.title = to.meta.title + ' | ' + this.city;
-                this.transitionName = compare ? 'transitionLeft' : 'transitionRight'
+        methods: {
+            // 切换滑块
+            tabhome(index, path) {
+                this.ind = index;
+                this.$router.push(path)
             }
-        }
+        },
+        mounted() {
+            this.ind = this.$route.meta.index || 0;
+        },
+
     }
+
+
 </script>
 
 <style scoped lang="scss">
@@ -77,6 +87,9 @@
                         margin-right: 28px;
                         position: relative;
                         color: #fff;
+                        display: inline-block;
+                        z-index: 2;
+                        letter-spacing: 2px;
 
                         &:last-child {
                             margin: 0;
@@ -84,13 +97,18 @@
 
                         .border_b {
                             position: absolute;
-                            width: 30px;
-                            height: 4px;
+                            width: 35px;
+                            height: 6px;
                             background: linear-gradient(90deg, $baseBlue, $baseRed);
                             border-radius: 3px;
                             left: 0;
-                            bottom: -6px;
-                            z-index: 1;
+                            bottom: -2px;
+                            z-index: -1;
+                            padding: 0;
+                        }
+
+                        .border_b1 {
+                            width: 27px;
                         }
                     }
 
@@ -105,36 +123,23 @@
                     color: #fff;
                     padding: 4px 8px;
                     background-color: $baseRed;
-                    border-radius:12px;
+                    border-radius: 12px;
                     display: flex;
                     align-items: center;
-                    .iconfont{
+
+                    .iconfont {
                         margin-right: 2px;
                     }
                 }
             }
+
+            .searchinput {
+                width: 354px;
+                height: 32px;
+                background: rgba(255, 255, 255, .008);
+                border-radius: 16px;
+                margin: 0 auto;
+            }
         }
-    }
-
-    .transitionBody {
-        transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
-    }
-
-    .transitionLeft-enter,
-    .transitionRight-leave-active {
-        /*-webkit-transform: translate(100%, 0);*/
-        transform: translate(100%, 0);
-        /*当左滑进入右滑进入过渡动画*/
-        opacity: 0;
-        -webkit-transform: translate(50px, 0);
-    }
-
-    .transitionLeft-leave-active,
-    .transitionRight-enter {
-        /* -webkit-transform: translate(-100%, 0);
-         transform: translate(-100%, 0);*/
-        opacity: 0;
-        -webkit-transform: translate(-50px, 0);
-        transform: translate(-50px, 0)
     }
 </style>

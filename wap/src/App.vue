@@ -1,22 +1,20 @@
 <template>
     <div class="app" v-cloak>
-        <!--<Nav v-if="nav" ref="nav" v-cloak></Nav>-->
-        <div :class="{'navP':nav}">
+        <transition :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
             <keep-alive>
-                <transition>
-                    <router-view :v-wechat-title="title" v-if="$route.meta.keepAlive"></router-view>
-                </transition>
+                <router-view :v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
             </keep-alive>
-            <transition :name="transitionName">
-                <router-view :v-wechat-title="title" v-if="!$route.meta.keepAlive"></router-view>
-            </transition>
-        </div>
+        </transition>
+        <transition :name="'vux-pop-' + (direction === 'forward' ? 'in' : 'out')">
+            <router-view :v-wechat-title="title" v-if="!$route.meta.keepAlive" class="router-view"></router-view>
+        </transition>
         <v-footer v-if="footer" v-cloak></v-footer>
     </div>
 </template>
 <script>
     import Header from "./components/header.vue";
-    import Footer from "./components/footer.vue";
+    import Footer from "./components/foot.vue";
+    import {mapState} from 'vuex'
 
     export default {
         name: "App",
@@ -25,14 +23,20 @@
                 nav: false,
                 plat: "",
                 footer: true,
-                transitionName: "slide-right",
                 title: ''
             };
         },
-        computed: {},
+        created() {
+        },
+
+        computed: {
+            ...mapState({
+                direction: state => state.mutations.direction,
+            })
+        },
         components: {
-            'v-header':Header,
-            'v-footer':Footer
+            'v-header': Header,
+            'v-footer': Footer
         },
         watch: {},
         provide() {
@@ -40,6 +44,7 @@
                 app: this
             };
         },
+
         methods: {}
     };
 </script>
@@ -48,11 +53,45 @@
         display: none;
     }
 
-
     .navP {
         flex: 1;
         padding-bottom: 60px;
         display: flex;
         flex-direction: column;
     }
+
+    .vux-pop-out-enter-active,
+    .vux-pop-out-leave-active,
+    .vux-pop-in-enter-active,
+    .vux-pop-in-leave-active {
+        will-change: transform;
+        transition: all 250ms;
+        height: 100%;
+        top: 0;
+        position: absolute;
+        backface-visibility: hidden;
+        perspective: 1000;
+        -webkit-perspective: 1000,
+    }
+
+    .vux-pop-out-enter {
+        opacity: 0;
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    .vux-pop-out-leave-active {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    .vux-pop-in-enter {
+        opacity: 0;
+        transform: translate3d(100%, 0, 0);
+    }
+
+    .vux-pop-in-leave-active {
+        opacity: 0;
+        transform: translate3d(-100%, 0, 0);
+    }
 </style>
+

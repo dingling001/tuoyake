@@ -1,10 +1,39 @@
 <template>
     <div class="footer">
-        <div class="footer_item footer_itemactive"><span class="iconfont iconshouyex"></span><span>首页</span></div>
-        <div class="footer_item"><span class="iconfont icondiannao"></span><span>电竞馆</span></div>
+        <div :class="['footer_item',gindex==0?'footer_itemactive':'']" @click="tab(0,'/home')">
+            <span class="iconfont iconshouyex"></span><span>首页</span>
+        </div>
+        <div :class="['footer_item',gindex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
+            <span class="iconfont icondiannao"></span><span>电竞馆</span>
+        </div>
         <div class="footer_item"><span class="iconfont iconwode"></span><span>我的</span></div>
     </div>
 </template>
+<script>
+    export default {
+        name: 'foot',
+        data() {
+            return {
+                gindex: 0
+            }
+        },
+        created() {
+
+        },
+        mounted() {
+            console.log(this.$route.meta)
+            this.gindex = this.$route.meta.r || 0;
+        },
+        methods: {
+            // 切换滑块
+            tab(index, path) {
+                this.gindex = index;
+                this.$router.push(path)
+            }
+        },
+
+    }
+</script>
 <style scoped lang="scss">
     @import "../style/reset";
 
