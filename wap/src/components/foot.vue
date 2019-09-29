@@ -21,7 +21,7 @@
 
         },
         mounted() {
-            console.log(this.$route.meta)
+            // console.log(this.$route.meta)
             this.gindex = this.$route.meta.r || 0;
         },
         methods: {
