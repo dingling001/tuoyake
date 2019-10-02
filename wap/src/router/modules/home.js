@@ -9,7 +9,6 @@ export default [
         component: resolve => require(["../../pages/home/home"], resolve),
         meta: {
             title: "首页",
-            r: 0
         },
         children: [
             {
@@ -22,7 +21,6 @@ export default [
                 meta: {
                     title: "电竞馆",
                     index: 0,
-                    r:0
                 },
                 component: resolve => require(["../../pages/home/competition"], resolve)
 
@@ -33,7 +31,6 @@ export default [
                 meta: {
                     title: "电竞俱乐部",
                     index: 1,
-                    r:0
                 },
                 component: resolve => require(["../../pages/home/club"], resolve)
 
@@ -44,7 +41,6 @@ export default [
                 meta: {
                     title: "学院",
                     index: 2,
-                    r:0
                 },
                 component: resolve => require(["../../pages/home/school"], resolve)
             }

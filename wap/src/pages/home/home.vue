@@ -134,7 +134,7 @@
             }
 
             .searchinput {
-                width: 354px;
+                width: 94.4%;
                 height: 32px;
                 background: rgba(255, 255, 255, .008);
                 border-radius: 16px;

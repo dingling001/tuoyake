@@ -6,7 +6,9 @@
         <div :class="['footer_item',gindex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
             <span class="iconfont icondiannao"></span><span>电竞馆</span>
         </div>
-        <div class="footer_item"><span class="iconfont iconwode"></span><span>我的</span></div>
+        <div :class="['footer_item',gindex==2?'footer_itemactive':'']" @click="tab(2,'/my')">
+            <span class="iconfont iconwode"></span><span>我的</span>
+        </div>
     </div>
 </template>
 <script>
@@ -18,11 +20,19 @@
             }
         },
         created() {
-
+        },
+        watch: {
+            '$route'(val) {
+                if (val.fullPath.indexOf('/gindex') !== -1) {
+                    this.gindex = 1
+                } else if (val.fullPath.indexOf('/my') !== -1) {
+                    this.gindex = 2;
+                } else {
+                    this.gindex = 0
+                }
+            }
         },
         mounted() {
-            // console.log(this.$route.meta)
-            this.gindex = this.$route.meta.r || 0;
         },
         methods: {
             // 切换滑块
@@ -38,11 +48,11 @@
     @import "../style/reset";
 
     .footer {
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        left: 0;
-        z-index: 1;
+        /*position: fixed;*/
+        /*width: 100%;*/
+        /*bottom: 0;*/
+        /*left: 0;*/
+        /*z-index: 1;*/
         padding: 12px 50px 34px 50px;
         display: flex;
         align-items: center;
