@@ -4,7 +4,7 @@
         <keep-alive>
             <router-view :v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
         </keep-alive>
-        <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive" class="router-view"></router-view>
+        <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive" :class="['router-view',showH?'':'nonav']"></router-view>
         <v-footer v-if="showF"></v-footer>
     </div>
 </template>
@@ -50,9 +50,12 @@
     .app {
         .router-view {
             min-height: calc(100vh - 139px);
-
+            overflow-y: scroll;
+            &.nonav{
+                min-height: calc(100vh - 83px);
+            }
         }
-    }
 
+    }
 </style>
 

@@ -17,6 +17,8 @@ import api from "./http";
 import VueQrcode from "@xkeshi/vue-qrcode";
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import NProgress from 'nprogress' // 进度条
+import 'nprogress/nprogress.css' //这个样式必须引入
 // import "./theme.js";
 // import 'video.js/dist/video-js.css'
 // import 'vue-video-player/src/custom-theme.css'
@@ -35,6 +37,23 @@ Vue.use(api);
 Vue.use(VueWechatTitle);
 
 Vue.config.productionTip = false;
+// 简单配置
+NProgress.configure({
+    easing: 'ease',  // 动画方式
+    speed: 500,  // 递增进度条的速度
+    showSpinner: false, // 是否显示加载ico
+    trickleSpeed: 200, // 自动递增间隔
+    minimum: 0.3 // 初始化时的最小百分比
+})
+router.beforeEach((to, from, next) => {
+    NProgress.start()
+    next()
+});
+
+router.afterEach(() => {
+    NProgress.done()
+});
+
 // simple history management
 /* eslint-disable no-new */
 new Vue({

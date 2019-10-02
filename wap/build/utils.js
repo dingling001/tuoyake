@@ -46,7 +46,7 @@ exports.cssLoaders = function(options) {
 
   // generate loader string to be used with extract text plugin
   function generateLoaders(loader, loaderOptions) {
-    const loaders = options.usePostCSS
+      const loaders = options.usePostCSS ? [cssLoader, px2remLoader] : [cssLoader]
       ? [cssLoader, postcssLoader, px2remLoader]
       : [cssLoader, px2remLoader];
 

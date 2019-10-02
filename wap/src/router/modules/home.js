@@ -12,8 +12,8 @@ export default [
         },
         children: [
             {
-                path: '/',
-                redirect: '/home/competition',
+                path: "/",
+                redirect: '/home/competition'
             },
             {
                 path: '/home/competition',
@@ -21,6 +21,7 @@ export default [
                 meta: {
                     title: "电竞馆",
                     index: 0,
+                    keepAlive:true
                 },
                 component: resolve => require(["../../pages/home/competition"], resolve)
 
@@ -31,9 +32,9 @@ export default [
                 meta: {
                     title: "电竞俱乐部",
                     index: 1,
+                    keepAlive:true
                 },
                 component: resolve => require(["../../pages/home/club"], resolve)
-
             },
             {
                 path: '/home/school',
@@ -41,6 +42,7 @@ export default [
                 meta: {
                     title: "学院",
                     index: 2,
+                    keepAlive:true
                 },
                 component: resolve => require(["../../pages/home/school"], resolve)
             }

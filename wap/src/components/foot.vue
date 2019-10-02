@@ -48,12 +48,12 @@
     @import "../style/reset";
 
     .footer {
-        /*position: fixed;*/
-        /*width: 100%;*/
-        /*bottom: 0;*/
-        /*left: 0;*/
-        /*z-index: 1;*/
-        padding: 12px 50px 34px 50px;
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        padding: 12px 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -65,6 +65,7 @@
             align-items: center;
             color: #909090;
             font-weight: bold;
+            flex: 1;
             font-size: 9px;
             /*px*/
             .iconfont {
@@ -77,7 +78,6 @@
 
         .footer_itemactive {
             color: #333;
-
             .iconfont {
                 color: $baseRed;
 

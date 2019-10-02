@@ -1,6 +1,5 @@
 <template>
     <div class="index">
-        <div v-wechat-title="title"></div>
         <div class="index_top">
             <div class="htop">
                 <div class="htopleft">
@@ -17,17 +16,28 @@
                 </div>
                 <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
             </div>
-            <div class="searchinput"><span class="iconfont iconsousuo1"></span><span></span></div>
+            <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
+            <div class="swiperbox">
+                <swiper :options="swiperOption" ref="mySwiper">
+                    <swiper-slide>I'm Slide 1</swiper-slide>
+                    <swiper-slide>I'm Slide 2</swiper-slide>
+                    <swiper-slide>I'm Slide 3</swiper-slide>
+                    <swiper-slide>I'm Slide 4</swiper-slide>
+                    <swiper-slide>I'm Slide 5</swiper-slide>
+                    <swiper-slide>I'm Slide 6</swiper-slide>
+                    <swiper-slide>I'm Slide 7</swiper-slide>
+                    <div class="swiper-pagination" slot="pagination"></div>
+                </swiper>
+            </div>
         </div>
         <!--<router-view class="router-view"></router-view>-->
-        <keep-alive>
-            <router-view class="router-view"></router-view>
-        </keep-alive>
+        <router-view class="router-view"></router-view>
     </div>
 </template>
 
 <script>
-    import Club from './club'
+    import 'swiper/dist/css/swiper.css'
+    import {swiper, swiperSlide} from 'vue-awesome-swiper'
 
     export default {
         name: "home",
@@ -37,15 +47,21 @@
                 title: '',
                 city: '天津',
                 ind: 0,
-                keyword: ''
+                keyword: '和平路商业街',
+                swiperOption: {
+                    pagination: '.swiper-pagination',
+                }
             }
-        },
-        components: {
-            Club
         },
         created() {
             this.title = '托亚克 | ' + this.city;
-
+        },
+        mounted() {
+            this.ind = this.$route.meta.index || 0;
+        },
+        components: {
+            swiper,
+            swiperSlide
         },
         methods: {
             // 切换滑块
@@ -54,10 +70,11 @@
                 this.$router.push(path)
             }
         },
-        mounted() {
-            this.ind = this.$route.meta.index || 0;
+        computed: {
+            swiper() {
+                return this.$refs.mySwiper.swiper
+            }
         },
-
     }
 
 
@@ -72,9 +89,8 @@
             /*align-items: center;*/
             /*justify-content: space-between;*/
             padding: 22px 15px;
-            background-color: #222;
-            height: 256px;
-
+            height: 221px;
+            background: linear-gradient(90deg, #441219, #29182E);
             .htop {
                 display: flex;
                 align-items: center;
@@ -126,19 +142,57 @@
                     border-radius: 12px;
                     display: flex;
                     align-items: center;
-
                     .iconfont {
                         margin-right: 2px;
                     }
                 }
             }
-
             .searchinput {
-                width: 94.4%;
                 height: 32px;
-                background: rgba(255, 255, 255, .008);
+                background: rgba(255, 255, 255, .1);
                 border-radius: 16px;
-                margin: 0 auto;
+                margin: 20px auto;
+                padding: 10px 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, .3);
+                font-size: 14px;
+                /*px*/
+                .iconfont {
+                    margin-right: 8px;
+                }
+            }
+            .swiperbox {
+                height: 160px;
+                .swiper-container {
+                    height: 100%;
+                    .swiper-slide {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: #fff;
+                        background-color: #000;
+                        border-radius: 10px;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                    /deep/ .swiper-pagination {
+                        .swiper-pagination-bullet {
+                            height: 5px; /* no*/
+                            width: 5px; /* no*/
+                            border-radius: 5px; /* no*/
+                            background: rgba(255, 255, 255, 0.3);
+                            opacity: 1;
+                        }
+                        .swiper-pagination-bullet-active {
+                            width: 15px;
+                            background: rgba(255, 255, 255, 0.7);
+                            transition: all .3s;
+                        }
+                    }
+                }
             }
         }
     }
