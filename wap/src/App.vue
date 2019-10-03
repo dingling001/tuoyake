@@ -2,7 +2,7 @@
     <div class="app" v-cloak>
         <v-header v-if="showH"></v-header>
         <keep-alive>
-            <router-view :v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
+            <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
         </keep-alive>
         <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive" :class="['router-view',showH?'':'nonav']"></router-view>
         <v-footer v-if="showF"></v-footer>
@@ -32,9 +32,8 @@
         },
         watch: {
             '$route'(val) {
-                console.log(val)
                 this.title = '托亚克 | ' + val.meta.title;
-                console.log(this.title)
+                // console.log(this.title)
             }
         },
         provide() {

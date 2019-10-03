@@ -4,7 +4,6 @@ import "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import store from './store/'
 import "lib-flexible";
 
 import "@/style/reset.scss";
@@ -25,11 +24,12 @@ import 'nprogress/nprogress.css' //这个样式必须引入
 // import VideoPlayer from 'vue-video-player'
 /*引入移动端手势库*/
 import directives from './directives/touch'
+import Com from "./bin/common";
 
 directives(Vue);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;
-Vue.prototype.$web = STATIC_WEB_URL;
+Vue.prototype.$com = Com;
 
 Vue.use(Vant);
 Vue.use(api);
@@ -59,7 +59,7 @@ router.afterEach(() => {
 new Vue({
     el: "#app",
     router,
-    store,
+    // store,
     components: {
         App
     }

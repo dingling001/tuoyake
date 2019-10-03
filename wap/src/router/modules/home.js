@@ -1,11 +1,10 @@
 export default [
     {
         path: "/",
-        redirect: '/home'
+        redirect: '/home/competition'
     },
     {
         path: "/home",
-        name: "home",
         component: resolve => require(["../../pages/home/home"], resolve),
         meta: {
             title: "首页",

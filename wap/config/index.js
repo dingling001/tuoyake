@@ -3,13 +3,12 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 
 const path = require("path");
-
 module.exports = {
   dev: {
     // Paths
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
-    proxyTable: {},
+    // proxyTable: {},
 
     // Various Dev Server settings
     // host: "localhost", // can be overwritten by process.env.HOST
@@ -31,10 +30,19 @@ module.exports = {
     // set this to false - it *may* help
     // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
-
-    cssSourceMap: true
+    cssSourceMap: true,
+    env: require('./dev.env'),
+    proxyTable: {
+      '/api': {
+        target: 'http://admin.tuoyake.com/',
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/api"
+        }
+      }
+    },
   },
-
   build: {
     // Template for index.html
     // index: path.resolve(__dirname, '../dist/index.html'),

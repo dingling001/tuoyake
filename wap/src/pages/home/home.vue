@@ -19,13 +19,8 @@
             <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
             <div class="swiperbox">
                 <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide>I'm Slide 1</swiper-slide>
-                    <swiper-slide>I'm Slide 2</swiper-slide>
-                    <swiper-slide>I'm Slide 3</swiper-slide>
-                    <swiper-slide>I'm Slide 4</swiper-slide>
-                    <swiper-slide>I'm Slide 5</swiper-slide>
-                    <swiper-slide>I'm Slide 6</swiper-slide>
-                    <swiper-slide>I'm Slide 7</swiper-slide>
+                    <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
+                    </swiper-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
                 </swiper>
             </div>
@@ -50,14 +45,22 @@
                 keyword: '和平路商业街',
                 swiperOption: {
                     pagination: '.swiper-pagination',
-                }
+                    observers: true,
+                    observeParents: true,
+                    spaceBetween: 10,
+                    loop: true,
+                    autoplay: 3000,
+                },
+                swiperlist: []
             }
         },
         created() {
             this.title = '托亚克 | ' + this.city;
+            this._GetSlideList()
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
+            console.log(this.$com)
         },
         components: {
             swiper,
@@ -68,7 +71,17 @@
             tabhome(index, path) {
                 this.ind = index;
                 this.$router.push(path)
-            }
+            },
+            // 获取轮播图
+            _GetSlideList() {
+                this.$api.GetSlideList(this.city).then((res) => {
+                    if (res.code == 1) {
+                        this.swiperlist = res.data;
+                    } else {
+                        this.$com.showtoast(res.msg)
+                    }
+                })
+            },
         },
         computed: {
             swiper() {
@@ -89,8 +102,9 @@
             /*align-items: center;*/
             /*justify-content: space-between;*/
             padding: 22px 15px;
-            height: 221px;
+            height: 230px;
             background: linear-gradient(90deg, #441219, #29182E);
+
             .htop {
                 display: flex;
                 align-items: center;
@@ -142,11 +156,13 @@
                     border-radius: 12px;
                     display: flex;
                     align-items: center;
+
                     .iconfont {
                         margin-right: 2px;
                     }
                 }
             }
+
             .searchinput {
                 height: 32px;
                 background: rgba(255, 255, 255, .1);
@@ -163,10 +179,14 @@
                     margin-right: 8px;
                 }
             }
+
             .swiperbox {
                 height: 160px;
+                border-radius: 16px;
+
                 .swiper-container {
                     height: 100%;
+
                     .swiper-slide {
                         display: flex;
                         align-items: center;
@@ -174,10 +194,13 @@
                         color: #fff;
                         background-color: #000;
                         border-radius: 10px;
+                        overflow: hidden;
+
                         img {
                             width: 100%;
                         }
                     }
+
                     /deep/ .swiper-pagination {
                         .swiper-pagination-bullet {
                             height: 5px; /* no*/
@@ -186,6 +209,7 @@
                             background: rgba(255, 255, 255, 0.3);
                             opacity: 1;
                         }
+
                         .swiper-pagination-bullet-active {
                             width: 15px;
                             background: rgba(255, 255, 255, 0.7);
