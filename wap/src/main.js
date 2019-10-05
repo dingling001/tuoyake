@@ -4,8 +4,7 @@ import "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import "lib-flexible";
-
+import 'lib-flexible'
 import "@/style/reset.scss";
 import VueWechatTitle from "vue-wechat-title";
 import moment from 'moment';

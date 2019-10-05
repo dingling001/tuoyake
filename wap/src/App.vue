@@ -48,7 +48,7 @@
 <style lang="scss" scoped>
     .app {
         .router-view {
-            min-height: calc(100vh - 139px);
+            height: calc(100vh - 61px);
             overflow-y: scroll;
             &.nonav{
                 min-height: calc(100vh - 83px);

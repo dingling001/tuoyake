@@ -60,7 +60,6 @@
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
-            console.log(this.$com)
         },
         components: {
             swiper,

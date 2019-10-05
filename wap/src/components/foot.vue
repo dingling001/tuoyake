@@ -52,7 +52,7 @@
         width: 100%;
         bottom: 0;
         left: 0;
-        z-index: 1;
+        z-index: 1000;
         padding: 12px 0;
         display: flex;
         align-items: center;
