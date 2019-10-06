@@ -5,6 +5,7 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 import 'lib-flexible'
+// import './assets/js/window'
 import "@/style/reset.scss";
 import VueWechatTitle from "vue-wechat-title";
 import moment from 'moment';
@@ -13,8 +14,8 @@ import moment from 'moment';
 import api from "./http";
 // import "swiper/dist/css/swiper.min.css";
 import VueQrcode from "@xkeshi/vue-qrcode";
-import Vant from 'vant';
-import 'vant/lib/index.css';
+// import Vant from 'vant';
+// import 'vant/lib/index.css';
 import NProgress from 'nprogress' // 进度条
 import 'nprogress/nprogress.css' //这个样式必须引入
 // import "./theme.js";
@@ -24,17 +25,16 @@ import 'nprogress/nprogress.css' //这个样式必须引入
 /*引入移动端手势库*/
 import directives from './directives/touch'
 import Com from "./bin/common";
+import Vant from 'vant'
+import 'vant/lib/index.css';
 
 directives(Vue);
 Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;
 Vue.prototype.$com = Com;
-
-Vue.use(Vant);
 Vue.use(api);
-
 Vue.use(VueWechatTitle);
-
+Vue.use(Vant)
 Vue.config.productionTip = false;
 // 简单配置
 NProgress.configure({

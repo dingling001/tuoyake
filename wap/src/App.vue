@@ -4,8 +4,9 @@
         <keep-alive>
             <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
         </keep-alive>
-        <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive" :class="['router-view',showH?'':'nonav']"></router-view>
-        <v-footer v-if="showF"></v-footer>
+        <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive"
+                     :class="['router-view',showH?'':'nonav']"></router-view>
+        <v-footer v-if="showF" :gindex="f_index"></v-footer>
     </div>
 </template>
 <script>
@@ -20,6 +21,7 @@
                 showF: true,
                 plat: "",
                 title: '跳转中…',
+                f_index: 0
             };
         },
         created() {
@@ -33,7 +35,14 @@
         watch: {
             '$route'(val) {
                 this.title = '托亚克 | ' + val.meta.title;
-                // console.log(this.title)
+                this.showF = val.meta.showF;
+                if (val.fullPath.indexOf('/gindex') !== -1) {
+                    this.f_index = 1
+                } else if (val.fullPath.indexOf('/my') !== -1) {
+                    this.f_index = 2;
+                } else {
+                    this.f_index = 0
+                }
             }
         },
         provide() {
@@ -50,7 +59,8 @@
         .router-view {
             height: calc(100vh - 61px);
             overflow-y: scroll;
-            &.nonav{
+
+            &.nonav {
                 min-height: calc(100vh - 83px);
             }
         }

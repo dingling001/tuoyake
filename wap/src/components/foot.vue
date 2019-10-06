@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        <div :class="['footer_item',gindex==0?'footer_itemactive':'']" @click="tab(0,'/home')">
+        <div :class="['footer_item',gindex==0?'footer_itemactive':'']" @click="tab(0,'/competition')">
             <span class="iconfont iconshouyex"></span><span>首页</span>
         </div>
         <div :class="['footer_item',gindex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
@@ -16,28 +16,32 @@
         name: 'foot',
         data() {
             return {
-                gindex: 0
+                // gindex: 0
             }
         },
-        created() {
+        props: {
+            'gindex': {}
         },
+        // created() {
+        //     this.findex = this.gindex;
+        // },
         watch: {
-            '$route'(val) {
-                if (val.fullPath.indexOf('/gindex') !== -1) {
-                    this.gindex = 1
-                } else if (val.fullPath.indexOf('/my') !== -1) {
-                    this.gindex = 2;
-                } else {
-                    this.gindex = 0
-                }
-            }
+            // '$route'(val) {
+            //     console.log(val)
+            //     if (val.fullPath.indexOf('/gindex') !== -1) {
+            //         this.gindex = 1
+            //     } else if (val.fullPath.indexOf('/my') !== -1) {
+            //         this.gindex = 2;
+            //     } else {
+            //         this.gindex = 0
+            //     }
+            // }
         },
         mounted() {
         },
         methods: {
             // 切换滑块
             tab(index, path) {
-                this.gindex = index;
                 this.$router.push(path)
             }
         },
@@ -78,6 +82,7 @@
 
         .footer_itemactive {
             color: #333;
+
             .iconfont {
                 color: $baseRed;
 

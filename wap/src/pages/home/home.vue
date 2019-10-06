@@ -3,14 +3,14 @@
         <div class="index_top">
             <div class="htop">
                 <div class="htopleft">
-                    <span @click="tabhome(0,'/home/competition')" :class="{'activespan':ind==0}">
+                    <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">
                         电竞馆
                         <span class="border_b" v-if="ind==0"></span>
                     </span>
-                    <span @click="tabhome(1,'/home/club')" :class="{'activespan':ind==1}">俱乐部
+                    <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部
                         <span class="border_b" v-if="ind==1"></span>
                     </span>
-                    <span @click="tabhome(2,'/home/school')" :class="{'activespan':ind==2}">学院
+                    <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">学院
                         <span class="border_b border_b1" v-if="ind==2"></span>
                     </span>
                 </div>
@@ -19,7 +19,7 @@
             <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
             <div class="swiperbox">
                 <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
+                    <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img  :src="item.image_m" alt="">
                     </swiper-slide>
                     <div class="swiper-pagination" slot="pagination"></div>
                 </swiper>
@@ -52,6 +52,17 @@
                     autoplay: 3000,
                 },
                 swiperlist: []
+            }
+        },
+        watch: {
+            '$route'(val) {
+                if (val.fullPath.indexOf('/competition') !== -1) {
+                    this.ind = 0
+                } else if (val.fullPath.indexOf('/club') !== -1) {
+                    this.ind = 1;
+                } else {
+                    this.ind = 2
+                }
             }
         },
         created() {

@@ -6,9 +6,13 @@ import check from ".././bin/common";
 Vue.use(Router);
 var routes = [...RouterCommon, ...RouterModule];
 const router = new Router({
-  mode: "history",
+  // mode: "history",
   routes: routes
 });
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 router.beforeEach(function(to, from, next) {
   window.scroll(0, 0);
   if (to.meta.needLogin) {

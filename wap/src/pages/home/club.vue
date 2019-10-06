@@ -14,7 +14,17 @@
                         GamingInvictus GamingInvictus Gaming
                     </div>
                     <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
-                    <div class="jaddress">和平区大沽南路43号金融街中心1115</div>
+                    <div class="jaddress van-ellipsis">和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115</div>
+                </div>
+            </div>
+            <div class="jitem van-row--flex">
+                <div class="jimg"><img src="" alt=""></div>
+                <div class="jright">
+                    <div class="jname van-ellipsis">Invictus GamingInvictus GamingInvictus GamingInvictus
+                        GamingInvictus GamingInvictus Gaming
+                    </div>
+                    <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
+                    <div class="jaddress van-ellipsis">和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115</div>
                 </div>
             </div>
         </div>
@@ -22,8 +32,10 @@
 </template>
 
 <script>
+
     export default {
-        name: "club"
+        name: "club",
+
     }
 </script>
 
@@ -71,6 +83,7 @@
                     border: 1px solid #eee;
                     /*no*/
                     margin-right: 17px;
+                    flex-shrink: 0;
                 }
 
                 .jright {
@@ -96,6 +109,7 @@
                         color: #666666;
                         font-size: 12px;
                         /*px*/
+                        max-width: 240px;
                     }
                 }
             }
