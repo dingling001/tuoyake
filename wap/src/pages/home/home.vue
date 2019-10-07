@@ -58,7 +58,7 @@
                     autoplay: 3000,
                 },
                 swiperlist: [],
-                offsettop: 0
+                // offsettop: 0
             }
         },
         watch: {
@@ -70,16 +70,22 @@
                 } else {
                     this.ind = 2
                 }
+                this.offsettop = this.$refs.index_top.offsetHeight;
+                Bus.$emit("home", this.offsettop);
             }
         },
         created() {
             this.title = '托亚克 | ' + this.city;
             this._GetSlideList()
+
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
-            Bus.$emit("home", this.offsettop);
+            localStorage.offsettop = this.offsettop;
+            console.log(this.offsettop)
+            // Bus.$emit("home", this.offsettop);
+
         },
         components: {
             swiper,
@@ -105,7 +111,7 @@
         computed: {
             swiper() {
                 return this.$refs.mySwiper.swiper
-            }
+            },
         },
     }
 
