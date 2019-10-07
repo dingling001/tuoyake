@@ -5,7 +5,8 @@ export default [
         component: resolve => require(["../../pages/my/my"], resolve),
         meta: {
             title: "我的",
-            showF:true
+            showF:true,
+            showH:false
         },
     }
 ]

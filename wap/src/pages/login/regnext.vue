@@ -1,29 +1,21 @@
 <template>
     <div class="login_box">
         <div class="login_head" @click="$router.go(-1)">
-            <div class="iconfont iconguanbi-copy"></div>
+            <div class="iconfont iconfanhui"></div>
         </div>
-        <div class="login_title">登录托亚克</div>
+        <div class="login_title">设置密码</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="请输入您的账号" clearable/>
-            <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable/>
-            <div class="btns van-row--flex van-row--justify-space-between">
-                <router-link tag="span" to="/logincode">验证码登录</router-link>
-                <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
-            </div>
-            <div class="login_btn">登录</div>
-            <div class="tips">
-                <span>还没有账号，</span>
-                <router-link class="reg" to="/reg" tag="span">去注册</router-link>
-                <span class="iconfont iconjiantou"></span>
-            </div>
+            <van-field v-model="account" placeholder="登录密码（6~12位）" type="password" clearable/>
+            <van-field v-model="password" placeholder="请再次输入登录密码" type="password" clearable>
+            </van-field>
+            <div class="login_btn" @click="gologin">前往登录</div>
         </form>
     </div>
 </template>
 
 <script>
     export default {
-        name: "login",
+        name: "reg",
         data() {
             return {
                 account: '',
@@ -31,7 +23,11 @@
             }
         },
         created() {
-
+        },
+        methods: {
+            gologin() {
+                this.$router.push({path: '/login', query: {}})
+            }
         }
     }
 </script>
@@ -83,27 +79,28 @@
                         /*px*/
                     }
                 }
-            }
 
-
-            .btns {
-                span {
-                    flex: 1;
+                .code {
                     color: #778399;
                     font-size: 14px;
                     /*px*/
-                    padding: 32px 10px;
+                    border: none;
+                    background: none;
 
-                    &:last-child {
-                        text-align: right;
+                    &:active {
+                        opacity: 1;
+                        background: none;
+                    }
+
+                    &:before {
+                        background: none;
                     }
                 }
-
             }
 
             .login_btn {
                 width: 300px;
-                margin: 30px auto;
+                margin: 51px auto;
                 text-align: center;
                 background-color: $baseBlue;
                 color: #fff;
@@ -115,22 +112,6 @@
 
                 &:active {
                     opacity: .9;
-                }
-            }
-
-            .tips {
-                text-align: center;
-                color: #454951;
-                font-size: 14px;
-                /*px*/
-                .reg {
-                    color: #6285CC;
-                }
-
-                .iconjiantou {
-                    color: #6285CC;
-                    font-size: 14px;
-                    /*px*/
                 }
             }
         }

@@ -1,11 +1,133 @@
 <template>
     <div class="cbox">
-        <div class="cselect">
-            <div class="cselectitem"><span>推荐电竞馆</span><span class="iconfont iconjiantouarrow486"></span></div>
-            <div class="cselectitem"><span>全部服务</span><span class="iconfont iconjiantouarrow486"></span></div>
-            <div class="cselectitem"><span>全部地区</span><span class="iconfont iconjiantouarrow486"></span></div>
-        </div>
+        <van-sticky :offset-top="offsettop">
+            <div class="cselect">
+                <div class="cselectitem"><span>推荐电竞馆</span><span class="iconfont iconjiantouarrow486"></span></div>
+                <div class="cselectitem"><span>全部服务</span><span class="iconfont iconjiantouarrow486"></span></div>
+                <div class="cselectitem"><span>全部地区</span><span class="iconfont iconjiantouarrow486"></span></div>
+            </div>
+        </van-sticky>
         <div class="clist">
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cimg"><img
+                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+                </div>
+                <div class="cright">
+                    <div class="cname">
+                        <div class="namebox">
+                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
+                            <div class="startbox">
+                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                            </div>
+                        </div>
+                        <span class="juli">1.1km</span>
+                    </div>
+                    <div class="ctype"><span>环境优雅</span></div>
+                    <div class="caddress">
+                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
+                    </div>
+                </div>
+            </div>
             <div class="citem">
                 <div class="cimg"><img
                         src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
@@ -71,8 +193,20 @@
 </template>
 
 <script>
+    import Bus from '../../bin/Bus'
+
     export default {
-        name: "competition"
+        name: "competition",
+        data() {
+            return {
+                offsettop: 0
+            }
+        },
+        mounted() {
+            Bus.$on("home", (val, val1) => {    //取  Bus.$on
+                this.offsettop = val;
+            });
+        }
     }
 </script>
 
@@ -80,17 +214,13 @@
     @import "../../style/reset";
 
     .cbox {
-        background-color: #fff;
-        margin-top: -10px;
-        border-radius: 10px 10px 0 0;
-        padding: 60px 0;
-
         .cselect {
             padding: 0 39px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             color: #333333;
+            background-color: #fff;
             font-size: 12px;
             /* px */
             .cselectitem {

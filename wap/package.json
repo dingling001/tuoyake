@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@xkeshi/vue-qrcode": "^1.0.0",
+    "animate.css": "^3.7.2",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "crypto": "^1.0.1",
@@ -22,7 +23,7 @@
     "postcss-px2rem-exclude": "^0.0.6",
     "px2rem-loader": "^0.1.9",
     "qs": "^6.7.0",
-    "vant": "^1.6.25",
+    "vant": "^2.2.5",
     "velocity-animate": "^1.5.2",
     "vue": "^2.6.10",
     "vue-awesome-swiper": "^2.6.7",

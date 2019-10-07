@@ -3,10 +3,14 @@
         <div class="mhead">
             <div class="mimg"><img src="../../assets/logo.png" alt=""></div>
             <div class="namebox">
-                <div class="nickname">使命召唤</div>
+                <van-sticky>
+                    <div class="nickname">
+                        <span class="name">使命召唤</span>
+                        <div class="iconfont iconshezhi1" @click="goset"></div>
+                    </div>
+                </van-sticky>
                 <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">104</span></div>
             </div>
-            <div class="iconfont iconshezhi1" @click="goset"></div>
         </div>
         <div class="mbody">
             <div class="mnav">
@@ -73,9 +77,9 @@
 <script>
     export default {
         name: "my",
-        methods:{
+        methods: {
             // 去设置页面
-            goset(){
+            goset() {
                 this.$router.push('/login')
             }
         }
@@ -120,6 +124,15 @@
                     /*px*/
                     font-weight: bold;
                     margin-bottom: 11px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    width: 100%;
+                    transition: all .3s;
+
+                    .name {
+                        flex: 1;
+                    }
                 }
 
                 .mscroe {
@@ -137,6 +150,16 @@
                     }
                 }
 
+                /deep/ .van-sticky--fixed {
+                    .nickname {
+                        padding: 11px 17px;
+                        font-size: 14px;
+                        /*px*/
+                        text-align: center;
+                        background-color: #fff;
+                        color: #333;
+                    }
+                }
             }
 
             .iconshezhi1 {
@@ -149,6 +172,7 @@
             margin: -10px 0 0 0;
             background-color: #fff;
             border-radius: 15px 15px 0px 0px;
+            padding: 0 0 20px 0;
 
             .mnav {
                 display: flex;

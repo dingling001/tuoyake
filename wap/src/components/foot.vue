@@ -1,12 +1,12 @@
 <template>
     <div class="footer">
-        <div :class="['footer_item',gindex==0?'footer_itemactive':'']" @click="tab(0,'/competition')">
+        <div :class="['footer_item',findex==0?'footer_itemactive':'']" @click="tab(0,'/competition')">
             <span class="iconfont iconshouyex"></span><span>首页</span>
         </div>
-        <div :class="['footer_item',gindex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
+        <div :class="['footer_item',findex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
             <span class="iconfont icondiannao"></span><span>电竞馆</span>
         </div>
-        <div :class="['footer_item',gindex==2?'footer_itemactive':'']" @click="tab(2,'/my')">
+        <div :class="['footer_item',findex==2?'footer_itemactive':'']" @click="tab(2,'/my')">
             <span class="iconfont iconwode"></span><span>我的</span>
         </div>
     </div>
@@ -16,32 +16,35 @@
         name: 'foot',
         data() {
             return {
-                // gindex: 0
+                findex: 0
             }
         },
         props: {
-            'gindex': {}
+            'gindex': {
+                default: 0
+            }
         },
-        // created() {
-        //     this.findex = this.gindex;
-        // },
+        created() {
+            this.findex = this.gindex;
+        },
         watch: {
-            // '$route'(val) {
-            //     console.log(val)
-            //     if (val.fullPath.indexOf('/gindex') !== -1) {
-            //         this.gindex = 1
-            //     } else if (val.fullPath.indexOf('/my') !== -1) {
-            //         this.gindex = 2;
-            //     } else {
-            //         this.gindex = 0
-            //     }
-            // }
+            '$route'(val) {
+                // console.log(val)
+                if (val.fullPath.indexOf('/gindex') !== -1) {
+                    this.findex = 1
+                } else if (val.fullPath.indexOf('/my') !== -1) {
+                    this.findex = 2;
+                } else {
+                    this.findex = 0
+                }
+            }
         },
         mounted() {
         },
         methods: {
             // 切换滑块
             tab(index, path) {
+                this.findex = index;
                 this.$router.push(path)
             }
         },
@@ -62,6 +65,7 @@
         align-items: center;
         justify-content: space-between;
         box-shadow: 0 -1px 10px rgba(0, 0, 0, .08);
+        background-color: #fff;
 
         .footer_item {
             display: flex;

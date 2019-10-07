@@ -26,7 +26,6 @@ export default [
                     showH:false
                 },
                 component: resolve => require(["../../pages/home/competition"], resolve)
-
             },
             {
                 path: '/club',
