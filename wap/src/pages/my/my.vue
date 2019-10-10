@@ -1,7 +1,7 @@
 <template>
     <div class="mbox">
         <div class="mhead">
-            <div class="mimg"><img src="../../assets/logo.png" alt=""></div>
+            <div class="mimg"><img :src="avatar" alt=""></div>
             <div class="namebox">
                 <van-sticky>
                     <div class="nickname">
@@ -77,11 +77,19 @@
 <script>
     export default {
         name: "my",
+        data(){
+            return{
+                avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgaGVpZ2h0PSIxMDAiIHdpZHRoPSIxMDAiPjxyZWN0IGZpbGw9InJnYigyMjksMTYwLDE4MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIj4xPC90ZXh0Pjwvc3ZnPg=="
+
+            }
+        },
         methods: {
             // 去设置页面
             goset() {
                 this.$router.push('/login')
-            }
+            },
+            // 获取个人信息
+            // user_twap
         }
 
     }

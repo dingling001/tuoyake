@@ -161,10 +161,10 @@ const checkWx = () => {
     }
 };
 // 弹窗
-const showtoast = (message, type = 'text', icon='like-o', duration = 2000) => {
+const showtoast = (message, type = 'text', icon = 'like-o', duration = 2000, iconPrefix = '') => {
     Toast({
         message,
-        iconPrefix: 'iconfont',
+        iconPrefix,
         icon,
         type,
         duration,

@@ -4,14 +4,14 @@
             <div class="iconfont iconfanhui"></div>
         </div>
         <div class="login_title">验证码登录</div>
-        <form class="loginform">
-            <van-field v-model="account" placeholder="手机号" type="number" clearable/>
-            <van-field v-model="password" placeholder="短信验证码" type="text" center clearable>
-                <van-button slot="button" type="default" class="code" size="small">获取验证码</van-button>
+        <div class="loginform">
+            <van-field v-model="mobile" placeholder="手机号" type="number" clearable/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="text" center clearable>
+                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend">获取验证码</van-button>
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
             <router-link to="/login" tag="div" class="login_pass">密码登录</router-link>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -20,16 +20,35 @@
         name: "reg",
         data() {
             return {
-                account: '',
-                password: '',
+                mobile: '',
+                captcha: '',
             }
         },
         created() {
         },
         methods: {
-            // 下一步
+            // 获取验证码
+            _SmsSend() {
+                if (this.mobile == '') {
+                    this.$com.showtoast('请输入手机号', 'fail', 'iconfont  iconguanbi-copy')
+                } else {
+                    this.$api.SmsSend(this.mobile, 'login').then((res) => {
+                        console.log(res)
+                    })
+                }
+            },
             gonext() {
-                this.$router.push({path: '/regnext', query: {}})
+                if (this.mobile == '') {
+                    this.$com.showtoast('请输入手机号', 'fail', 'copy')
+                } else if (this.captcha == '') {
+                    this.$com.showtoast('请输入验证码', 'fail', 'copy')
+
+                } else {
+                    this.$api.MobileLogin(this.mobile, this.captcha).then((res) => {
+                        console.log(res)
+                    })
+                }
+                // this.$router.push({path: '/regnext', query: {}})
             }
         }
     }
@@ -117,7 +136,8 @@
                     opacity: .9;
                 }
             }
-            .login_pass{
+
+            .login_pass {
                 text-align: center;
                 font-size: 15px;
                 /*px*/

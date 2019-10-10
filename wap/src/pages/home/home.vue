@@ -70,8 +70,8 @@
                 } else {
                     this.ind = 2
                 }
-                this.offsettop = this.$refs.index_top.offsetHeight;
-                Bus.$emit("home", this.offsettop);
+                // this.offsettop = this.$refs.index_top.offsetHeight;
+                // Bus.$emit("home", this.offsettop);
             }
         },
         created() {
@@ -83,7 +83,6 @@
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
-            console.log(this.offsettop)
             // Bus.$emit("home", this.offsettop);
 
         },

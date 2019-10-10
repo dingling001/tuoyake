@@ -2,7 +2,7 @@ import axios from "../api";
 
 
 /**
- * 添加编辑常用联系人(票务共用)
+ * (票务共用)
  */
 export const GetSlideList = (city) =>
     axios(

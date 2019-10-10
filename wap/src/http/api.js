@@ -28,20 +28,20 @@ const instance = axios.create(config);
 
 instance.interceptors.response.use(
     function (response) {
-        // if (response.data.status == 405) {
-        //     Toast({
-        //         message: "登录已过期，请重新登录！",
-        //         position: "center",
-        //         duration: 3000
-        //     });
-        //     localStorage.removeItem("app_token");
-        //     // 暂时缓存地址，授权成功后回跳这个地址
-        //     localStorage.url = window.location.href;
-        //     window.location.href = window.location.origin + "/login";
-        // } else {
+        if (response.data.status == 405) {
+            Toast({
+                message: "登录已过期，请重新登录！",
+                position: "center",
+                duration: 3000
+            });
+            localStorage.removeItem("app_token");
+            // 暂时缓存地址，授权成功后回跳这个地址
+            localStorage.url = window.location.href;
+            window.location.href = window.location.origin + "/login";
+        } else {
         //     console.log(response)
             return response.data;
-        // }
+        }
     },
     function (err) {
         // switch (err.response.status) {

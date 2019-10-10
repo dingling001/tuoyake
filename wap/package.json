@@ -11,7 +11,6 @@
     "publish": "node build/publish.js"
   },
   "dependencies": {
-    "@xkeshi/vue-qrcode": "^1.0.0",
     "animate.css": "^3.7.2",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",

@@ -11,7 +11,7 @@
                 <router-link tag="span" to="/logincode">验证码登录</router-link>
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
             </div>
-            <div class="login_btn">登录</div>
+            <div class="login_btn" @click="loginpass">登录</div>
             <div class="tips">
                 <span>还没有账号，</span>
                 <router-link class="reg" to="/reg" tag="span">去注册</router-link>
@@ -32,6 +32,30 @@
         },
         created() {
 
+        },
+        methods: {
+            // 登录
+            loginpass() {
+                console.log(this.$com.checkPhone(this.account))
+                if (!this.$com.checkPhone(this.account)) {
+                    this.$com.showtoast('请输入正确的手机号', 'fail')
+                } else if (this.password == '') {
+                    this.$com.showtoast('请输入密码', 'fail')
+                } else {
+                    this.$api.Login(this.account, this.password).then((res) => {
+                        console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast('登录成功', 'fail')
+                            setTimeout(()=>{
+                                this.$router.push('/')
+                            },2000)
+                        } else {
+                            this.$com.showtoast(res.msg, 'fail')
+
+                        }
+                    })
+                }
+            }
         }
     }
 </script>
