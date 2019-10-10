@@ -83,7 +83,7 @@
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
-            // Bus.$emit("home", this.offsettop);
+            Bus.$emit("home", this.offsettop);
 
         },
         components: {

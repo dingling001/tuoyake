@@ -193,6 +193,7 @@
 </template>
 
 <script>
+    import Bus from '../../bin/Bus'
 
     export default {
         name: "competition",
@@ -203,10 +204,10 @@
         },
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
-            // Bus.$on("home", (val, val1) => {    //取  Bus.$on
-            //     this.offsettop = val;
-            //     console.log(this.offsettop)
-            // });
+            Bus.$on("home", (val, val1) => {    //取  Bus.$on
+                this.offsettop = val;
+                console.log(this.offsettop)
+            });
         },
         mounted() {
 
