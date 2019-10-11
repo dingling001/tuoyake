@@ -39,7 +39,7 @@
                     <div class="navtext">我的积分</div>
                 </div>
             </div>
-            <div class="mad"><img src="" alt=""></div>
+            <div class="mad"><img :src="adinfo.image" alt=""></div>
             <div class="mlink">
                 <van-cell is-link :border='false'>
                     <!-- 使用 title 插槽来自定义标题 -->
@@ -77,10 +77,16 @@
 <script>
     export default {
         name: "my",
-        data(){
-            return{
-                avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgaGVpZ2h0PSIxMDAiIHdpZHRoPSIxMDAiPjxyZWN0IGZpbGw9InJnYigyMjksMTYwLDE4MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIj4xPC90ZXh0Pjwvc3ZnPg=="
-
+        data() {
+            return {
+                avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgaGVpZ2h0PSIxMDAiIHdpZHRoPSIxMDAiPjxyZWN0IGZpbGw9InJnYigyMjksMTYwLDE4MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIj4xPC90ZXh0Pjwvc3ZnPg==",
+                adinfo: {}
+            }
+        },
+        created() {
+            this._GetAdv();
+            if (localStorage.user_twap) {
+                this._GetUserInfo()
             }
         },
         methods: {
@@ -89,7 +95,18 @@
                 this.$router.push('/login')
             },
             // 获取个人信息
-            // user_twap
+            _GetUserInfo() {
+                this.$api.GetUserInfo().then(res => {
+                    console.log(res)
+                })
+            },
+            // 获取广告位
+            _GetAdv() {
+                this.$api.GetAdv(1).then(res => {
+                    console.log(res)
+                    this.adinfo = res.data;
+                })
+            }
         }
 
     }
@@ -201,7 +218,8 @@
 
                         img {
                             /*width: 100%;*/
-                            width: 39px;
+                            /*width: 39px;*/
+                            height: 100%;
                         }
 
                         /*.navshadow {*/
@@ -222,8 +240,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                margin: 15px 0;
-
+                /*margin: 15px 0;*/
                 img {
                     width: 100%;
                 }

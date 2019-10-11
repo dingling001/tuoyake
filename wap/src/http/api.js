@@ -28,7 +28,8 @@ const instance = axios.create(config);
 
 instance.interceptors.response.use(
     function (response) {
-        if (response.data.status == 405) {
+        console.log(response)
+        if (response.data.status == 401) {
             Toast({
                 message: "登录已过期，请重新登录！",
                 position: "center",
@@ -118,7 +119,7 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
         }
         instance(options)
             .then(function (res) {
-                // console.log(res);
+                console.log(res);
                 resolve(res);
                 return false;
             })
