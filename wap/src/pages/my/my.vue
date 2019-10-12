@@ -15,25 +15,25 @@
         <div class="mbody">
             <div class="mnav">
                 <div class="mitem">
-                    <div class="navimg"><img src="../../assets/img/m1.png" alt="">
+                    <div class="navimg"><img src="../../assets/img/m1.jpg" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的报名</div>
                 </div>
                 <div class="mitem">
-                    <div class="navimg"><img src="../../assets/img/m2.png" alt="">
+                    <div class="navimg"><img src="../../assets/img/m2.jpg" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的收藏</div>
                 </div>
                 <div class="mitem">
-                    <div class="navimg"><img src="../../assets/img/m3.png" alt="">
+                    <div class="navimg"><img src="../../assets/img/m3.jpg" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的订单</div>
                 </div>
                 <div class="mitem">
-                    <div class="navimg"><img src="../../assets/img/m4.png" alt="">
+                    <div class="navimg"><img src="../../assets/img/m4.jpg" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的积分</div>

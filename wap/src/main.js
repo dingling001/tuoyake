@@ -12,7 +12,7 @@ import moment from 'moment';
 // Vue.use(VideoPlayer);
 //导入 http 文件夹下的 index.js
 import api from "./http";
-import VueQrcode from "@xkeshi/vue-qrcode";
+// import VueQrcode from "@xkeshi/vue-qrcode";
 
 import 'nprogress/nprogress.css' //这个样式必须引入
 // import "./theme.js";
@@ -27,7 +27,7 @@ import 'vant/lib/index.css';
 import 'animate.css'
 
 directives(Vue);
-Vue.component(VueQrcode.name, VueQrcode);
+// Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;
 Vue.prototype.$com = Com;
 Vue.use(api);
