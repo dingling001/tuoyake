@@ -1,6 +1,6 @@
 <template>
     <div class="mbox">
-        <div class="mhead">
+        <div class="mhead" v-if="user_twap">
             <div class="mimg"><img :src="avatar" alt=""></div>
             <div class="namebox">
                 <van-sticky>
@@ -10,6 +10,15 @@
                     </div>
                 </van-sticky>
                 <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">104</span></div>
+            </div>
+        </div>
+        <div class="mhead" v-else>
+            <div class="mimg nologin">登录/注册</div>
+            <div class="namebox">
+                <div class="nickname">
+                    <span></span>
+                    <div class="iconfont iconshezhi1" @click="goset"></div>
+                </div>
             </div>
         </div>
         <div class="mbody">
@@ -80,7 +89,8 @@
         data() {
             return {
                 avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgaGVpZ2h0PSIxMDAiIHdpZHRoPSIxMDAiPjxyZWN0IGZpbGw9InJnYigyMjksMTYwLDE4MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIj4xPC90ZXh0Pjwvc3ZnPg==",
-                adinfo: {}
+                adinfo: {},
+                user_twap: ''
             }
         },
         created() {
@@ -138,6 +148,11 @@
                 /*no*/
                 img {
                     width: 100%;
+                }
+
+                &.nologin {
+                    font-size: 13px;
+                    /*px*/
                 }
             }
 
