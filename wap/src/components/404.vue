@@ -1,7 +1,7 @@
 <template>
   <div class="loading">
     <div class="loading-box">
-      <img src=".././img/404.png" />
+      <!--<img src=".././img/404.png" />-->
       <p>抱歉，您访问的页面丢失。</p>
     </div>
   </div>
