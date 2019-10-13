@@ -7,7 +7,11 @@
         <div class="loginform">
             <van-field v-model="mobile" placeholder="手机号" type="number" clearable/>
             <van-field v-model="captcha" placeholder="短信验证码" type="text" center clearable>
-                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend">获取验证码</van-button>
+                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
+                    获取验证码
+                </van-button>
+                <!--<van-count-down :time="time" v-else />-->
+                <van-count-down :time="time" format="ss" ref="countDown" auto-start="fasle" @finish="endtime"/>
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
             <router-link to="/login" tag="div" class="login_pass">密码登录</router-link>
@@ -22,30 +26,46 @@
             return {
                 mobile: '',
                 captcha: '',
+                show: false,
+                time: 60000,
+                showbtn: true
             }
         },
         created() {
         },
         methods: {
+            endtime() {
+                this.showbtn = true;
+            },
             // 获取验证码
             _SmsSend() {
                 if (this.mobile == '') {
-                    this.$com.showtoast('请输入手机号', 'fail', 'iconfont  iconguanbi-copy')
+                    this.$com.showtoast('请输入手机号')
                 } else {
                     this.$api.SmsSend(this.mobile, 'login').then((res) => {
+                        this.showbtn = false;
                         console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast(res.msg)
+                            this.captcha = res.data
+                        }
                     })
                 }
             },
             gonext() {
                 if (this.mobile == '') {
-                    this.$com.showtoast('请输入手机号', 'fail', 'copy')
+                    this.$com.showtoast('请输入手机号')
                 } else if (this.captcha == '') {
-                    this.$com.showtoast('请输入验证码', 'fail', 'copy')
+                    this.$com.showtoast('请输入验证码')
 
                 } else {
                     this.$api.MobileLogin(this.mobile, this.captcha).then((res) => {
                         console.log(res)
+                        if (res.code == 1) {
+                            localStorage.user_twap = res.data.userinfo.token
+                            this.$com.showtoast(res.msg)
+
+                        }
                     })
                 }
                 // this.$router.push({path: '/regnext', query: {}})

@@ -116,14 +116,21 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
 
     // copy custom static assets
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: path.resolve(__dirname, "../static"),
+    //     to:
+    //       process.env.type === '"publish"'
+    //         ? config.publish.assetsSubDirectory
+    //         : config.publish.assetsSubDirectory,
+    //     ignore: [".*"]
+    //   }
+    // ])
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, "../static"),
-        to:
-          process.env.type === '"publish"'
-            ? config.publish.assetsSubDirectory
-            : config.publish.assetsSubDirectory,
-        ignore: [".*"]
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
       }
     ])
   ]

@@ -28,64 +28,71 @@ const instance = axios.create(config);
 
 instance.interceptors.response.use(
     function (response) {
-        console.log(response)
+        // console.log(response)
         if (response.data.status == 401) {
             Toast({
                 message: "登录已过期，请重新登录！",
                 position: "center",
                 duration: 3000
             });
-            localStorage.removeItem("app_token");
+            localStorage.removeItem("user_twap");
             // 暂时缓存地址，授权成功后回跳这个地址
             localStorage.url = window.location.href;
             window.location.href = window.location.origin + "/login";
         } else {
-        //     console.log(response)
+            //     console.log(response)
             return response.data;
         }
     },
     function (err) {
-        // switch (err.response.status) {
-        //     case 400:
-        //         err.message = "请求错误";
-        //         break;
-        //     case 401:
-        //         err.message = "未授权，请登录";
-        //         break;
-        //     case 403:
-        //         err.message = "拒绝访问";
-        //         break;
-        //     case 404:
-        //         err.message = `请求地址出错: ${err.response.config.url}`;
-        //         break;
-        //     case 408:
-        //         err.message = "请求超时";
-        //         break;
-        //     case 500:
-        //         err.message = "服务器内部错误";
-        //         break;
-        //     case 501:
-        //         err.message = "服务未实现";
-        //         break;
-        //     case 502:
-        //         err.message = "网关错误";
-        //         break;
-        //     case 503:
-        //         Toast({
-        //             message: "太热情了，请稍后再来吧！",
-        //             position: "center",
-        //             duration: 3000
-        //         });
-        //         err.message = "服务不可用";
-        //         break;
-        //     case 504:
-        //         err.message = "网关超时";
-        //         break;
-        //     case 505:
-        //         err.message = "HTTP版本不受支持";
-        //         break;
-        //     default:
-        // }
+        if (!err=='timeout of 10000ms exceeded') {
+            err.message = '网络超时';
+            return
+        }
+        switch (err.response.status) {
+            case 400:
+                err.message = "请求错误";
+                break;
+            case 401:
+                err.message = "未授权，请登录";
+                break;
+            case 403:
+                err.message = "拒绝访问";
+                break;
+            case 404:
+                err.message = `请求地址出错: ${err.response.config.url}`;
+                break;
+            case 408:
+                err.message = "请求超时";
+                break;
+            case 500:
+                err.message = "服务器内部错误";
+                break;
+            case 501:
+                err.message = "服务未实现";
+                break;
+            case 502:
+                err.message = "网关错误";
+                break;
+            case 503:
+                Toast({
+                    message: "太热情了，请稍后再来吧！",
+                    position: "center",
+                    duration: 3000
+                });
+                err.message = "服务不可用";
+                break;
+            case 504:
+                err.message = "网关超时";
+                break;
+            case 505:
+                err.message = "HTTP版本不受支持";
+                break;
+            default:
+                err.message = '网络错误'
+        }
+
+        err.code = err.response.status;
         return Promise.reject(err);
     }
 );
@@ -119,18 +126,24 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
         }
         instance(options)
             .then(function (res) {
-                console.log(res);
+                // console.log(res);
                 resolve(res);
                 return false;
             })
             .catch(function (err) {
-                console.log(err)
+                // console.log(err)
                 Toast({
-                    message: "请刷新一下试试",
+                    message: err.message,
                     position: "center",
                     duration: 3000
                 });
-                console.log("网络异常");
+                if (err.code === 401) {
+                    localStorage.removeItem("user_twap");
+                    // 暂时缓存地址，授权成功后回跳这个地址
+                    localStorage.url = window.location.href;
+                    window.location.href = window.location.origin + "#/login";
+                }
+                // console.log(err.code);
             });
     });
 };

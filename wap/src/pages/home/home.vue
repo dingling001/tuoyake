@@ -1,5 +1,6 @@
 <template>
     <div class="index">
+        <el-amap class="amap-box" vid="map" :plugin="plugin"></el-amap>
         <van-sticky>
             <div class="index_top" ref="index_top">
                 <div class="htop">
@@ -15,7 +16,8 @@
                         <span class="border_b border_b1 " v-if="ind==2"></span>
                     </span>
                     </div>
-                    <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
+                    <div class="index_address"><span class="iconfont icondingweiweizhi"></span><span>{{city}}</span>
+                    </div>
                 </div>
                 <div class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
@@ -24,7 +26,7 @@
         </van-sticky>
         <div class="swiperbox">
             <div class="sbg"></div>
-            <swiper :options="swiperOption" ref="mySwiper">
+            <swiper :options="swiperOption" ref="mySwiper" v-if="swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
@@ -43,10 +45,11 @@
     export default {
         name: "home",
         data() {
+            let self = this;
             return {
                 transitionName: 'transitionLeft',
                 title: '',
-                city: '天津',
+                city: '北京市',
                 ind: 0,
                 keyword: '和平路商业街',
                 swiperOption: {
@@ -59,7 +62,28 @@
                 },
                 swiperlist: [],
                 // offsettop: 0
-            }
+                plugin: [{
+                    pName: 'Geolocation',
+                    showMarker: false,
+                    events: {
+                        init(o) {
+                            //定位成功 自动将marker和circle移到定位点
+                            o.getCurrentPosition((status, result) => {
+                                // alert(JSON.stringify(result.addressComponent))
+                                if (result && result.addressComponent) {
+                                    // alert(JSON.stringify(result.addressComponent))
+                                    self.city = result.addressComponent.province;
+                                } else {
+                                    self.$com.showtoast('获取位置失败')
+                                }
+                                self._GetSlideList()
+                                self._GetAreaPidByName()
+                            });
+                            // console.log(o);
+                        }
+                    }
+                }]
+            };
         },
         watch: {
             '$route'(val) {
@@ -76,7 +100,6 @@
         },
         created() {
             this.title = '托亚克 | ' + this.city;
-            this._GetSlideList()
 
         },
         mounted() {
@@ -84,7 +107,6 @@
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
-
         },
         components: {
             swiper,
@@ -106,6 +128,13 @@
                     }
                 })
             },
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    // console.log(res)
+                    Bus.$emit("citypid", res.data);
+                })
+            }
+
         },
         computed: {
             swiper() {
@@ -276,6 +305,10 @@
             background-color: #fff;
             border-radius: 10px 10px 0 0;
             padding: 60px 0;
+        }
+
+        .amap-box {
+            display: none;
         }
     }
 </style>

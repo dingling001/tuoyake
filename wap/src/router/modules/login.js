@@ -32,7 +32,8 @@ export default [
         meta: {
             title: "设置密码",
             showF: false,
-            showH: false
+            showH: false,
+            needLogin:true
         }
     },
     {
@@ -41,7 +42,7 @@ export default [
         meta: {
             title: "验证手机",
             showF: false,
-            showH: false
+            showH: false,
         }
     },
     {
@@ -50,7 +51,28 @@ export default [
         meta: {
             title: "重置密码",
             showF: false,
-            showH: false
+            showH: false,
+            needLogin:true
+        }
+    },
+    {
+        path: '/changepass',
+        component: resolve => require(["../../pages/login/changepass"], resolve),
+        meta: {
+            title: "设置/修改密码",
+            showF: false,
+            showH: true,
+            needLogin:true
+        }
+    },
+    {
+        path: '/changephone',
+        component: resolve => require(["../../pages/login/changephone"], resolve),
+        meta: {
+            title: "修改手机号",
+            showF: false,
+            showH: true,
+            needLogin:true
         }
     },
 ]

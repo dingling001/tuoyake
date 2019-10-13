@@ -161,13 +161,22 @@ const checkWx = () => {
     }
 };
 // 弹窗
-const showtoast = (message, type = 'text', icon = 'like-o', duration = 2000, iconPrefix = '') => {
-    Toast({
-        message,
-        iconPrefix,
-        icon,
-        type,
-        duration,
-    })
+const showtoast = (message, type = 'text', icon = 'like-o', duration = 2000, iconPrefix = '', mask = false, loading = false) => {
+    if (loading) {
+        Toast.loading({
+            mask,
+            message,
+            duration,
+        });
+    } else {
+        Toast({
+            message,
+            type,
+            icon,
+            duration,
+            iconPrefix,
+        })
+    }
+
 };
 export default {checkPhone, checkIdcard, checkWx, getCookie, analyzeIDCard, showtoast};

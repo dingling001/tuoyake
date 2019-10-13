@@ -28,7 +28,7 @@ router.beforeEach(function (to, from, next) {
     const u = navigator.userAgent.toLowerCase()
     if (to.meta.needLogin) {
         // 哪些需要验证
-        if (!localStorage.getItem("app_token")) {
+        if (!localStorage.getItem("user_twap")) {
             // token存在条件
             next({
                 path: "/login", // 验证失败要跳转的页面
@@ -38,9 +38,11 @@ router.beforeEach(function (to, from, next) {
             });
 
         } else {
-            if (to.path !== global.location.pathname) {
-                location.assign(to.fullPath)
-            }
+            console.log(global.location.pathname)
+            // if (to.path !== global.location.pathname) {
+            //     location.assign(to.fullPath)
+            //     this.$router.push(to.fullPath)
+            // }
             next();
         }
     } else {

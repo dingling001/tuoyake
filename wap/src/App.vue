@@ -1,18 +1,18 @@
 <template>
     <div class="app" v-cloak>
-        <v-header v-if="showH"></v-header>
+        <top v-if="showH" :title="headtext"></top>
         <keep-alive>
             <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
         </keep-alive>
         <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive"
-                     :class="['router-view',showH?'':'nonav',showF==false&&showH==false?'noall':'']">
+                     :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']">
         </router-view>
-        <v-footer v-if="showF" :gindex="f_index"></v-footer>
+        <bottom v-if="showF" :gindex="f_index"></bottom>
     </div>
 </template>
 <script>
-    import Header from "./components/header.vue";
-    import Footer from "./components/foot.vue";
+    import VHeader from "./components/vheader.vue";
+    import VFooter from "./components/foot.vue";
 
     export default {
         name: "App",
@@ -28,13 +28,15 @@
         created() {
         },
         components: {
-            'v-header': Header,
-            'v-footer': Footer
+            'top': VHeader,
+            'bottom': VFooter
         },
         watch: {
             '$route'(val) {
                 this.title = '托亚克 | ' + val.meta.title;
                 this.showF = val.meta.showF;
+                this.showH = val.meta.showH;
+                this.headtext = val.meta.title;
                 if (val.fullPath.indexOf('/gindex') !== -1) {
                     this.f_index = 1
                 } else if (val.fullPath.indexOf('/my') !== -1) {
@@ -60,11 +62,12 @@
             overflow-y: scroll;
 
             &.nonav {
-                min-height: calc(100vh - 83px);
+                height: 100vh;
+                padding-top:56px;
             }
 
             &.noall {
-                min-height: 100vh;
+                height: 100vh;
             }
         }
 

@@ -4,7 +4,7 @@ import "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import 'lib-flexible'
+import 'lib-flexible/flexible'
 // import './assets/js/window'
 import "@/style/reset.scss";
 import VueWechatTitle from "vue-wechat-title";
@@ -12,7 +12,7 @@ import moment from 'moment';
 // Vue.use(VideoPlayer);
 //导入 http 文件夹下的 index.js
 import api from "./http";
-import VueQrcode from "@xkeshi/vue-qrcode";
+// import VueQrcode from "@xkeshi/vue-qrcode";
 
 import 'nprogress/nprogress.css' //这个样式必须引入
 // import "./theme.js";
@@ -25,9 +25,18 @@ import Com from "./bin/common";
 import Vant from 'vant'
 import 'vant/lib/index.css';
 import 'animate.css'
+import AMap from 'vue-amap';
+Vue.use(AMap)
+AMap.initAMapApiLoader({
+    key: '1f082acaf195dfdc0dd3e06cf0f4f25f',
+    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView',
+        'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor',
+        'AMap.CircleEditor', 'AMap.Geolocation'],
+    debug:false
+});
 
 directives(Vue);
-Vue.component(VueQrcode.name, VueQrcode);
+// Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;
 Vue.prototype.$com = Com;
 Vue.use(api);
@@ -46,3 +55,10 @@ new Vue({
         App
     }
 });
+window.onresize = setHtmlFontSize;
+function setHtmlFontSize(){
+    const htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
+    const htmlDom = document.getElementsByTagName('html')[0];
+    htmlDom.style.fontSize = htmlWidth / 10 + 'px';
+};
+setHtmlFontSize();

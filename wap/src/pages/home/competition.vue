@@ -2,193 +2,64 @@
     <div class="cbox">
         <van-sticky :offset-top="offsettop">
             <div class="cselect">
-                <div class="cselectitem"><span>推荐电竞馆</span><span class="iconfont iconjiantouarrow486"></span></div>
-                <div class="cselectitem"><span>全部服务</span><span class="iconfont iconjiantouarrow486"></span></div>
-                <div class="cselectitem"><span>全部地区</span><span class="iconfont iconjiantouarrow486"></span></div>
+                <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
+                    <span>推荐电竞馆</span>
+                </div>
+                <van-dropdown-menu active-color="#f2313b">
+                    <van-dropdown-item v-model="label" :options="labellist">
+                        <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
+                    </van-dropdown-item>
+                    <van-dropdown-item :title="district" ref="item">
+                        <div class="citybox" v-if="districtlist.length">
+                            <div class="citems dleft">
+                                <div v-for="(item ,index) in districtlist" :class="{activecity:index==lindex}"
+                                     @click="lindex=index">
+                                    {{item.name}}
+                                </div>
+                            </div>
+                            <div class="citems dright">
+                                <div v-for="(c ,cindex) in districtlist[lindex].childlist"
+                                     :class="{activecity:rindex==cindex}" @click="selcetcity(cindex,c.name)">{{c.name}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--<span>全部地区</span><span class="iconfont iconjiantouarrow486"></span>-->
+                    </van-dropdown-item>
+                    <!--<div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">-->
+                    <!--<span>推荐电竞馆</span>-->
+                    <!--</div>-->
+                </van-dropdown-menu>
             </div>
         </van-sticky>
-        <div class="clist">
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh">
+            <van-list
+                    v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
+                    finished-text="到底了">
+                <!-- 加载的内容-->
+                <div class="citem" v-for="(item,index) in netlist" :key="item.id">
+                    <div class="cimg">
+                        <img :src="item.image" alt="">
+                    </div>
+                    <div class="cright">
+                        <div class="cname">
+                            <div class="namebox">
+                                <div class="name single-line-text">{{item.name}}</div>
+                                <div class="startbox">
+                                    <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>
+                                </div>
                             </div>
+                            <span class="juli">{{item.distance}}</span>
                         </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
+                        <div class="ctype"><span v-for="l in item.label_ids">{{l}}</span></div>
+                        <div class="caddress">
+                            <span class="iconfont icondingweiweizhi"></span>
+                            <span class="single-line-text">{{item.address}}</span>
                         </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
                     </div>
                 </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-            <div class="citem">
-                <div class="cimg"><img
-                        src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                </div>
-                <div class="cright">
-                    <div class="cname">
-                        <div class="namebox">
-                            <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                            <div class="startbox">
-                                <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                            </div>
-                        </div>
-                        <span class="juli">1.1km</span>
-                    </div>
-                    <div class="ctype"><span>环境优雅</span></div>
-                    <div class="caddress">
-                        <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </van-list>
+        </van-pull-refresh>
     </div>
 </template>
 
@@ -199,7 +70,28 @@
         name: "competition",
         data() {
             return {
-                offsettop: 0
+                isDownLoading: false,
+                isUpLoading: false,
+                finished: false,
+                offsettop: 0,
+                page: 0,
+                keyword: '',
+                city: '',
+                lat: 0,
+                lng: 0,
+                recommend: 0,
+                label: '',
+                district: '全部地区',
+                circle: '',
+                netlist: [],
+                offset: 100,
+                labellist: [
+                    {value: '', text: '全部服务'}
+                ],
+                districtlist: [],
+                citypid: '',
+                lindex: 0,
+                rindex: 0,
             }
         },
         created() {
@@ -208,10 +100,117 @@
                 this.offsettop = val;
                 console.log(this.offsettop)
             });
+            Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
+                this.citypid = val;
+                console.log(this.citypid)
+                this._GetAreaListTree()
+            });
         },
         mounted() {
+            this._GetBarList();
+            this._GetLabelList();
+        },
+        methods: {
+            // 获取列表
+            async _GetBarList() {
+                let pageNumber = this.page + 1;
 
+                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                await this.$api.GetBarList(
+                    pageNumber,
+                    this.keyword,
+                    this.city,
+                    this.lat,
+                    this.lng,
+                    this.recommend,
+                    this.label,
+                    this.district,
+                    this.circle,
+                ).then(res => {
+                    if (res.code == 1) {//请求成功
+                        if (this.netlist.length) {//当请求前有数据时 第n次请求
+                            if (this.isUpLoading) {// 上拉加载
+                                this.netlist = this.netlist.concat(res.data.data) //上拉加载新数据添加到数组中
+                                this.$nextTick(() => { //在下次 DOM 更新循环结束之后执行延迟回调
+                                    this.isUpLoading = false  //关闭上拉加载中
+                                })
+                                if (res.data.data.length < 10) {//没有更多数据
+                                    this.finished = true   //上拉加载完毕
+                                }
+                            }
+                            if (this.isDownLoading) {//关闭下拉刷新
+                                this.isDownLoading = false; //关闭下拉刷新中
+                                this.netlist = res.data.data; //重新给数据赋值
+                                if (this.finished) { //如果上拉加载完毕为true则设为false。解决上拉加载完毕后再下拉刷新就不会执行上拉加载问题
+                                    this.finished = false
+                                }
+                            }
+                        } else {
+                            this.netlist = res.data.data
+                        }
+                    }
+                })
+            },
+            // 获取服务标签
+            _GetLabelList() {
+                this.$api.GetLabelList().then(res => {
+                    if (res.code == 1) {
+                        var labellist = res.data;
+                        for (let i in labellist) {
+                            this.labellist.push({
+                                value: labellist[i],
+                                text: labellist[i]
+                            })
+                        }
+                        ;
+                        this.label = this.labellist[0].value;
+                        // console.log(this.labellist)
+                    }
+                })
+            },
+
+            // 切换成推荐模式
+            recommendlist() {
+                this.page = 1;
+                if (this.recommend == 1) {
+                    this.recommend = 0
+                } else {
+                    this.recommend = 1
+                }
+                console.log(this.recommend)
+                this._GetBarList();
+            },
+            // 下拉刷新
+            onRefresh() {
+                setTimeout(() => {
+                    this.$com.showtoast('刷新成功');
+                    this.isDownLoading = false;
+                    this.page = 0;
+                    this._GetBarList();
+                }, 500);
+            },
+            // 上拉加载
+            onLoad() {
+                this.page++;
+                this.isUpLoading = true;
+                this._GetBarList();
+            },
+            // 获取当前城市的区
+            _GetAreaListTree() {
+                this.$api.GetAreaListTree(this.citypid).then(res => {
+                    console.log(res.data)
+                    this.districtlist = res.data;
+                    console.log(this.districtlist)
+                })
+            },
+            // 选择城市
+            selcetcity(index, name) {
+                this.rindex = index;
+                this.$refs.item.toggle();
+                this.district = name;
+            }
         }
+
     }
 </script>
 
@@ -228,10 +227,13 @@
             background-color: #fff;
             font-size: 12px;
             /* px */
+            /*border-bottom: 1px solid #f5f5f5;*/
             .cselectitem {
                 display: flex;
                 align-items: center;
                 padding: 25px 0;
+                flex: 1;
+                justify-content: center;
 
                 .iconfont {
                     color: #BBBBBB;
@@ -239,8 +241,64 @@
                     /*px*/
                     margin-left: 5px;
                 }
+
+                &.cselectitemactive {
+                    color: $baseRed;
+                    font-weight: bold;
+                }
             }
 
+            /deep/ .van-dropdown-menu {
+                flex: 2;
+
+                .van-ellipsis {
+                    font-size: 12px;
+                    /*px*/
+                }
+
+                &:after {
+                    border: 0;
+                }
+
+                .citybox {
+                    /*align-items: center;*/
+                    /*justify-content: space-between;*/
+                    position: relative;
+                    max-height: 300px;
+                    min-height: 220px;
+                    overflow: hidden;
+
+                    .citems {
+                        position: absolute;
+                        flex: 1;
+                        text-align: center;
+                        width: 50%;
+                        height: 100%;
+                        overflow: scroll;
+
+                        div {
+                            padding: 10px 0;
+                            font-size: 12px;
+                            /*px*/
+                            color: #666;
+
+                            &.activecity {
+                                color: $baseRed;
+                                font-weight: bold;
+                            }
+                        }
+
+                        &.dleft {
+                            left: 0;
+                        }
+
+                        &.dright {
+                            right: 0;
+
+                        }
+                    }
+                }
+            }
         }
 
         .clist {
@@ -315,6 +373,7 @@
                             background: rgba(242, 49, 59, .1);
                             color: $baseRed;
                             border-radius: 8px;
+                            margin-right: 5px;
                         }
                     }
 
@@ -339,7 +398,12 @@
                         }
                     }
                 }
+
+                &:last-child {
+                    margin: 0;
+                }
             }
+
         }
     }
 </style>

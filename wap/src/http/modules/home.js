@@ -2,7 +2,7 @@ import axios from "../api";
 
 
 /**
- * (票务共用)
+ * 获取首页轮播图
  */
 export const GetSlideList = (city) =>
     axios(
@@ -13,14 +13,49 @@ export const GetSlideList = (city) =>
         true
     );
 /**
- * 常用联系人列表(票务共用)
+ * 获取首页列表接口
  */
-export const PW_WX_ContactsList = () =>
+export const GetBarList = (page = 1, keyword, city, lat = 0, lng = 0, recommend = 0, label, district, circle) =>
     axios(
-        BASEURL + "/api/top_contacts_list", {
-            p: PLAT,
-            api_token: localStorage.app_token
+        "/api/index/getBarList", {
+            page,
+            keyword,
+            city,
+            lat,
+            lng,
+            recommend,
+            label,
+            district,
+            circle
         },
-        "GET",
+        "POST",
+        true
+    );
+/**
+ * 获取服务标签
+ */
+export const GetLabelList = () =>
+    axios(
+        "/api/index/getLabelList", {},
+        "POST",
+        true
+    );
+
+/**
+ * 根据城市换id
+ */
+export const GetAreaPidByName = (name = '北京市') =>
+    axios(
+        "/api/common/getAreaPidByName", {name},
+        "POST",
+        true
+    );
+/**
+ * 根据城市id，获取区列表
+ */
+export const GetAreaListTree = (pid = 2) =>
+    axios(
+        "/api/common/getAreaListTree", {pid},
+        "POST",
         true
     );

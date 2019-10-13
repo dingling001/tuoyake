@@ -38,7 +38,7 @@
             loginpass() {
                 console.log(this.$com.checkPhone(this.account))
                 if (!this.$com.checkPhone(this.account)) {
-                    this.$com.showtoast('请输入正确的手机号', 'fail')
+                    this.$com.showtoast('请输入正确的手机号')
                 } else if (this.password == '') {
                     this.$com.showtoast('请输入密码', 'fail')
                 } else {
@@ -47,7 +47,11 @@
                         if (res.code == 1) {
                             this.$com.showtoast('登录成功', 'fail')
                             setTimeout(()=>{
-                                this.$router.push('/')
+                                // this.$router.go(-1)
+                                let redirect = decodeURIComponent(
+                                    this.$route.query.redirect || "/"
+                                );
+                                this.$router.replace(redirect);
                             },2000)
                         } else {
                             this.$com.showtoast(res.msg, 'fail')

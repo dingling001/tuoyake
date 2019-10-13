@@ -1,19 +1,19 @@
 <template>
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
-            <div class="mimg"><img :src="avatar" alt=""></div>
+            <div class="mimg" ><van-image  :src="user_info.avatar" alt="" v-if="user_info.avatar" /></div>
             <div class="namebox">
                 <van-sticky>
                     <div class="nickname">
-                        <span class="name">使命召唤</span>
+                        <span class="name">{{user_info.nickname}}</span>
                         <div class="iconfont iconshezhi1" @click="goset"></div>
                     </div>
                 </van-sticky>
-                <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">104</span></div>
+                <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span></div>
             </div>
         </div>
-        <div class="mhead" v-else>
-            <div class="mimg nologin">登录/注册</div>
+        <div class="mhead" v-else >
+            <div class="mimg nologin" @click="gologin">登录/注册</div>
             <div class="namebox">
                 <div class="nickname">
                     <span></span>
@@ -23,59 +23,59 @@
         </div>
         <div class="mbody">
             <div class="mnav">
-                <div class="mitem">
+                <router-link class="mitem" to="/myApplication" tag="div">
                     <div class="navimg"><img src="../../assets/img/m1.png" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的报名</div>
-                </div>
-                <div class="mitem">
+                </router-link>
+                <router-link class="mitem" to="/myCollect" tag="div">
                     <div class="navimg"><img src="../../assets/img/m2.png" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的收藏</div>
-                </div>
-                <div class="mitem">
+                </router-link>
+                <router-link class="mitem" to="/myOrder" tag="div">
                     <div class="navimg"><img src="../../assets/img/m3.png" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的订单</div>
-                </div>
-                <div class="mitem">
+                </router-link>
+                <router-link class="mitem" to="/myPoints" tag="div">
                     <div class="navimg"><img src="../../assets/img/m4.png" alt="">
                         <div class="navshadow"></div>
                     </div>
                     <div class="navtext">我的积分</div>
-                </div>
+                </router-link>
             </div>
             <div class="mad"><img :src="adinfo.image" alt=""></div>
             <div class="mlink">
-                <van-cell is-link :border='false'>
+                <van-cell is-link :border='false' to="myCoupon">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
                         <span class="iconfont iconyouhuiquan"></span>
                         <span class="custom-title">我的优惠券</span>
                     </template>
                 </van-cell>
-                <van-cell is-link :border='false'>
+                <van-cell is-link :border='false' to="myFeedback">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
                         <span class="iconfont iconfeedback-center"></span>
                         <span class="custom-title">意见反馈</span>
                     </template>
                 </van-cell>
-                <van-cell is-link :border='false'>
+                <van-cell is-link :border='false' to="myVersion">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
                         <span class="iconfont iconshu"></span>
                         <span class="custom-title">版本信息</span>
                     </template>
                 </van-cell>
-                <van-cell is-link :border='false'>
+                <van-cell is-link :border='false' to="myPlatform">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
                         <span class="iconfont iconguanyuwomen"></span>
-                        <span class="custom-title">关于我们</span>
+                        <span class="custom-title">关于平台</span>
                     </template>
                 </van-cell>
             </div>
@@ -88,34 +88,42 @@
         name: "my",
         data() {
             return {
-                avatar: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgaGVpZ2h0PSIxMDAiIHdpZHRoPSIxMDAiPjxyZWN0IGZpbGw9InJnYigyMjksMTYwLDE4MikiIHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48L3JlY3Q+PHRleHQgeD0iNTAiIHk9IjUwIiBmb250LXNpemU9IjUwIiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIj4xPC90ZXh0Pjwvc3ZnPg==",
                 adinfo: {},
-                user_twap: ''
+                user_twap: '',
+                user_info:{}
             }
         },
         created() {
             this._GetAdv();
             if (localStorage.user_twap) {
+                this.user_twap=localStorage.user_twap;
                 this._GetUserInfo()
             }
         },
         methods: {
             // 去设置页面
             goset() {
-                this.$router.push('/login')
+                this.$router.push({path:'/myset'})
             },
             // 获取个人信息
             _GetUserInfo() {
                 this.$api.GetUserInfo().then(res => {
-                    console.log(res)
+                    // console.log(res)
+                    if(res.code==1){
+                        this.user_info=res.data;
+                    }
                 })
             },
             // 获取广告位
             _GetAdv() {
                 this.$api.GetAdv(1).then(res => {
-                    console.log(res)
+                    // console.log(res)
                     this.adinfo = res.data;
                 })
+            },
+            // 登录
+            gologin() {
+                this.$router.push({path: '/login'})
             }
         }
 
