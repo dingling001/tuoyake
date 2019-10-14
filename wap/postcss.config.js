@@ -1,18 +1,8 @@
 module.exports = {
-    plugins: {
-        'autoprefixer': {browsers: 'last 5 version'},
-        // "postcss-px2rem-exclude": {
-        //     remUnit: 37.5,
-        //     exclude: /node_modules/
-        // }
+    "plugins": {
+        "postcss-import": {},
+        "postcss-url": {},
+        // to edit target browsers: use "browserslist" field in package.json
+        "autoprefixer": {}
     }
 }
-//  "postcss": {
-//    "plugins": {
-//      "autoprefixer": {},
-//      "postcss-px2rem-exclude": {
-//        "remUnit": 75,
-//        "exclude": "/node_modules/"
-//      }
-//    }
-//  }
