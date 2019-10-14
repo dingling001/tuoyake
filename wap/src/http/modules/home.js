@@ -59,3 +59,26 @@ export const GetAreaListTree = (pid = 2) =>
         "POST",
         true
     );
+/**
+ * 获取俱乐部分类
+ */
+export const Category = () =>
+    axios(
+        "/api/club/category", {},
+        "POST",
+        true
+    );
+/**
+ * 获取俱乐部列表
+ */
+export const ClubIndex = (page = 0, category_id, city, keyword = '') =>
+    axios(
+        "/api/club/index", {
+            page,
+            category_id,
+            city,
+            keyword
+        },
+        "POST",
+        true
+    );

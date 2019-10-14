@@ -1,25 +1,25 @@
 <template>
-    <div class="cbox">
+    <div class="cbox" ref="container" id="container">
         <van-sticky :offset-top="offsettop">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
                     <span>推荐电竞馆</span>
                 </div>
                 <van-dropdown-menu active-color="#f2313b">
-                    <van-dropdown-item v-model="label" :options="labellist">
+                    <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="district" ref="item">
-                        <div class="citybox" v-if="districtlist.length">
+                    <van-dropdown-item :title="district" ref="item" v-if="districtlist.length>1">
+                        <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :class="{activecity:index==lindex}"
-                                     @click="lindex=index">
+                                     @click="selcetcity(index)">
                                     {{item.name}}
                                 </div>
                             </div>
                             <div class="citems dright">
                                 <div v-for="(c ,cindex) in districtlist[lindex].childlist"
-                                     :class="{activecity:rindex==cindex}" @click="selcetcity(cindex,c.name)">{{c.name}}
+                                     :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">{{c.name}}
                                 </div>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                 </van-dropdown-menu>
             </div>
         </van-sticky>
-        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh">
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="netlist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                     finished-text="到底了">
@@ -60,6 +60,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
+        <div class="nodata" v-else> 暂无数据</div>
     </div>
 </template>
 
@@ -81,42 +82,91 @@
                 lng: 0,
                 recommend: 0,
                 label: '',
-                district: '全部地区',
+                district: '',
                 circle: '',
                 netlist: [],
                 offset: 100,
                 labellist: [
                     {value: '', text: '全部服务'}
                 ],
-                districtlist: [],
+                districtlist: [
+                    {
+                        id: '',
+                        childlist: [],
+                        name: " 全部地区",
+                        pid: '',
+                        spacer: ""
+                    }
+                ],
                 citypid: '',
                 lindex: 0,
                 rindex: 0,
+                totop: false
             }
         },
+        inject: ['app'],
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
             Bus.$on("home", (val, val1) => {    //取  Bus.$on
                 this.offsettop = val;
-                console.log(this.offsettop)
+                // console.log(this.offsettop)
             });
+            // 获取城市的pid
             Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
                 this.citypid = val;
-                console.log(this.citypid)
+                // console.log(this.citypid)
                 this._GetAreaListTree()
+            });
+            Bus.$on("lat", (val, val1) => {    //取  Bus.$on
+                this.lat = val;
+                // console.log(this.lat, 'lat1')
+            });
+            Bus.$on("lng", (val, val1) => {    //取  Bus.$on
+                this.lng = val;
+                console.log(this.lng, 'lng1')
+                this._GetBarList();
+                console.log(this.lng, 'lng3')
+            });
+            Bus.$on("city", (val, val1) => {    //取  Bus.$on
+                this.city = val;
+                this._GetBarList();
             });
         },
         mounted() {
             this._GetBarList();
             this._GetLabelList();
         },
+        watch: {
+            'lat'(val) {
+                this.lat = val;
+                console.log(this.lat, 'lat2')
+            },
+            'lng'(val) {
+                this.lng = val;
+                console.log(this.lng, 'lng2')
+                this._GetBarList();
+            },
+            'city'(val) {
+                this.city = val;
+                console.log(this.city)
+                this._GetBarList();
+            },
+            $route: {
+                handler(val, oldVal) {
+                    console.log(val);
+                    this._GetBarList();
+                },
+                // 深度观察监听
+                deep: true
+            }
+        },
         methods: {
             // 获取列表
-            async _GetBarList() {
+            _GetBarList() {
                 let pageNumber = this.page + 1;
 
                 this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
-                await this.$api.GetBarList(
+                this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
                     this.city,
@@ -124,7 +174,7 @@
                     this.lng,
                     this.recommend,
                     this.label,
-                    this.district,
+                    this.lindex == 0 ? '' : this.district,
                     this.circle,
                 ).then(res => {
                     if (res.code == 1) {//请求成功
@@ -149,6 +199,7 @@
                             this.netlist = res.data.data
                         }
                     }
+                    // console.log(this.netlist)
                 })
             },
             // 获取服务标签
@@ -168,10 +219,9 @@
                     }
                 })
             },
-
             // 切换成推荐模式
             recommendlist() {
-                this.page = 1;
+                this.page = 0;
                 if (this.recommend == 1) {
                     this.recommend = 0
                 } else {
@@ -198,19 +248,60 @@
             // 获取当前城市的区
             _GetAreaListTree() {
                 this.$api.GetAreaListTree(this.citypid).then(res => {
-                    console.log(res.data)
-                    this.districtlist = res.data;
-                    console.log(this.districtlist)
+                    this.districtlist = this.districtlist.concat(res.data);
+                    // console.log(this.districtlist)
+                    this.district = this.districtlist[0].name;
                 })
             },
             // 选择城市
-            selcetcity(index, name) {
+            selcetcity(index) {
+                this.lindex = index;
+                if (index == 0) {
+                    this.$refs.item.toggle();
+                    this.district = this.districtlist[index].name;
+                    this.page = 0;
+                    this.netlist = [];
+                    this._GetBarList();
+                }
+            },
+            // 选择地区
+            selcetarea(index, name) {
                 this.rindex = index;
                 this.$refs.item.toggle();
                 this.district = name;
-            }
-        }
+                this.page = 0;
+                this.netlist = [];
+                this._GetBarList();
+            },
+            // 打开全部服务
+            openlabel() {
+                console.log(this.offsettop);
+                this.gotop()
+                // window.scroll(this.offsettop, 300);
+                // document.documentElement.scrollTop = this.offsettop+'px';
 
+            },
+            // 切换服务标签
+            changelabel() {
+                this.page = 0;
+                this.netlist = [];
+                this._GetBarList();
+            },
+            // 滚动到指定位置
+            gotop() {
+                let container = document.getElementById("container").scrollTop;
+
+                // let top = container.scrollTop;
+                console.log(container, 'top')
+                // let step = Math.floor(top / 20)
+                // let timer = null
+                // timer = setInterval(() => {
+                //     if (top <= 0) clearInterval(timer)
+                //     top -= step
+                //     container.scrollTop = top
+                // }, 10)
+            },
+        }
     }
 </script>
 

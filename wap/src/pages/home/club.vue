@@ -1,10 +1,7 @@
 <template>
     <div class="jbox">
         <div class="jnav">
-            <span class="activespan">反恐精英</span>
-            <span>反恐精英</span>
-            <span>反恐精英</span>
-            <span>反恐精英</span>
+            <span :class="{activespan:ind==index}" v-for="(item,index) in clist" :key="item.id">{{item.name}}</span>
         </div>
         <div class="jlist">
             <div class="jitem van-row--flex">
@@ -32,10 +29,45 @@
 </template>
 
 <script>
+    import Bus from '../../bin/Bus'
 
     export default {
         name: "club",
+        data() {
+            return {
+                clist: [],
+                ind: 0,
+                page: 0,
+                keyword:'',
+                city:'',
+                category_id:''
+            }
+        },
+        created() {
+            this._Category()
+            this._ClubIndex();
+        },
+        methods: {
+            _Category() {
+                this.$api.Category().then(res => {
+                    if (res.code == 1) {
+                        this.clist = res.data
+                    }
+                })
+            },
+            _ClubIndex() {
+                let pageNumber = this.page + 1;
+                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                this.$api.ClubIndex(
+                    pageNumber,
+                    this.category_id,
+                    this.keyword,
+                    this.city,
+                ).then(res => {
 
+                })
+            },
+        }
     }
 </script>
 
