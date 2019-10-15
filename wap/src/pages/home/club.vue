@@ -4,50 +4,63 @@
             <span :class="{activespan:ind==index}" v-for="(item,index) in clist" :key="item.id">{{item.name}}</span>
         </div>
         <div class="jlist">
-            <div class="jitem van-row--flex">
-                <div class="jimg"><img src="" alt=""></div>
-                <div class="jright">
-                    <div class="jname van-ellipsis">Invictus GamingInvictus GamingInvictus GamingInvictus
-                        GamingInvictus GamingInvictus Gaming
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length">
+                <van-list
+                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
+                        :finished-text="finishedtext">
+                    <div class="jitem van-row--flex" v-for="(item,index) in clublist">
+                        <div class="jimg"><img src="" alt=""></div>
+                        <div class="jright">
+                            <div class="jname van-ellipsis">Invictus GamingInvictus GamingInvictus GamingInvictus
+                                GamingInvictus GamingInvictus Gaming
+                            </div>
+                            <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
+                            <div class="jaddress van-ellipsis">
+                                和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115
+                            </div>
+                        </div>
                     </div>
-                    <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
-                    <div class="jaddress van-ellipsis">和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115</div>
-                </div>
-            </div>
-            <div class="jitem van-row--flex">
-                <div class="jimg"><img src="" alt=""></div>
-                <div class="jright">
-                    <div class="jname van-ellipsis">Invictus GamingInvictus GamingInvictus GamingInvictus
-                        GamingInvictus GamingInvictus Gaming
-                    </div>
-                    <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
-                    <div class="jaddress van-ellipsis">和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115</div>
-                </div>
-            </div>
+                </van-list>
+            </van-pull-refresh>
         </div>
     </div>
 </template>
 
 <script>
-    import Bus from '../../bin/Bus'
 
     export default {
         name: "club",
         data() {
             return {
                 clist: [],
+                clublist: [],
                 ind: 0,
                 page: 0,
-                keyword:'',
-                city:'',
-                category_id:''
+                keyword: '',
+                city: '',
+                category_id: '',
+                isUpLoading: false,
+                isDownLoading: false,
+                finished: false,
+                offset: 100,
+                finishedtext:'到底了'
             }
         },
         created() {
             this._Category()
-            this._ClubIndex();
+        },
+        watch: {
+            'city': {
+                handler(val) {
+                    this.city = val;
+                    console.log(this.city)
+                    this._ClubIndex();
+                },
+                immediate: true
+            }
         },
         methods: {
+            // 获取俱乐部分类
             _Category() {
                 this.$api.Category().then(res => {
                     if (res.code == 1) {
@@ -55,6 +68,7 @@
                     }
                 })
             },
+            // 获取俱乐部列表
             _ClubIndex() {
                 let pageNumber = this.page + 1;
                 this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
@@ -64,8 +78,48 @@
                     this.keyword,
                     this.city,
                 ).then(res => {
+                    if (res.code == 1) {//请求成功
+                        if (this.clublist.length) {//当请求前有数据时 第n次请求
+                            if (this.isUpLoading) {// 上拉加载
+                                this.clublist = this.clublist.concat(res.data.data) //上拉加载新数据添加到数组中
+                                this.$nextTick(() => { //在下次 DOM 更新循环结束之后执行延迟回调
+                                    this.isUpLoading = false  //关闭上拉加载中
+                                })
+                                if (res.data.data.length < 10) {//没有更多数据
+                                    this.finished = true   //上拉加载完毕
+                                    this.finishedtext='到底了'
+                                }
+                            }
+                            if (this.isDownLoading) {//关闭下拉刷新
+                                this.isDownLoading = false; //关闭下拉刷新中
+                                this.clublist = res.data.data; //重新给数据赋值
+                                if (this.finished) { //如果上拉加载完毕为true则设为false。解决上拉加载完毕后再下拉刷新就不会执行上拉加载问题
+                                    this.finished = false
+                                }
+                            }
+                        } else {
+                            console.log(res)
+                            this.clublist = res.data.data;
+                            this.finishedtext='没有更多了'
+                        }
+                    }
 
                 })
+            },
+            // 下拉刷新
+            onRefresh() {
+                setTimeout(() => {
+                    this.$com.showtoast('刷新成功');
+                    this.isDownLoading = false;
+                    this.page = 0;
+                    this._ClubIndex();
+                }, 500);
+            },
+            // 上拉加载
+            onLoad() {
+                this.page++;
+                this.isUpLoading = true;
+                this._ClubIndex();
             },
         }
     }
