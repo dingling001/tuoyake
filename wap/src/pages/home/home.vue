@@ -33,7 +33,7 @@
             </swiper>
         </div>
         <!--<router-view class="router-view"></router-view>-->
-        <router-view class="router-view"></router-view>
+        <router-view class="router-view" :lat="lat" :lng="lng" :city="city"></router-view>
     </div>
 </template>
 
@@ -49,7 +49,7 @@
             return {
                 transitionName: 'transitionLeft',
                 title: '',
-                city: '北京市',
+                city: '天津市',
                 ind: 0,
                 keyword: '和平路商业街',
                 swiperOption: {
@@ -69,10 +69,13 @@
                         init(o) {
                             //定位成功 自动将marker和circle移到定位点
                             o.getCurrentPosition((status, result) => {
+                                // alert(JSON.stringify(result))
                                 // alert(JSON.stringify(result.addressComponent))
-                                if (result && result.addressComponent) {
+                                if (result && result.status == 1) {
                                     // alert(JSON.stringify(result.addressComponent))
                                     self.city = result.addressComponent.province;
+                                    self.lat = result.position.lat;
+                                    self.lng = result.position.lng;
                                 } else {
                                     self.$com.showtoast('获取位置失败')
                                 }
@@ -82,8 +85,13 @@
                             // console.log(o);
                         }
                     }
-                }]
+                }],
+                lat: 0,
+                lng: 0
             };
+        },
+        provide: {
+            app: this
         },
         watch: {
             '$route'(val) {
@@ -131,10 +139,12 @@
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
                     // console.log(res)
-                    Bus.$emit("citypid", res.data);
+                    Bus.$emit("citypid", res.data)
+                    Bus.$emit("city", this.city);
+                    Bus.$emit('lat', this.lat);
+                    Bus.$emit('lng', this.lng);
                 })
             }
-
         },
         computed: {
             swiper() {
@@ -304,7 +314,7 @@
             z-index: 2;
             background-color: #fff;
             border-radius: 10px 10px 0 0;
-            padding: 60px 0;
+            padding: 60px 0 0 0;
         }
 
         .amap-box {
