@@ -275,11 +275,8 @@
             },
             // 打开全部服务
             openlabel() {
-                console.log(this.offsettop);
+                // console.log(this.offsettop);
                 this.gotop()
-                // window.scroll(this.offsettop, 300);
-                // document.documentElement.scrollTop = this.offsettop+'px';
-
             },
             // 切换服务标签
             changelabel() {
@@ -289,17 +286,44 @@
             },
             // 滚动到指定位置
             gotop() {
-                let container = document.getElementById("container").scrollTop;
-
-                // let top = container.scrollTop;
-                console.log(container, 'top')
-                // let step = Math.floor(top / 20)
-                // let timer = null
-                // timer = setInterval(() => {
-                //     if (top <= 0) clearInterval(timer)
-                //     top -= step
-                //     container.scrollTop = top
-                // }, 10)
+                let jump = document.querySelectorAll('.cselect')
+                let total = jump[0].offsetTop ;
+                let distance = document.documentElement.scrollTop || document.body.scrollTop
+                // 平滑滚动，时长500ms，每10ms一跳，共50跳
+                console.log(distance)
+                let step = total / 10
+                if (total > distance) {
+                    smoothDown()
+                } else {
+                    let newTotal = distance - total;
+                    console.log(newTotal)
+                    step = newTotal / 50;
+                    smoothUp()
+                }
+                function smoothDown() {
+                    if (distance < total) {
+                        distance += step
+                        document.body.scrollTop = distance
+                        document.documentElement.scrollTop = distance
+                        setTimeout(smoothDown, 10)
+                    } else {
+                        document.body.scrollTop = total
+                        document.documentElement.scrollTop = total
+                    }
+                    console.log('smoothDown')
+                }
+                function smoothUp() {
+                    if (distance > total) {
+                        distance -= step
+                        document.body.scrollTop = distance
+                        document.documentElement.scrollTop = distance
+                        setTimeout(smoothUp, 10)
+                    } else {
+                        document.body.scrollTop = total;
+                        document.documentElement.scrollTop = total
+                    }
+                    console.log('smoothUp')
+                }
             },
         }
     }

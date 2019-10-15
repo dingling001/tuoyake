@@ -69,6 +69,7 @@
                         init(o) {
                             //定位成功 自动将marker和circle移到定位点
                             o.getCurrentPosition((status, result) => {
+                                console.log(result)
                                 // alert(JSON.stringify(result))
                                 // alert(JSON.stringify(result.addressComponent))
                                 if (result && result.status == 1) {

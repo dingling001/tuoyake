@@ -1,23 +1,21 @@
 <template>
     <div class="jbox">
         <div class="jnav">
-            <span :class="{activespan:ind==index}" v-for="(item,index) in clist" :key="item.id">{{item.name}}</span>
+            <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
+                  @click="activeList(index,item.id)">{{item.name}}</span>
         </div>
         <div class="jlist">
             <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
                         :finished-text="finishedtext">
-                    <div class="jitem van-row--flex" v-for="(item,index) in clublist">
-                        <div class="jimg"><img src="" alt=""></div>
+                    <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.category_id">
+                        <div class="jimg"><img :src="item.image" alt=""></div>
                         <div class="jright">
-                            <div class="jname van-ellipsis">Invictus GamingInvictus GamingInvictus GamingInvictus
-                                GamingInvictus GamingInvictus Gaming
+                            <div class="jname van-ellipsis">{{item.name}}</div>
+                            <div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>
                             </div>
-                            <div class="jinfo"><span class="name">王经理</span><span class="tel">17622687799</span></div>
-                            <div class="jaddress van-ellipsis">
-                                和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115和平区大沽南路43号金融街中心1115
-                            </div>
+                            <div class="jaddress van-ellipsis">{{item.address}}</div>
                         </div>
                     </div>
                 </van-list>
@@ -43,7 +41,7 @@
                 isDownLoading: false,
                 finished: false,
                 offset: 100,
-                finishedtext:'到底了'
+                finishedtext: '到底了'
             }
         },
         created() {
@@ -87,7 +85,7 @@
                                 })
                                 if (res.data.data.length < 10) {//没有更多数据
                                     this.finished = true   //上拉加载完毕
-                                    this.finishedtext='到底了'
+                                    this.finishedtext = '到底了'
                                 }
                             }
                             if (this.isDownLoading) {//关闭下拉刷新
@@ -100,7 +98,7 @@
                         } else {
                             console.log(res)
                             this.clublist = res.data.data;
-                            this.finishedtext='没有更多了'
+                            this.finishedtext = '没有更多了'
                         }
                     }
 
@@ -121,6 +119,13 @@
                 this.isUpLoading = true;
                 this._ClubIndex();
             },
+            // 点击分类获取列表
+            activeList(index, id) {
+                this.page = 0;
+                this.ind = index;
+                this.category_id = id;
+                this._ClubIndex();
+            }
         }
     }
 </script>
@@ -170,6 +175,10 @@
                     /*no*/
                     margin-right: 17px;
                     flex-shrink: 0;
+
+                    img {
+                        width: 100%;
+                    }
                 }
 
                 .jright {
@@ -189,6 +198,10 @@
                         font-size: 12px;
                         /*px*/
                         color: #666666;
+
+                        .name {
+                            margin-right: 10px;
+                        }
                     }
 
                     .jaddress {
