@@ -75,6 +75,7 @@
                                 if (result && result.status == 1) {
                                     // alert(JSON.stringify(result.addressComponent))
                                     self.city = result.addressComponent.province;
+                                    self.keyword=result.addressComponent.street;
                                     self.lat = result.position.lat;
                                     self.lng = result.position.lng;
                                 } else {
@@ -96,6 +97,7 @@
         },
         watch: {
             '$route'(val) {
+                console.log(val.fullPath)
                 if (val.fullPath.indexOf('/competition') !== -1) {
                     this.ind = 0
                 } else if (val.fullPath.indexOf('/club') !== -1) {
@@ -103,8 +105,9 @@
                 } else {
                     this.ind = 2
                 }
-                // this.offsettop = this.$refs.index_top.offsetHeight;
-                // Bus.$emit("home", this.offsettop);
+                this.offsettop = this.$refs.index_top.offsetHeight;
+                Bus.$emit("home", this.offsettop);
+                this._GetAreaPidByName()
             }
         },
         created() {
@@ -139,7 +142,7 @@
             },
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
-                    // console.log(res)
+                    console.log(`${JSON.stringify(res)}res`)
                     Bus.$emit("citypid", res.data)
                     Bus.$emit("city", this.city);
                     Bus.$emit('lat', this.lat);
@@ -231,7 +234,7 @@
             }
 
             .searchbox {
-                padding: 12px 15px;
+                padding: 25px 15px 12px 15px;
 
                 .searchinput {
                     height: 32px;

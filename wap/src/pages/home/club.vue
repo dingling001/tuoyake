@@ -4,23 +4,22 @@
             <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
                   @click="activeList(index,item.id)">{{item.name}}</span>
         </div>
-        <div class="jlist">
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length">
-                <van-list
-                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
-                        :finished-text="finishedtext">
-                    <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.category_id">
-                        <div class="jimg"><img :src="item.image" alt=""></div>
-                        <div class="jright">
-                            <div class="jname van-ellipsis">{{item.name}}</div>
-                            <div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>
-                            </div>
-                            <div class="jaddress van-ellipsis">{{item.address}}</div>
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length" class="jlist">
+            <van-list
+                    v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
+                    :finished-text="finishedtext">
+                <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.category_id"
+                     @click="godetail(item.category_id)">
+                    <div class="jimg"><img :src="item.image" alt=""></div>
+                    <div class="jright">
+                        <div class="jname van-ellipsis">{{item.name}}</div>
+                        <div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>
                         </div>
+                        <div class="jaddress van-ellipsis">{{item.address}}</div>
                     </div>
-                </van-list>
-            </van-pull-refresh>
-        </div>
+                </div>
+            </van-list>
+        </van-pull-refresh>
     </div>
 </template>
 
@@ -40,7 +39,7 @@
                 isUpLoading: false,
                 isDownLoading: false,
                 finished: false,
-                offset: 100,
+                offset: 0,
                 finishedtext: '到底了'
             }
         },
@@ -125,6 +124,10 @@
                 this.ind = index;
                 this.category_id = id;
                 this._ClubIndex();
+            },
+            // 去详情
+            godetail(id) {
+                this.$router.push({path: '/clubdetail', query: {club_id: id}})
             }
         }
     }
@@ -152,6 +155,7 @@
 
             .activespan {
                 color: #333;
+                font-weight: bold;
             }
 
         }

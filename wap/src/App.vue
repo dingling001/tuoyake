@@ -32,18 +32,21 @@
             'bottom': VFooter
         },
         watch: {
-            '$route'(val) {
-                this.title = '托亚克 | ' + val.meta.title;
-                this.showF = val.meta.showF;
-                this.showH = val.meta.showH;
-                this.headtext = val.meta.title;
-                if (val.fullPath.indexOf('/gindex') !== -1) {
-                    this.f_index = 1
-                } else if (val.fullPath.indexOf('/my') !== -1) {
-                    this.f_index = 2;
-                } else {
-                    this.f_index = 0
-                }
+            '$route': {
+                handler(val) {
+                    this.title = '托亚克 | ' + val.meta.title;
+                    this.showF = val.meta.showF;
+                    this.showH = val.meta.showH;
+                    this.headtext = val.meta.title;
+                    if (val.fullPath.indexOf('/gindex') !== -1) {
+                        this.f_index = 1
+                    } else if (val.fullPath.indexOf('/my') !== -1) {
+                        this.f_index = 2;
+                    } else {
+                        this.f_index = 0
+                    }
+                },
+                immediate: true
             }
         },
         provide() {
@@ -63,7 +66,7 @@
 
             &.nonav {
                 height: 100vh;
-                padding-top:56px;
+                padding-top: 56px;
             }
 
             &.noall {

@@ -82,3 +82,61 @@ export const ClubIndex = (page = 0, category_id, city, keyword = '') =>
         "POST",
         true
     );
+/**
+ * 获取俱乐部列表详情
+ */
+export const ClubDetail = (club_id ) =>
+    axios(
+        "/api/club/detail", {
+            club_id,
+        },
+        "POST",
+        true
+    );
+
+/**
+ * 获取学院分类
+ */
+export const CollegeCategory = () =>
+    axios(
+        "/api/college/category", {},
+        "POST",
+        true
+    );
+/**
+ * 获取学院列表
+ */
+export const CollegeIndex = (page = 0, category_id, city, keyword = '') =>
+    axios(
+        "/api/college/index", {
+            page,
+            category_id,
+            city,
+            keyword
+        },
+        "POST",
+        true
+    );
+/**
+ * 获取俱乐部列表详情
+ */
+export const CollegeDetail = (college_id ) =>
+    axios(
+        "/api/college/detail", {
+            college_id,
+        },
+        "POST",
+        true
+    );
+/**
+ * 获取俱乐部列表详情
+ */
+export const GetBarInfo = (id ) =>
+    axios(
+        "/api/index/getBarInfo", {
+            id,
+        },
+        "POST",
+        true
+    );
+

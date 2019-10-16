@@ -9,7 +9,7 @@
                     <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="district" ref="item" v-if="districtlist.length>1">
+                    <van-dropdown-item :title="district" ref="item" @open="opendistrict">
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :class="{activecity:index==lindex}"
@@ -37,7 +37,7 @@
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                     finished-text="到底了">
                 <!-- 加载的内容-->
-                <div class="citem" v-for="(item,index) in netlist" :key="item.id">
+                <div class="citem" v-for="(item,index) in netlist" :key="item.id" @click="godetail(item.id)">
                     <div class="cimg">
                         <img :src="item.image" alt="">
                     </div>
@@ -85,7 +85,7 @@
                 district: '',
                 circle: '',
                 netlist: [],
-                offset: 100,
+                offset: 0,
                 labellist: [
                     {value: '', text: '全部服务'}
                 ],
@@ -114,7 +114,7 @@
             // 获取城市的pid
             Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
                 this.citypid = val;
-                // console.log(this.citypid)
+                console.log(this.citypid)
                 this._GetAreaListTree()
             });
             Bus.$on("lat", (val, val1) => {    //取  Bus.$on
@@ -133,7 +133,7 @@
             });
         },
         mounted() {
-            this._GetBarList();
+            // this._GetBarList();
             this._GetLabelList();
         },
         watch: {
@@ -149,15 +149,15 @@
             'city'(val) {
                 this.city = val;
                 console.log(this.city)
+                this._GetAreaListTree()
                 this._GetBarList();
             },
-            $route: {
-                handler(val, oldVal) {
-                    console.log(val);
+            $route:{
+                handler(to,from){
+                    // this._GetAreaListTree()
                     this._GetBarList();
                 },
-                // 深度观察监听
-                deep: true
+                immediate:true
             }
         },
         methods: {
@@ -287,7 +287,7 @@
             // 滚动到指定位置
             gotop() {
                 let jump = document.querySelectorAll('.cselect')
-                let total = jump[0].offsetTop ;
+                let total = jump[0].offsetTop;
                 let distance = document.documentElement.scrollTop || document.body.scrollTop
                 // 平滑滚动，时长500ms，每10ms一跳，共50跳
                 console.log(distance)
@@ -300,6 +300,7 @@
                     step = newTotal / 50;
                     smoothUp()
                 }
+
                 function smoothDown() {
                     if (distance < total) {
                         distance += step
@@ -312,6 +313,7 @@
                     }
                     console.log('smoothDown')
                 }
+
                 function smoothUp() {
                     if (distance > total) {
                         distance -= step
@@ -325,6 +327,14 @@
                     console.log('smoothUp')
                 }
             },
+            // 打开全部列表
+            opendistrict(){
+                this._GetAreaListTree()
+            },
+            // 去详情
+            godetail(id){
+                this.$router.push({path: '/competitiondetail', query: {id: id}})
+            }
         }
     }
 </script>

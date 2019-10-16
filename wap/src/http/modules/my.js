@@ -14,7 +14,7 @@ export const GetAdv = (type = 1) =>
 /**
  * 获取个人信息
  */
-export const GetUserInfo = (type = 1) =>
+export const GetUserInfo = () =>
     axios(
         "/api/user/getUserInfo", {
             token:localStorage.getItem('user_twap'),
@@ -22,4 +22,15 @@ export const GetUserInfo = (type = 1) =>
         "POST",
         true
     );
+/**
+ * 获取平台信息
+ */
+export const Platform = () =>
+    axios(
+        "/api/user/platform", {
+        },
+        "POST",
+        true
+    );
+
 

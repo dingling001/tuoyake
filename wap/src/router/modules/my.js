@@ -119,5 +119,15 @@ export default [
             needLogin: true
         },
     },
-
+    {
+        path: '/download',
+        name: 'download',
+        component: resolve => require(["../../components/download"], resolve),
+        meta: {
+            title: "关于平台",
+            showF: false,
+            showH: true,
+            needLogin: true
+        },
+    },
 ]
