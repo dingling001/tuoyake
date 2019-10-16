@@ -12,13 +12,14 @@
                     <van-dropdown-item :title="district" ref="item" @open="opendistrict">
                         <div class="citybox">
                             <div class="citems dleft">
-                                <div v-for="(item ,index) in districtlist" :class="{activecity:index==lindex}"
+                                <div v-for="(item ,index) in districtlist" :key="index"
+                                     :class="{activecity:index==lindex}"
                                      @click="selcetcity(index)">
                                     {{item.name}}
                                 </div>
                             </div>
                             <div class="citems dright">
-                                <div v-for="(c ,cindex) in districtlist[lindex].childlist"
+                                <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
                                      :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">{{c.name}}
                                 </div>
                             </div>
@@ -123,9 +124,9 @@
             });
             Bus.$on("lng", (val, val1) => {    //取  Bus.$on
                 this.lng = val;
-                console.log(this.lng, 'lng1')
+                // console.log(this.lng, 'lng1')
                 this._GetBarList();
-                console.log(this.lng, 'lng3')
+                // console.log(this.lng, 'lng3')
             });
             Bus.$on("city", (val, val1) => {    //取  Bus.$on
                 this.city = val;
@@ -139,25 +140,26 @@
         watch: {
             'lat'(val) {
                 this.lat = val;
-                console.log(this.lat, 'lat2')
+                // console.log(this.lat, 'lat2')
             },
             'lng'(val) {
                 this.lng = val;
-                console.log(this.lng, 'lng2')
+                // console.log(this.lng, 'lng2')
                 this._GetBarList();
             },
             'city'(val) {
                 this.city = val;
-                console.log(this.city)
-                this._GetAreaListTree()
                 this._GetBarList();
             },
-            $route:{
-                handler(to,from){
-                    // this._GetAreaListTree()
+            'citypid'(val) {
+                console.log(val)
+                this._GetAreaListTree()
+            },
+            $route: {
+                handler(to, from) {
                     this._GetBarList();
                 },
-                immediate:true
+                immediate: true
             }
         },
         methods: {
@@ -328,11 +330,11 @@
                 }
             },
             // 打开全部列表
-            opendistrict(){
+            opendistrict() {
                 this._GetAreaListTree()
             },
             // 去详情
-            godetail(id){
+            godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             }
         }
@@ -373,6 +375,11 @@
                 }
             }
 
+            /deep/ .van-cell {
+                font-size: 12px;
+                /*px*/
+            }
+
             /deep/ .van-dropdown-menu {
                 flex: 2;
 
@@ -380,6 +387,7 @@
                     font-size: 12px;
                     /*px*/
                 }
+
 
                 &:after {
                     border: 0;

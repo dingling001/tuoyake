@@ -25,15 +25,15 @@ import Com from "./bin/common";
 import Vant from 'vant'
 import 'vant/lib/index.css';
 import 'animate.css'
-import AMap from 'vue-amap';
-Vue.use(AMap)
-AMap.initAMapApiLoader({
-    key: '1f082acaf195dfdc0dd3e06cf0f4f25f',
-    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView',
-        'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor',
-        'AMap.CircleEditor', 'AMap.Geolocation'],
-    debug:false
-});
+// import AMap from 'vue-amap';
+// Vue.use(AMap)
+// AMap.initAMapApiLoader({
+//     key: '1f082acaf195dfdc0dd3e06cf0f4f25f',
+//     plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView',
+//         'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor',
+//         'AMap.CircleEditor', 'AMap.Geolocation'],
+//     debug:true
+// });
 
 directives(Vue);
 // Vue.component(VueQrcode.name, VueQrcode);
