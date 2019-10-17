@@ -116,6 +116,7 @@
                 this.citypid = val;
                 console.log(this.citypid)
                 this._GetAreaListTree()
+                this._GetBarList();
             });
             Bus.$on("lat", (val, val1) => {    //取  Bus.$on
                 this.lat = val;

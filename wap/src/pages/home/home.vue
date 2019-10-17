@@ -51,7 +51,7 @@
                 title: '',
                 city: '天津市',
                 ind: 0,
-                keyword: '和平路商业街',
+                keyword: '',
                 swiperOption: {
                     pagination: '.swiper-pagination',
                     observers: true,
