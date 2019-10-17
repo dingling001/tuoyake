@@ -279,7 +279,8 @@
             // 打开全部服务
             openlabel() {
                 // console.log(this.offsettop);
-                this.gotop()
+                window.scrollTo(100)
+                // this.gotop()
             },
             // 切换服务标签
             changelabel() {

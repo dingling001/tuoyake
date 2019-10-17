@@ -150,9 +150,7 @@
                             Bus.$emit("city", '北京市');
                             Bus.$emit('lat', 0);
                             Bus.$emit('lng', 0);
-
                         }
-
                     })
                 })
             }
