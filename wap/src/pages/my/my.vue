@@ -64,13 +64,13 @@
                         <span class="custom-title">意见反馈</span>
                     </template>
                 </van-cell>
-                <van-cell is-link :border='false' to="myVersion">
-                    <!-- 使用 title 插槽来自定义标题 -->
-                    <template slot="title">
-                        <span class="iconfont iconshu"></span>
-                        <span class="custom-title">版本信息</span>
-                    </template>
-                </van-cell>
+                <!--<van-cell is-link :border='false' to="myVersion">-->
+                    <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
+                    <!--<template slot="title">-->
+                        <!--<span class="iconfont iconshu"></span>-->
+                        <!--<span class="custom-title">版本信息</span>-->
+                    <!--</template>-->
+                <!--</van-cell>-->
                 <van-cell is-link :border='false' to="myPlatform">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
@@ -80,6 +80,7 @@
                 </van-cell>
             </div>
         </div>
+        <div class="mbnt">退出登录</div>
     </div>
 </template>
 
@@ -302,6 +303,15 @@
 
 
             }
+        }
+        .mbnt{
+            margin:0  14px 30px 14px;
+            border: 1px solid #E4E4E4;
+            line-height: 44px;
+            text-align: center;
+            font-size: 15px;
+            /*px*/
+            color: #999999;
         }
     }
 

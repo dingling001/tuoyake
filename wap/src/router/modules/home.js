@@ -1,5 +1,3 @@
-import Home from '../../pages/home/home'
-import Competition from '@/pages/home/competition'
 
 export default [
     {
@@ -9,18 +7,13 @@ export default [
     },
     {
         path: "/home",
-        component: Home,
+        component: resolve => require(["../../pages/home/home"], resolve),
         meta: {
             title: "首页",
             showF: true,
 
         },
         children: [
-            {
-                path: "/",
-                redirect: '/competition',
-                meta: {}
-            },
             {
                 path: '/competition',
                 name: 'competition',
@@ -30,7 +23,7 @@ export default [
                     showF: true,
                     showH: false
                 },
-                component: Competition
+                component: resolve => require(["../../pages/home/competition"], resolve)
             },
             {
                 path: '/club',
@@ -53,7 +46,7 @@ export default [
                     showH: false
                 },
                 component: resolve => require(["../../pages/home/school"], resolve)
-            }
+            },
         ]
     },
     {

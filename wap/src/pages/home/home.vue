@@ -1,6 +1,7 @@
 <template>
     <div class="index">
-        <el-amap class="amap-box" vid="map" :plugin="plugin"></el-amap>
+        <!--<el-amap class="amap-box" vid="map" :plugin="plugin"></el-amap>-->
+        <div id="map"></div>
         <van-sticky>
             <div class="index_top" ref="index_top">
                 <div class="htop">
@@ -49,7 +50,7 @@
             return {
                 transitionName: 'transitionLeft',
                 title: '',
-                city: '天津市',
+                city: '北京市',
                 ind: 0,
                 keyword: '',
                 swiperOption: {
@@ -61,33 +62,7 @@
                     autoplay: 3000,
                 },
                 swiperlist: [],
-                // offsettop: 0
-                plugin: [{
-                    pName: 'Geolocation',
-                    showMarker: false,
-                    events: {
-                        init(o) {
-                            //定位成功 自动将marker和circle移到定位点
-                            o.getCurrentPosition((status, result) => {
-                                console.log(result)
-                                // alert(JSON.stringify(result))
-                                // alert(JSON.stringify(result.addressComponent))
-                                if (result && result.status == 1) {
-                                    // alert(JSON.stringify(result.addressComponent))
-                                    self.city = result.addressComponent.province;
-                                    self.keyword=result.addressComponent.street;
-                                    self.lat = result.position.lat;
-                                    self.lng = result.position.lng;
-                                } else {
-                                    self.$com.showtoast('获取位置失败')
-                                }
-                                self._GetSlideList()
-                                self._GetAreaPidByName()
-                            });
-                            // console.log(o);
-                        }
-                    }
-                }],
+                offsettop: 0,
                 lat: 0,
                 lng: 0
             };
@@ -112,13 +87,13 @@
         },
         created() {
             this.title = '托亚克 | ' + this.city;
-
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
+            this.initMap()
         },
         components: {
             swiper,
@@ -140,13 +115,45 @@
                     }
                 })
             },
+            // 根据城市获取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
-                    console.log(`${JSON.stringify(res)}res`)
+                    // console.log(`${JSON.stringify(res)}res`)
                     Bus.$emit("citypid", res.data)
                     Bus.$emit("city", this.city);
                     Bus.$emit('lat', this.lat);
                     Bus.$emit('lng', this.lng);
+                })
+            },
+            // 初始化地图
+            initMap() {
+                var _ = this;
+                let map = new AMap.Map('map', {
+                    zoom: 0
+                });
+                map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
+                    let getlocation = new AMap.Geolocation({
+                        timeout: 6000,
+                    })
+                    map.addControl(getlocation)
+                    getlocation.getCurrentPosition(function (status, res) {
+                        if (status == 'complete' && res.status == 1) {
+                            console.log(res)
+                            _.city = res.addressComponent.province;
+                            _.keyword = res.addressComponent.street;
+                            _.lat = res.position.lat;
+                            _.lng = res.position.lng;
+                            _._GetSlideList();
+                            _._GetAreaPidByName()
+                        } else {
+                            Bus.$emit("citypid", 2)
+                            Bus.$emit("city", '北京市');
+                            Bus.$emit('lat', 0);
+                            Bus.$emit('lng', 0);
+
+                        }
+
+                    })
                 })
             }
         },

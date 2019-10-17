@@ -24,7 +24,7 @@ NProgress.configure({
 
 router.beforeEach(function (to, from, next) {
     NProgress.start()
-    window.scroll(0, 0);
+    // window.scroll(0, 0);
     const u = navigator.userAgent.toLowerCase()
     if (to.meta.needLogin) {
         // 哪些需要验证
@@ -46,10 +46,10 @@ router.beforeEach(function (to, from, next) {
             next();
         }
     } else {
-        if (u.indexOf("like mac os x") < 0 || u.match(/MicroMessenger/i) != 'micromessenger' || u.match(/WebP/i) == "webp") {
-            next();
-            return;
-        }
+        // if (u.indexOf("like mac os x") < 0 || u.match(/MicroMessenger/i) != 'micromessenger' || u.match(/WebP/i) == "webp") {
+        //     next();
+        //     return;
+        // }
         // if (to.path !== global.location.pathname) {
         //   location.assign(to.fullPath)
         // }

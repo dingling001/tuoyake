@@ -32,6 +32,17 @@ export default [
         },
     },
     {
+        path: '/myCoupondetail',
+        name: 'myCoupondetail',
+        component: resolve => require(["../../pages/my/myCoupondetail"], resolve),
+        meta: {
+            title: "优惠券详情",
+            showF: false,
+            showH: true,
+            needLogin: true
+        },
+    },
+    {
         path: '/myApplication',
         name: 'myApplication',
         component: resolve => require(["../../pages/my/myApplication"], resolve),
@@ -116,7 +127,7 @@ export default [
             title: "关于平台",
             showF: false,
             showH: true,
-            needLogin: true
+            needLogin: false
         },
     },
     {
