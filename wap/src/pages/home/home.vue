@@ -143,7 +143,6 @@
                             _.keyword = res.addressComponent.street;
                             _.lat = res.position.lat;
                             _.lng = res.position.lng;
-
                             _._GetAreaPidByName()
                         } else {
                             Bus.$emit("citypid", 2)

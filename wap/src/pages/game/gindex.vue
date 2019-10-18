@@ -3,7 +3,7 @@
         <div class="index_top">
             <van-sticky :offset-top="0">
                 <div class="htop">
-                    <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
+                    <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{street}}</span></div>
                     <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
                 </div>
             </van-sticky>
@@ -85,8 +85,6 @@
 </template>
 
 <script>
-    import Bus from '../../bin/Bus'
-
     export default {
         name: "competition",
         data() {
@@ -122,65 +120,55 @@
                 lindex: 0,
                 rindex: 0,
                 totop: false,
-                adimg: ''
+                adimg: '',
+                street: ''
             }
         },
         inject: ['app'],
         created() {
-            // 获取城市的pid
-            Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
-                this.citypid = val;
-                console.log(this.citypid)
-                this._GetAreaListTree()
-                // this._GetBarList();
-            });
-            Bus.$on("lat", (val, val1) => {    //取  Bus.$on
-                this.lat = val;
-                // console.log(this.lat, 'lat1')
-            });
-            Bus.$on("lng", (val, val1) => {    //取  Bus.$on
-                this.lng = val;
-                // console.log(this.lng, 'lng1')
-                // this._GetBarList();
-                // console.log(this.lng, 'lng3')
-            });
-            Bus.$on("city", (val, val1) => {    //取  Bus.$on
-                this.city = val;
-                this._GetBarList();
-            });
+
 
         },
         mounted() {
             // this._GetBarList();
+            this.initMap();
             this._GetLabelList();
             this._GetAdv();
         },
-        watch: {
-            'lat'(val) {
-                this.lat = val;
-                // console.log(this.lat, 'lat2')
-            },
-            'lng'(val) {
-                this.lng = val;
-                // console.log(this.lng, 'lng2')
-                // this._GetBarList();
-            },
-            'city'(val) {
-                this.city = val;
-                // this._GetBarList();
-            },
-            'citypid'(val) {
-                console.log(val)
-                this._GetAreaListTree()
-            },
-            $route: {
-                handler(to, from) {
-                    this._GetBarList();
-                },
-                immediate: true
-            }
-        },
+        watch: {},
         methods: {
+            // 初始化位置
+            initMap() {
+                var _ = this;
+                let map = new AMap.Map('map', {
+                    zoom: 0
+                });
+                map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
+                    let getlocation = new AMap.Geolocation({
+                        timeout: 6000,
+                    })
+                    map.addControl(getlocation)
+                    getlocation.getCurrentPosition(function (status, res) {
+                        if (status == 'complete' && res.status == 1) {
+                            console.log(res)
+                            _.city = res.addressComponent.province;
+                            _.street = res.addressComponent.street;
+                            _.lat = res.position.lat;
+                            _.lng = res.position.lng;
+                            _._GetAreaPidByName()
+                            _._GetBarList();
+                        }
+                    })
+                })
+            },
+            // 根据城市获取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    // console.log(`${JSON.stringify(res)}res`)
+                    this.citypid = res.data;
+                    this._GetAreaListTree()
+                })
+            },
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
@@ -357,6 +345,7 @@
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
+            // 获取广告位
             _GetAdv() {
                 this.$api.GetAdv(2).then(res => {
                     console.log(res)
@@ -424,8 +413,9 @@
                 width: 354px;
                 margin: 0 auto;
                 overflow: hidden;
-                z-index: 5;
-position: relative;
+                z-index: 3;
+                position: relative;
+
                 img {
                     width: 100%;
                 }
@@ -473,6 +463,7 @@ position: relative;
             background-color: #fff;
             border-radius: 10px 10px 0 0;
             padding: 60px 0 0 0;
+
             .cselect {
                 padding: 0 39px;
                 display: flex;
