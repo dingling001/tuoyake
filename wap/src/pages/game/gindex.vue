@@ -121,7 +121,7 @@
                 rindex: 0,
                 totop: false,
                 adimg: '',
-                street: ''
+                street: '大兴'
             }
         },
         inject: ['app'],
@@ -129,13 +129,25 @@
 
 
         },
+
         mounted() {
             // this._GetBarList();
             this.initMap();
             this._GetLabelList();
             this._GetAdv();
         },
-        watch: {},
+        watch: {
+            'city': {
+                handler(val) {
+                    var _=this;
+                    _.city = val;
+                    _.page = 0;
+                    _._GetAreaPidByName()
+                    _._GetBarList();
+                },
+                immediate: true
+            }
+        },
         methods: {
             // 初始化位置
             initMap() {
