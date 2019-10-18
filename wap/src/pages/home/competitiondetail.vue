@@ -8,14 +8,31 @@
             <!--                <div class="swiper-pagination" slot="pagination"></div>-->
             <!--            </swiper>-->
             <van-sticky :offset="0">
-                <div class="navbox"><span class="iconfont iconfanhui"></span>
-                    <div><span class="iconfont  iconstar"></span> <span class="iconfont iconfenxiang"></span></div>
+                <div class="navbox">
+                    <span class="iconfont iconfanhui" @click="backlist"></span>
+                    <div class="comnanme van-ellipsis">{{comdata.info.name}}</div>
+                    <div class="nright"><span @click="clllection"
+                                              :class="['iconfont', comdata.info.is_collection==0? 'iconstar':'iconstar-fill']"></span>
+                        <span class="iconfont iconfenxiang"></span>
+                    </div>
                 </div>
             </van-sticky>
-            <div class="album" v-if="comdata.info.album_images.length>0">
+            <div class="album" @click="show=true" v-if="comdata.info.album_images.length>0">
                 <span class="iconfont iconimage"></span>
                 <span>{{comdata.info.album_images.length}}</span>
             </div>
+            <van-image-preview
+                    v-model="show"
+                    :images="comdata.info.album_images"
+                    @change="onChange"
+                    v-if="comdata.info.album_images.length"
+            >
+                <template v-slot:index>
+                    <div class="preview" @click="show=false" v-if="comdata.info.album_images.length"><span
+                            class="iconfont iconfanhui"></span><span>相册（{{comdata.info.album_images.length}}）</span><span>{{index+1}}/{{comdata.info.album_images.length}}</span>
+                    </div>
+                </template>
+            </van-image-preview>
         </div>
         <div class="comitem">
             <div class="comnanme">{{comdata.info.name}}</div>
@@ -35,7 +52,7 @@
                         class="iconfont iconphone-fill"></span></a>
             </div>
             <div class="hr"></div>
-            <div class="comlist">
+            <div class="comlist" v-if="comdata.goods.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">惠</span> <span>套餐</span></div>
                 </div>
@@ -43,7 +60,7 @@
                      @click="godetail(item.id)">
                     <div class="jimg"><img :src="item.image" alt=""></div>
                     <div class="jright">
-                        <div class="jname van-ellipsis">{{item.bar_name}}</div>
+                        <div class="jname van-ellipsis">{{item.name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
                         <div class="jaddress van-ellipsis">{{comdata.info.address}}</div>
@@ -53,16 +70,18 @@
                 </div>
             </div>
             <div class="hr"></div>
-            <div class="comlist">
+            <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">赛</span><span>赛事</span></div>
-                    <div class="all">全部 <span class="iconfont iconjiantou"></span></div>
+                    <div class="all" v-if="comdata.match.length>1">全部 <span class="iconfont iconjiantou"></span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
                      @click="godetail(item.id)">
-                    <div class="jimg"><img :src="item.image" alt=""></div>
+                    <div class="jimg"><img :src="item.image" alt="">
+                        <span v-if="item.recommend==1">精选</span>
+                    </div>
                     <div class="jright">
-                        <div class="jname van-ellipsis">{{item.bar_name}}</div>
+                        <div class="jname van-ellipsis">{{item.league_name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
                         <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>
@@ -89,7 +108,8 @@
                 comdata: {
                     goods: [],
                     info: {
-                        album_images: []
+                        album_images: [],
+                        star: 0
                     }
                 },
                 swiperOption: {
@@ -100,6 +120,8 @@
                     loop: true,
                     autoplay: 3000,
                 },
+                show: false,
+                index: 0
             }
         },
         components: {
@@ -115,6 +137,7 @@
             }
         },
         methods: {
+            // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {
                     console.log(res)
@@ -123,7 +146,32 @@
                     }
                 })
             },
+            // 去套餐详情
             godetail() {
+
+            },
+            // 回到列表
+            backlist() {
+                this.$router.push('/competition')
+            },
+            // 改变预览下标
+            onChange(index) {
+                this.index = index;
+            },
+            // 收藏
+            clllection() {
+                this.$api.SetCollection(1, this.comdata.info.id).then(res => {
+                    if (res.code == 1) {
+                        if (res.data.is_collection == 1) {
+                            this.$com.showtoast('收藏成功')
+                            this.comdata.info.is_collection=1;
+                        } else {
+                            this.$com.showtoast('取消收藏')
+                            this.comdata.info.is_collection=0;
+                        }
+                    }
+                    // this._GetBarInfo()
+                })
 
             }
         }
@@ -150,6 +198,19 @@
                 color: #fff;
                 padding: 15px 10px;
 
+                .comnanme {
+                    font-size: 18px;
+                    /*px*/
+                    position: absolute;
+                    width: 100%;
+                    text-align: center;
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    padding: 15px 10px;
+                    display: none;
+                }
+
                 .iconfont {
                     width: 28px;
                     height: 28px;
@@ -159,14 +220,24 @@
                     font-weight: bold;
                     line-height: 28px;
                     display: inline-block;
-
+                    font-size: 14px;
+                    margin-right: 10px;
+                    /*px*/
                     &.iconstar-fill {
                         color: $baseRed;
+                        font-size: 20px;
+                        /*px*/
                     }
 
-                    &.iconfont {
+                    &.iconstar {
                         font-size: 20px;
+                        /*px*/
                     }
+                }
+
+                .nright {
+                    display: flex;
+                    align-items: center;
                 }
 
 
@@ -195,6 +266,31 @@
 
             img {
                 width: 100%;
+            }
+
+            /deep/ .van-sticky--fixed {
+                .navbox {
+                    background-color: rgba(255, 255, 255, .9);
+                    color: #fff;
+
+                    .comnanme {
+                        color: #333;
+                        display: block;
+                    }
+                }
+            }
+
+            /deep/ .van-image-preview {
+                .van-image-preview__index {
+                    width: 100%;
+
+                    .preview {
+                        display: flex;
+                        align-items: center;
+                        padding: 10px 15px;
+                        justify-content: space-between;
+                    }
+                }
             }
 
             .swiper-container {
@@ -374,9 +470,25 @@
                         /*no*/
                         margin-right: 17px;
                         flex-shrink: 0;
+                        overflow: hidden;
+                        position: relative;
 
                         img {
-                            width: 100%;
+                            height: 100%;
+                        }
+
+                        span {
+                            position: absolute;
+                            right: 0;
+                            bottom: 0;
+                            width: 31px;
+                            border-radius: 5px 0px 0px 0px;
+                            background-color: #F7A421;
+                            color: #fff;
+                            font-size: 10px;
+                            /*px*/
+                            text-align: center;
+                            line-height: 16px;
                         }
                     }
 

@@ -1,161 +1,370 @@
 <template>
     <div class="index">
         <div class="index_top">
-            <div class="htop">
-                <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
-                <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
-            </div>
+            <van-sticky :offset-top="0">
+                <div class="htop">
+                    <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
+                    <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
+                </div>
+            </van-sticky>
             <div class="swiperbox">
-                <swiper :options="swiperOption" ref="mySwiper">
-                    <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
-                    </swiper-slide>
-                    <div class="swiper-pagination" slot="pagination"></div>
-                </swiper>
+                <!--<swiper :options="swiperOption" ref="mySwiper">-->
+                <!--<swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">-->
+                <!--</swiper-slide>-->
+                <!--<div class="swiper-pagination" slot="pagination"></div>-->
+                <!--</swiper>-->
+                <img :src="adimg" alt="">
             </div>
         </div>
         <div class="cbox">
-            <div class="cselect">
-                <div class="cselectitem"><span>推荐电竞馆</span><span class="iconfont iconjiantouarrow486"></span></div>
-                <div class="cselectitem"><span>全部服务</span><span class="iconfont iconjiantouarrow486"></span></div>
-                <div class="cselectitem"><span>全部地区</span><span class="iconfont iconjiantouarrow486"></span></div>
-            </div>
-            <div class="clist">
-                <div class="citem">
-                    <div class="cimg"><img
-                            src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
+            <van-sticky :offset-top="75">
+                <div class="cselect">
+                    <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
+                        <span>推荐电竞馆</span>
                     </div>
-                    <div class="cright">
-                        <div class="cname">
-                            <div class="namebox">
-                                <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                                <div class="startbox">
-                                    <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+                    <van-dropdown-menu active-color="#f2313b">
+                        <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
+                            <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
+                        </van-dropdown-item>
+                        <van-dropdown-item :title="district" ref="item" @open="opendistrict">
+                            <div class="citybox">
+                                <div class="citems dleft">
+                                    <div v-for="(item ,index) in districtlist" :key="index"
+                                         :class="{activecity:index==lindex}"
+                                         @click="selcetcity(index)">
+                                        {{item.name}}
+                                    </div>
+                                </div>
+                                <div class="citems dright">
+                                    <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
+                                         :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
+                                        {{c.name}}
+                                    </div>
                                 </div>
                             </div>
-                            <span class="juli">1.1km</span>
-                        </div>
-                        <div class="ctype"><span>环境优雅</span></div>
-                        <div class="caddress">
-                            <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                        </div>
-                    </div>
+
+                            <!--<span>全部地区</span><span class="iconfont iconjiantouarrow486"></span>-->
+                        </van-dropdown-item>
+                        <!--<div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">-->
+                        <!--<span>推荐电竞馆</span>-->
+                        <!--</div>-->
+                    </van-dropdown-menu>
                 </div>
-                <div class="citem">
-                    <div class="cimg"><img
-                            src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                    </div>
-                    <div class="cright">
-                        <div class="cname">
-                            <div class="namebox">
-                                <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                                <div class="startbox">
-                                    <span class="iconfont iconstar-fill" v-for="item in 5"></span>
+            </van-sticky>
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="netlist.length">
+                <van-list
+                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
+                        finished-text="到底了">
+                    <!-- 加载的内容-->
+                    <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
+                        <div class="cimg">
+                            <img :src="item.image" alt="">
+                        </div>
+                        <div class="cright">
+                            <div class="cname">
+                                <div class="namebox">
+                                    <div class="name single-line-text">{{item.name}}</div>
+                                    <div class="startbox">
+                                        <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>
+                                    </div>
                                 </div>
+                                <span class="juli">{{item.distance}}</span>
                             </div>
-                            <span class="juli">1.1km</span>
-                        </div>
-                        <div class="ctype"><span>环境优雅</span></div>
-                        <div class="caddress">
-                            <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="citem">
-                    <div class="cimg"><img
-                            src="http://qiniu.tuoyake.com/uploads/20190811/e2fc061b3b18e7847a7082c6a6526ad0.png" alt="">
-                    </div>
-                    <div class="cright">
-                        <div class="cname">
-                            <div class="namebox">
-                                <div class="name single-line-text">网鱼网咖网鱼网咖网鱼网咖网鱼网咖</div>
-                                <div class="startbox">
-                                    <span class="iconfont iconstar-fill" v-for="item in 5"></span>
-                                </div>
+                            <div class="ctype"><span v-for="l in item.label_ids">{{l}}</span></div>
+                            <div class="caddress">
+                                <span class="iconfont icondingweiweizhi"></span>
+                                <span class="single-line-text">{{item.address}}</span>
                             </div>
-                            <span class="juli">1.1km</span>
-                        </div>
-                        <div class="ctype"><span>环境优雅</span></div>
-                        <div class="caddress">
-                            <span class="iconfont icondingweiweizhi"></span><span class="single-line-text">和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号和平区大沽南路43号(金融街中心店)</span>
                         </div>
                     </div>
-                </div>
-            </div>
+                </van-list>
+            </van-pull-refresh>
+            <div class="nodata" v-else> 暂无数据</div>
         </div>
     </div>
 </template>
 
 <script>
-    import 'swiper/dist/css/swiper.css'
-    import {swiper, swiperSlide} from 'vue-awesome-swiper'
+    import Bus from '../../bin/Bus'
 
     export default {
-        name: "gindex",
+        name: "competition",
         data() {
             return {
-                transitionName: 'transitionLeft',
-                title: '',
-                city: '天津',
-                ind: 0,
-                keyword: '和平路商业街',
-                swiperOption: {
-                    pagination: '.swiper-pagination',
-                    observers: true,
-                    observeParents: true,
-                    spaceBetween: 10,
-                    loop: true,
-                    autoplay: 3000,
-                },
-                swiperlist: []
+                isDownLoading: false,
+                isUpLoading: false,
+                finished: false,
+                offsettop: 0,
+                page: 0,
+                keyword: '',
+                city: '北京市',
+                lat: 0,
+                lng: 0,
+                recommend: 0,
+                label: '',
+                district: '',
+                circle: '',
+                netlist: [],
+                offset: 0,
+                labellist: [
+                    {value: '', text: '全部服务'}
+                ],
+                districtlist: [
+                    {
+                        id: '',
+                        childlist: [],
+                        name: " 全部地区",
+                        pid: '',
+                        spacer: ""
+                    }
+                ],
+                citypid: '',
+                lindex: 0,
+                rindex: 0,
+                totop: false,
+                adimg: ''
             }
         },
-        watch: {
-            '$route'(val) {
-                if (val.fullPath.indexOf('/competition') !== -1) {
-                    this.ind = 0
-                } else if (val.fullPath.indexOf('/club') !== -1) {
-                    this.ind = 1;
-                } else {
-                    this.ind = 2
-                }
-            }
-        },
+        inject: ['app'],
         created() {
-            this.title = '托亚克 | ' + this.city;
-            this._GetSlideList()
+            // 获取城市的pid
+            Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
+                this.citypid = val;
+                console.log(this.citypid)
+                this._GetAreaListTree()
+                // this._GetBarList();
+            });
+            Bus.$on("lat", (val, val1) => {    //取  Bus.$on
+                this.lat = val;
+                // console.log(this.lat, 'lat1')
+            });
+            Bus.$on("lng", (val, val1) => {    //取  Bus.$on
+                this.lng = val;
+                // console.log(this.lng, 'lng1')
+                // this._GetBarList();
+                // console.log(this.lng, 'lng3')
+            });
+            Bus.$on("city", (val, val1) => {    //取  Bus.$on
+                this.city = val;
+                this._GetBarList();
+            });
+
         },
         mounted() {
-            this.ind = this.$route.meta.index || 0;
+            // this._GetBarList();
+            this._GetLabelList();
+            this._GetAdv();
         },
-        components: {
-            swiper,
-            swiperSlide
+        watch: {
+            'lat'(val) {
+                this.lat = val;
+                // console.log(this.lat, 'lat2')
+            },
+            'lng'(val) {
+                this.lng = val;
+                // console.log(this.lng, 'lng2')
+                // this._GetBarList();
+            },
+            'city'(val) {
+                this.city = val;
+                // this._GetBarList();
+            },
+            'citypid'(val) {
+                console.log(val)
+                this._GetAreaListTree()
+            },
+            $route: {
+                handler(to, from) {
+                    this._GetBarList();
+                },
+                immediate: true
+            }
         },
         methods: {
-            // 切换滑块
-            tabhome(index, path) {
-                this.ind = index;
-                this.$router.push(path)
+            // 获取列表
+            _GetBarList() {
+                let pageNumber = this.page + 1;
+
+                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                this.$api.GetBarList(
+                    pageNumber,
+                    this.keyword,
+                    this.city,
+                    this.lat,
+                    this.lng,
+                    this.recommend,
+                    this.label,
+                    this.lindex == 0 ? '' : this.district,
+                    this.circle,
+                ).then(res => {
+                    if (res.code == 1) {//请求成功
+                        if (this.netlist.length) {//当请求前有数据时 第n次请求
+                            if (this.isUpLoading) {// 上拉加载
+                                this.netlist = this.netlist.concat(res.data.data) //上拉加载新数据添加到数组中
+                                this.$nextTick(() => { //在下次 DOM 更新循环结束之后执行延迟回调
+                                    this.isUpLoading = false  //关闭上拉加载中
+                                })
+                                if (res.data.data.length < 10) {//没有更多数据
+                                    this.finished = true   //上拉加载完毕
+                                }
+                            }
+                            if (this.isDownLoading) {//关闭下拉刷新
+                                this.isDownLoading = false; //关闭下拉刷新中
+                                this.netlist = res.data.data; //重新给数据赋值
+                                if (this.finished) { //如果上拉加载完毕为true则设为false。解决上拉加载完毕后再下拉刷新就不会执行上拉加载问题
+                                    this.finished = false
+                                }
+                            }
+                        } else {
+                            this.netlist = res.data.data
+                        }
+                    }
+                    // console.log(this.netlist)
+                })
             },
-            // 获取轮播图
-            _GetSlideList() {
-                this.$api.GetSlideList(this.city).then((res) => {
+            // 获取服务标签
+            _GetLabelList() {
+                this.$api.GetLabelList().then(res => {
                     if (res.code == 1) {
-                        this.swiperlist = res.data;
-                    } else {
-                        this.$com.showtoast(res.msg)
+                        var labellist = res.data;
+                        for (let i in labellist) {
+                            this.labellist.push({
+                                value: labellist[i],
+                                text: labellist[i]
+                            })
+                        }
+                        ;
+                        this.label = this.labellist[0].value;
+                        // console.log(this.labellist)
                     }
                 })
             },
-        },
-        computed: {
-            swiper() {
-                return this.$refs.mySwiper.swiper
+            // 切换成推荐模式
+            recommendlist() {
+                this.page = 0;
+                if (this.recommend == 1) {
+                    this.recommend = 0
+                } else {
+                    this.recommend = 1
+                }
+                console.log(this.recommend)
+                this._GetBarList();
+            },
+            // 下拉刷新
+            onRefresh() {
+                setTimeout(() => {
+                    this.$com.showtoast('刷新成功');
+                    this.isDownLoading = false;
+                    this.page = 0;
+                    this._GetBarList();
+                }, 500);
+            },
+            // 上拉加载
+            onLoad() {
+                this.page++;
+                this.isUpLoading = true;
+                this._GetBarList();
+            },
+            // 获取当前城市的区
+            _GetAreaListTree() {
+                this.$api.GetAreaListTree(this.citypid).then(res => {
+                    this.districtlist = this.districtlist.concat(res.data);
+                    // console.log(this.districtlist)
+                    this.district = this.districtlist[0].name;
+                })
+            },
+            // 选择城市
+            selcetcity(index) {
+                this.lindex = index;
+                if (index == 0) {
+                    this.$refs.item.toggle();
+                    this.district = this.districtlist[index].name;
+                    this.page = 0;
+                    this.netlist = [];
+                    this._GetBarList();
+                }
+            },
+            // 选择地区
+            selcetarea(index, name) {
+                this.rindex = index;
+                this.$refs.item.toggle();
+                this.district = name;
+                this.page = 0;
+                this.netlist = [];
+                this._GetBarList();
+            },
+            // 打开全部服务
+            openlabel() {
+                // console.log(this.offsettop);
+                // window.scrollTo = 100
+                window.scrollTo(0, 0)
+                // this.gotop()
+            },
+            // 切换服务标签
+            changelabel() {
+                this.page = 0;
+                this.netlist = [];
+                this._GetBarList();
+            },
+            // 滚动到指定位置
+            gotop() {
+                let jump = document.querySelectorAll('.cselect')
+                let total = jump[0].offsetTop;
+                let distance = document.documentElement.scrollTop || document.body.scrollTop
+                // 平滑滚动，时长500ms，每10ms一跳，共50跳
+                console.log(distance)
+                let step = total / 10
+                if (total > distance) {
+                    smoothDown()
+                } else {
+                    let newTotal = distance - total;
+                    console.log(newTotal)
+                    step = newTotal / 50;
+                    smoothUp()
+                }
+
+                function smoothDown() {
+                    if (distance < total) {
+                        distance += step
+                        document.body.scrollTop = distance
+                        document.documentElement.scrollTop = distance
+                        setTimeout(smoothDown, 10)
+                    } else {
+                        document.body.scrollTop = total
+                        document.documentElement.scrollTop = total
+                    }
+                    console.log('smoothDown')
+                }
+
+                function smoothUp() {
+                    if (distance > total) {
+                        distance -= step
+                        document.body.scrollTop = distance
+                        document.documentElement.scrollTop = distance
+                        setTimeout(smoothUp, 10)
+                    } else {
+                        document.body.scrollTop = total;
+                        document.documentElement.scrollTop = total
+                    }
+                    console.log('smoothUp')
+                }
+            },
+            // 打开全部列表
+            opendistrict() {
+                this._GetAreaListTree()
+            },
+            // 去详情
+            godetail(id) {
+                this.$router.push({path: '/competitiondetail', query: {id: id}})
+            },
+            _GetAdv() {
+                this.$api.GetAdv(2).then(res => {
+                    console.log(res)
+                    this.adimg = res.data.image;
+                })
             }
-        },
+        }
     }
-
-
 </script>
 
 <style scoped lang="scss">
@@ -166,7 +375,6 @@
             /*display: flex;*/
             /*align-items: center;*/
             /*justify-content: space-between;*/
-            padding: 22px 15px;
             height: 220px;
             background: linear-gradient(90deg, #441219, #29182E);
 
@@ -174,7 +382,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin: 12px 0;
+                background: linear-gradient(90deg, #441219, #29182E);
+                padding: 22px 15px;
+                width: 100%;
 
                 .index_address {
                     color: #fff;
@@ -211,6 +421,14 @@
             .swiperbox {
                 height: 160px;
                 border-radius: 16px;
+                width: 354px;
+                margin: 0 auto;
+                overflow: hidden;
+                z-index: 5;
+position: relative;
+                img {
+                    width: 100%;
+                }
 
                 .swiper-container {
                     height: 100%;
@@ -249,23 +467,28 @@
         }
 
         .cbox {
+            margin-top: -50px;
+            position: relative;
+            z-index: 2;
             background-color: #fff;
-            margin-top: -40px;
             border-radius: 10px 10px 0 0;
-            padding: 60px 0;
-
+            padding: 60px 0 0 0;
             .cselect {
                 padding: 0 39px;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 color: #333333;
+                background-color: #fff;
                 font-size: 12px;
                 /* px */
+                /*border-bottom: 1px solid #f5f5f5;*/
                 .cselectitem {
                     display: flex;
                     align-items: center;
                     padding: 25px 0;
+                    flex: 1;
+                    justify-content: center;
 
                     .iconfont {
                         color: #BBBBBB;
@@ -273,8 +496,70 @@
                         /*px*/
                         margin-left: 5px;
                     }
+
+                    &.cselectitemactive {
+                        color: $baseRed;
+                        font-weight: bold;
+                    }
                 }
 
+                /deep/ .van-cell {
+                    font-size: 12px;
+                    /*px*/
+                }
+
+                /deep/ .van-dropdown-menu {
+                    flex: 2;
+
+                    .van-ellipsis {
+                        font-size: 12px;
+                        /*px*/
+                    }
+
+
+                    &:after {
+                        border: 0;
+                    }
+
+                    .citybox {
+                        /*align-items: center;*/
+                        /*justify-content: space-between;*/
+                        position: relative;
+                        max-height: 300px;
+                        min-height: 220px;
+                        overflow: hidden;
+
+                        .citems {
+                            position: absolute;
+                            flex: 1;
+                            text-align: center;
+                            width: 50%;
+                            height: 100%;
+                            overflow: scroll;
+
+                            div {
+                                padding: 10px 0;
+                                font-size: 12px;
+                                /*px*/
+                                color: #666;
+
+                                &.activecity {
+                                    color: $baseRed;
+                                    font-weight: bold;
+                                }
+                            }
+
+                            &.dleft {
+                                left: 0;
+                            }
+
+                            &.dright {
+                                right: 0;
+
+                            }
+                        }
+                    }
+                }
             }
 
             .clist {
@@ -349,6 +634,7 @@
                                 background: rgba(242, 49, 59, .1);
                                 color: $baseRed;
                                 border-radius: 8px;
+                                margin-right: 5px;
                             }
                         }
 
@@ -373,7 +659,12 @@
                             }
                         }
                     }
+
+                    &:last-child {
+                        margin: 0;
+                    }
                 }
+
             }
         }
     }

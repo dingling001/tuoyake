@@ -55,7 +55,7 @@
     @import "../style/reset";
 
     .footer {
-        position: absolute;
+        position: fixed;
         width: 100%;
         bottom: 0;
         left: 0;

@@ -1,5 +1,5 @@
 <template>
-    <div class="cbox" ref="container" id="container">
+    <div class="cbox">
         <van-sticky :offset-top="offsettop">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
@@ -38,7 +38,7 @@
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                     finished-text="到底了">
                 <!-- 加载的内容-->
-                <div class="citem" v-for="(item,index) in netlist" :key="item.id" @click="godetail(item.id)">
+                <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
                     <div class="cimg">
                         <img :src="item.image" alt="">
                     </div>
@@ -110,14 +110,14 @@
             this.offsettop = parseInt(localStorage.offsettop);
             Bus.$on("home", (val, val1) => {    //取  Bus.$on
                 this.offsettop = val;
-                // console.log(this.offsettop)
+                console.log(this.offsettop)
             });
             // 获取城市的pid
             Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
                 this.citypid = val;
                 console.log(this.citypid)
                 this._GetAreaListTree()
-                this._GetBarList();
+                // this._GetBarList();
             });
             Bus.$on("lat", (val, val1) => {    //取  Bus.$on
                 this.lat = val;
@@ -126,13 +126,14 @@
             Bus.$on("lng", (val, val1) => {    //取  Bus.$on
                 this.lng = val;
                 // console.log(this.lng, 'lng1')
-                this._GetBarList();
+                // this._GetBarList();
                 // console.log(this.lng, 'lng3')
             });
             Bus.$on("city", (val, val1) => {    //取  Bus.$on
                 this.city = val;
                 this._GetBarList();
             });
+
         },
         mounted() {
             // this._GetBarList();
@@ -146,11 +147,11 @@
             'lng'(val) {
                 this.lng = val;
                 // console.log(this.lng, 'lng2')
-                this._GetBarList();
+                // this._GetBarList();
             },
             'city'(val) {
                 this.city = val;
-                this._GetBarList();
+                // this._GetBarList();
             },
             'citypid'(val) {
                 console.log(val)
@@ -279,7 +280,8 @@
             // 打开全部服务
             openlabel() {
                 // console.log(this.offsettop);
-                window.scrollTo(100)
+                // window.scrollTo = 100
+                window.scrollTo(0,0)
                 // this.gotop()
             },
             // 切换服务标签
@@ -338,7 +340,7 @@
             // 去详情
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
-            }
+            },
         }
     }
 </script>

@@ -139,4 +139,17 @@ export const GetBarInfo = (id ) =>
         "POST",
         true
     );
+/**
+ * 获取俱乐部列表详情
+ */
+export const SetCollection = (type=1,object_id ) =>
+    axios(
+        "/api/collection/setCollection", {
+            token:localStorage.user_twap,
+            type,
+            object_id,
+        },
+        "POST",
+        true
+    );
 

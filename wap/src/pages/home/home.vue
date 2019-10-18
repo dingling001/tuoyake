@@ -46,7 +46,6 @@
     export default {
         name: "home",
         data() {
-            let self = this;
             return {
                 transitionName: 'transitionLeft',
                 title: '',
@@ -81,6 +80,7 @@
                     this.ind = 2
                 }
                 this.offsettop = this.$refs.index_top.offsetHeight;
+                // console.log(this.offsettop)
                 Bus.$emit("home", this.offsettop);
                 this._GetAreaPidByName()
             }
@@ -143,7 +143,7 @@
                             _.keyword = res.addressComponent.street;
                             _.lat = res.position.lat;
                             _.lng = res.position.lng;
-                            _._GetSlideList();
+
                             _._GetAreaPidByName()
                         } else {
                             Bus.$emit("citypid", 2)
@@ -151,6 +151,7 @@
                             Bus.$emit('lat', 0);
                             Bus.$emit('lng', 0);
                         }
+                        _._GetSlideList();
                     })
                 })
             }

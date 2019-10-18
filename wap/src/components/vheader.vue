@@ -22,7 +22,7 @@
                 type: Boolean,
                 default: false
             },
-            iconfont: {
+            'iconfont': {
                 type: String,
                 default: 'iconfanhui'
             }
