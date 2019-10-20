@@ -81,5 +81,27 @@ export default [
             showH: false
         },
         component: resolve => require(["../../pages/home/schooldetail"], resolve)
+    },
+    {
+        path: '/taocan',
+        name: 'taocan',
+        meta: {
+            title: "套餐详情",
+            index: 1,
+            showF: false,
+            showH: false
+        },
+        component: resolve => require(["../../pages/home/taocan"], resolve)
+    },
+    {
+        path: '/gamedetail',
+        name: 'gamedetail',
+        meta: {
+            title: "视频详情",
+            index: 1,
+            showF: false,
+            showH: false
+        },
+        component: resolve => require(["../../pages/home/gamedetail"], resolve)
     }
 ]

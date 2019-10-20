@@ -95,7 +95,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: '北京市',
+                city: '',
                 lat: 0,
                 lng: 0,
                 recommend: 0,

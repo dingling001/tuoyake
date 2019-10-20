@@ -1,5 +1,6 @@
 <template>
     <div class="cbox">
+        <div id="map"></div>
         <van-sticky :offset-top="offsettop">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
@@ -110,13 +111,13 @@
             this.offsettop = parseInt(localStorage.offsettop);
             Bus.$on("home", (val, val1) => {    //取  Bus.$on
                 this.offsettop = val;
-                console.log(this.offsettop)
+                // console.log(this.offsettop)
             });
             // 获取城市的pid
             Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
                 this.citypid = val;
-                console.log(this.citypid)
-                this._GetAreaListTree()
+                // console.log(this.citypid)
+                // this._GetAreaListTree()
                 // this._GetBarList();
             });
             Bus.$on("lat", (val, val1) => {    //取  Bus.$on
@@ -131,12 +132,13 @@
             });
             Bus.$on("city", (val, val1) => {    //取  Bus.$on
                 this.city = val;
-                this._GetBarList();
+                // this._GetBarList();
             });
 
         },
         mounted() {
             // this._GetBarList();
+            this.initMap()
             this._GetLabelList();
         },
         watch: {
@@ -154,12 +156,12 @@
                 // this._GetBarList();
             },
             'citypid'(val) {
-                console.log(val)
-                this._GetAreaListTree()
+                // console.log(val)
+                // this._GetAreaListTree()
             },
             $route: {
                 handler(to, from) {
-                    this._GetBarList();
+                    // this._GetBarList();
                 },
                 immediate: true
             }
@@ -231,7 +233,7 @@
                 } else {
                     this.recommend = 1
                 }
-                console.log(this.recommend)
+                // console.log(this.recommend)
                 this._GetBarList();
             },
             // 下拉刷新
@@ -281,7 +283,7 @@
             openlabel() {
                 // console.log(this.offsettop);
                 // window.scrollTo = 100
-                window.scrollTo(0,0)
+                window.scrollTo(0, 0)
                 // this.gotop()
             },
             // 切换服务标签
@@ -340,6 +342,44 @@
             // 去详情
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
+            },
+            // 初始化地图
+            initMap() {
+                var _ = this;
+                let map = new AMap.Map('map', {
+                    zoom: 0
+                });
+                map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
+                    let getlocation = new AMap.Geolocation({
+                        timeout: 6000,
+                    })
+                    map.addControl(getlocation)
+                    getlocation.getCurrentPosition(function (status, res) {
+                        if (status == 'complete' && res.status == 1) {
+                            _.city = res.addressComponent.province;
+                            _.lat = res.position.lat;
+                            _.lng = res.position.lng;
+
+                        } else {
+                            _.city = '天津市'
+                        }
+                        _._GetAreaPidByName()
+                    })
+                })
+            },
+            // 根据城市换取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    console.log(res)
+                    // console.log(`${JSON.stringify(res)}res`)
+                    // Bus.$emit("citypid", res.data)
+                    // Bus.$emit("city", this.city);
+                    // Bus.$emit('lat', this.lat);
+                    // Bus.$emit('lng', this.lng);
+                    this.citypid = res.data;
+                    this._GetAreaListTree();
+                    this._GetBarList();
+                })
             },
         }
     }

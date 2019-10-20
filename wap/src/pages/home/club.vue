@@ -143,14 +143,15 @@
         .jnav {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            padding: 0 25px;
+            /*justify-content: space-between;*/
+            padding: 0 20px;
 
             span {
                 font-size: 12px;
                 /*px*/
-                padding: 25px 0;
+                padding: 25px 10px 25px 0;
                 color: #999;
+
             }
 
             .activespan {

@@ -49,7 +49,7 @@
             return {
                 transitionName: 'transitionLeft',
                 title: '',
-                city: '北京市',
+                city: '天津',
                 ind: 0,
                 keyword: '',
                 swiperOption: {
@@ -138,7 +138,7 @@
                     map.addControl(getlocation)
                     getlocation.getCurrentPosition(function (status, res) {
                         if (status == 'complete' && res.status == 1) {
-                            console.log(res)
+                            // console.log(res)
                             _.city = res.addressComponent.province;
                             _.keyword = res.addressComponent.street;
                             _.lat = res.position.lat;
@@ -146,7 +146,7 @@
                             _._GetAreaPidByName()
                         } else {
                             Bus.$emit("citypid", 2)
-                            Bus.$emit("city", '北京市');
+                            Bus.$emit("city", '天津市');
                             Bus.$emit('lat', 0);
                             Bus.$emit('lng', 0);
                         }

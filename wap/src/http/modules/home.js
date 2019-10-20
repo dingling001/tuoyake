@@ -85,7 +85,7 @@ export const ClubIndex = (page = 0, category_id, city, keyword = '') =>
 /**
  * 获取俱乐部列表详情
  */
-export const ClubDetail = (club_id ) =>
+export const ClubDetail = (club_id) =>
     axios(
         "/api/club/detail", {
             club_id,
@@ -120,7 +120,7 @@ export const CollegeIndex = (page = 0, category_id, city, keyword = '') =>
 /**
  * 获取俱乐部列表详情
  */
-export const CollegeDetail = (college_id ) =>
+export const CollegeDetail = (college_id) =>
     axios(
         "/api/college/detail", {
             college_id,
@@ -131,7 +131,7 @@ export const CollegeDetail = (college_id ) =>
 /**
  * 获取俱乐部列表详情
  */
-export const GetBarInfo = (id ) =>
+export const GetBarInfo = (id) =>
     axios(
         "/api/index/getBarInfo", {
             id,
@@ -142,14 +142,25 @@ export const GetBarInfo = (id ) =>
 /**
  * 获取俱乐部列表详情
  */
-export const SetCollection = (type=1,object_id ) =>
+export const SetCollection = (type = 1, object_id) =>
     axios(
         "/api/collection/setCollection", {
-            token:localStorage.user_twap,
+            token: localStorage.user_twap,
             type,
             object_id,
         },
         "POST",
         true
     );
-
+/**
+ * 获取俱乐部列表详情
+ */
+export const GetGoodsInfo = (goods_id) =>
+    axios(
+        "/api/index/getGoodsInfo", {
+            token: localStorage.user_twap,
+            goods_id,
+        },
+        "POST",
+        true
+    );

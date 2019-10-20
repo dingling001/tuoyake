@@ -57,7 +57,7 @@
                     <div class="spanbox"><span class="span">惠</span> <span>套餐</span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.goods" :key="item.id"
-                     @click="godetail(item.id)">
+                     @click="gotaocandetail(item.id)">
                     <div class="jimg"><img :src="item.image" alt=""></div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -110,7 +110,8 @@
                     info: {
                         album_images: [],
                         star: 0
-                    }
+                    },
+                    match: []
                 },
                 swiperOption: {
                     pagination: '.swiper-pagination',
@@ -147,8 +148,8 @@
                 })
             },
             // 去套餐详情
-            godetail() {
-
+            gotaocandetail(id) {
+                this.$router.push({path: '/taocan', query: {goods_id: id,cid:this.id}})
             },
             // 回到列表
             backlist() {
@@ -164,10 +165,10 @@
                     if (res.code == 1) {
                         if (res.data.is_collection == 1) {
                             this.$com.showtoast('收藏成功')
-                            this.comdata.info.is_collection=1;
+                            this.comdata.info.is_collection = 1;
                         } else {
                             this.$com.showtoast('取消收藏')
-                            this.comdata.info.is_collection=0;
+                            this.comdata.info.is_collection = 0;
                         }
                     }
                     // this._GetBarInfo()
