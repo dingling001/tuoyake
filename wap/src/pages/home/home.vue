@@ -320,7 +320,7 @@
         .router-view {
             margin-top: -60px;
             position: relative;
-            z-index: 2;
+            /*z-index: 2;*/
             background-color: #fff;
             border-radius: 10px 10px 0 0;
             padding: 60px 0 0 0;

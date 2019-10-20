@@ -20,7 +20,6 @@
         </div>
         <div class="comitem">
             <div class="comnanme">{{goodinfo.name}}</div>
-
             <div class="comaddress">
                 <div class="adressitem">
                     <div class="address">{{goodinfo.bar_name}}</div>
@@ -34,7 +33,28 @@
                 <!--class="iconfont iconphone-fill"></span></a>-->
             </div>
             <div class="hr"></div>
+            <div class="taocaninfo">
+                <div class="tancantitle">套餐内容</div>
+                <div class="taocannum">
+                    <div class="taocandes">{{goodinfo.content}}</div>
+                    <div class="numbox">
+                        <span :class="['iconfont iconminus-circle' ,num<=0? 'disicon':'']" @click="nminus"></span>
+                        <input type="number" v-model="num">
+                        <span class="iconfont iconplus-circle" @click="plus"></span>
+                    </div>
+                </div>
+                <div class="price"><span>单价</span>{{goodinfo.price}}元</div>
+            </div>
             <div class="hr"></div>
+            <div class="taocaninfo" v-if="goodinfo.rules.length">
+                <div class="tancantitle">使用规则</div>
+                <ul class="rules">
+                    <li v-for="(item,index) in goodinfo.rules" :key="index">
+                        <span class="ruletitle">{{item.name}}</span><span>{{item.value}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="taocan_btn" @click="goapp">￥{{goodinfo.price*num}} 立即抢购</div>
         </div>
     </div>
 </template>
@@ -45,17 +65,24 @@
         data() {
             return {
                 goodinfo: {
-                    star: 0
+                    star: 0,
+                    rules: []
                 },
                 cid: '',
-                goods_id: ''
+                goods_id: '',
+                num: 0,
+                is_share: 0
             }
         },
         created() {
-            this.cid = this.$route.query.cid;
-
-            this.goods_id = this.$route.query.goods_id;
-            this._GetGoodsInfo()
+            if (this.$route.query.goods_id) {
+                this.cid = this.$route.query.cid;
+                this.goods_id = this.$route.query.goods_id;
+                this._GetGoodsInfo()
+            } else {
+                this.$router.replace('/')
+            }
+            this.is_share = this.$route.query.is_share;
         },
         methods: {
             // 获取套餐详情
@@ -68,7 +95,11 @@
             },
             // 返回列表
             backlist() {
-                this.$router.push({path: '/competitiondetail', query: {id: this.cid}})
+                if (this.is_share == 1) {
+                    this.$router.push({path: '/competitiondetail', query: {id: this.cid}})
+                } else {
+                    this.$router.go(-1);
+                }
             },
             // 收藏
             clllection() {
@@ -85,6 +116,19 @@
                     // this._GetBarInfo()
                 })
 
+            },
+            // 加法
+            plus() {
+                this.num += 1;
+            },
+            // 减法
+            nminus() {
+                if (this.num > 0) {
+                    this.num -= 1;
+                }
+            },
+            goapp() {
+                this.$router.push('/download')
             }
         }
     }
@@ -96,8 +140,13 @@
     .tcbox {
         .swiperbox {
             height: 282px;
-            border-radius: 16px;
+            /*border-radius: 16px;*/
             position: relative;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
 
             .navbox {
                 position: absolute;
@@ -114,12 +163,14 @@
                     font-size: 18px;
                     /*px*/
                     position: absolute;
-                    width: 100%;
+                    width: 50%;
                     text-align: center;
                     left: 0;
+                    right: 0;
+                    margin: 0 auto;
                     top: 0;
-                    height: 100%;
-                    padding: 15px 10px;
+                    line-height: 58px;
+                    /*padding: 15px 10px;*/
                     display: none;
                 }
 
@@ -153,31 +204,6 @@
                 }
 
 
-            }
-
-            .album {
-                position: absolute;
-                width: 58px;
-                height: 24px;
-                background: rgba(0, 0, 0, .3);
-                border-radius: 12px;
-                right: 30px;
-                bottom: 40px;
-                z-index: 1;
-                color: #fff;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-                /*px*/
-                .iconfont {
-                    font-size: 20px;
-                    margin-right: 5px;
-                }
-            }
-
-            img {
-                width: 100%;
             }
 
             /deep/ .van-sticky--fixed {
@@ -245,7 +271,7 @@
         }
 
         .comitem {
-            margin: -30px 0 0 0;
+            margin: -40px 0 0 0;
             position: relative;
             z-index: 1;
             background-color: #fff;
@@ -277,10 +303,9 @@
 
                     .address {
                         line-height: 20px;
-
-                        .juli {
-                            font-size: 12px;
-                        }
+                        font-size: 13px;
+                        /*px*/
+                        color: #666666;
                     }
 
                     .starbox {
@@ -300,9 +325,101 @@
                 }
             }
 
+            .taocaninfo {
+                padding: 18px;
+
+                .tancantitle {
+                    font-size: 13px;
+                    /*px*/
+                    color: #999999;
+                }
+
+                .taocannum {
+                    display: flex;
+                    /*align-items: center;*/
+                    align-items: baseline;
+                    justify-content: space-between;
+
+                    .taocandes {
+                        padding: 10px 0;
+                        line-height: 20px;
+                        color: #333333;
+                        font-size: 13px;
+                        /*px*/
+                    }
+
+                    .numbox {
+                        display: flex;
+                        align-items: center;
+                        margin-left: 20px;
+
+                        .iconfont {
+                            font-size: 18px;
+                            /*px*/
+                            color: #666666;
+
+                            &.disicon {
+                                color: #CCCCCC;
+                            }
+                        }
+
+                        input {
+                            width: 30px;
+                            text-align: center;
+                            font-size: 14px;
+                            outline: none;
+                            border: none;
+                        }
+                    }
+                }
+
+                .price {
+                    font-size: 13px;
+                    /*px*/
+                    color: $baseRed;
+
+                    span {
+                        color: #666666;
+                        margin-right: 10px;
+                    }
+                }
+
+                ul.rules {
+                    padding: 10px 0;
+
+                    li {
+                        color: #333;
+                        line-height: 20px;
+                        font-size: 13px;
+                        /*px*/
+                        .ruletitle {
+                            min-width: 50px;
+                            max-width: 100px;
+                            /*width: 50px;*/
+                            text-align: justify;
+                            margin-right: 25px;
+                            font-weight: bold;
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+
             .hr {
                 height: 10px;
                 background-color: #F8F8F8;
+            }
+
+            .taocan_btn {
+                width: 334px;
+                text-align: center;
+                line-height: 44px;
+                color: #fff;
+                background-color: $baseRed;
+                border-radius: 22px;
+                margin: 50px auto;
+                font-size: 17px;
+                /*px*/
             }
         }
     }

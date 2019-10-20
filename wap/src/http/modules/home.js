@@ -164,3 +164,40 @@ export const GetGoodsInfo = (goods_id) =>
         "POST",
         true
     );
+/**
+ * 获取赛事详情
+ */
+export const GetMatchInfo = (match_id) =>
+    axios(
+        "/api/index/getMatchInfo", {
+            token: localStorage.user_twap,
+            match_id,
+        },
+        "POST",
+        true
+    );
+
+/**
+ * 获取视频列表
+ */
+export const GetVideoList = (match_id) =>
+    axios(
+        "/api/index/getVideoList", {
+            token: localStorage.user_twap,
+            match_id,
+        },
+        "POST",
+        true
+    );
+/**
+ * 获取视频详情
+ */
+export const GetVideoInfo = (video_id) =>
+    axios(
+        "/api/index/getVideoInfo", {
+            token: localStorage.user_twap,
+            video_id,
+        },
+        "POST",
+        true
+    );

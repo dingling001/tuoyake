@@ -1,16 +1,17 @@
 <template>
     <div class="cbox">
         <div id="map"></div>
-        <van-sticky :offset-top="offsettop">
+        <van-sticky :offset-top="offsettop" class="sticky ">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
                     <span>推荐电竞馆</span>
                 </div>
                 <van-dropdown-menu active-color="#f2313b">
-                    <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
+                    <van-dropdown-item v-model="label" :options="labellist" @open="showoverlay=true"
+                                       @close="showoverlay=false" @change="changelabel">
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="district" ref="item" @open="opendistrict">
+                    <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false">
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
@@ -63,6 +64,8 @@
             </van-list>
         </van-pull-refresh>
         <div class="nodata" v-else> 暂无数据</div>
+
+        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
 
@@ -103,7 +106,8 @@
                 citypid: '',
                 lindex: 0,
                 rindex: 0,
-                totop: false
+                totop: false,
+                showoverlay: false
             }
         },
         inject: ['app'],
@@ -283,8 +287,9 @@
             openlabel() {
                 // console.log(this.offsettop);
                 // window.scrollTo = 100
-                window.scrollTo(0, 0)
+                // window.scrollTo(0, 0)
                 // this.gotop()
+                this.showoverlay = true;
             },
             // 切换服务标签
             changelabel() {
@@ -389,6 +394,11 @@
     @import "../../style/reset";
 
     .cbox {
+        .sticky {
+            position: relative;
+            z-index: 10;
+        }
+
         .cselect {
             padding: 0 39px;
             display: flex;

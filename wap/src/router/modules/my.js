@@ -72,7 +72,8 @@ export default [
             title: "我的收藏",
             showF: false,
             showH: true,
-            needLogin: true
+            needLogin: true,
+            keepAlive:true
         },
     },
     {

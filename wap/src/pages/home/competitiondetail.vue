@@ -63,7 +63,7 @@
                         <div class="jname van-ellipsis">{{item.name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis">{{comdata.info.address}}</div>
+                        <div class="jaddress van-ellipsis">{{item.content}}</div>
                         <div class="price">￥{{item.price}}</div>
                     </div>
                     <div class="jbtn">抢购</div>
@@ -76,7 +76,7 @@
                     <div class="all" v-if="comdata.match.length>1">全部 <span class="iconfont iconjiantou"></span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
-                     @click="godetail(item.id)">
+                     @click="gossdetail(item.id)">
                     <div class="jimg"><img :src="item.image" alt="">
                         <span v-if="item.recommend==1">精选</span>
                     </div>
@@ -85,7 +85,7 @@
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
                         <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>
-                            {{item.start_time}}
+                            {{item.start_time}} ~ {{item.end_time}}
                         </div>
                         <div class="synopsis van-ellipsis">{{item.synopsis}}</div>
                     </div>
@@ -122,7 +122,8 @@
                     autoplay: 3000,
                 },
                 show: false,
-                index: 0
+                index: 0,
+                is_share: 0
             }
         },
         components: {
@@ -136,6 +137,7 @@
             } else {
                 this.$router.replace('/')
             }
+            this.is_share = this.$route.query.is_share;
         },
         methods: {
             // 获取详情
@@ -149,11 +151,18 @@
             },
             // 去套餐详情
             gotaocandetail(id) {
-                this.$router.push({path: '/taocan', query: {goods_id: id,cid:this.id}})
+                this.$router.push({path: '/taocan', query: {goods_id: id, cid: this.id}})
+            },
+            gossdetail(id){
+                this.$router.push({path: '/gamedetail', query: {match_id: id, cid: this.id}})
             },
             // 回到列表
             backlist() {
-                this.$router.push('/competition')
+                if (this.is_share == 1) {
+                    this.$router.push('/competition')
+                } else {
+                    this.$router.go(-1)
+                }
             },
             // 改变预览下标
             onChange(index) {
@@ -203,12 +212,14 @@
                     font-size: 18px;
                     /*px*/
                     position: absolute;
-                    width: 100%;
+                    width: 50%;
                     text-align: center;
                     left: 0;
+                    right: 0;
+                    margin: 0 auto;
                     top: 0;
-                    height: 100%;
-                    padding: 15px 10px;
+                    line-height: 58px;
+                    /*padding: 15px 10px;*/
                     display: none;
                 }
 

@@ -48,7 +48,7 @@ export const SetFeedback = (content, images) =>
 /**
  * 获取我的优惠券
  */
-export const GetCouponList = (type=1,page=0) =>
+export const GetCouponList = (type = 1, page = 0) =>
     axios(
         "/api/coupon/getCouponList", {
             type,
@@ -70,3 +70,33 @@ export const GetCouponInfo = (id) =>
         "POST",
         true
     );
+/**
+ * 修改个人信息
+ */
+export const Profile = (avatar, nickname) =>
+    axios(
+        "/api/user/profile", {
+            token: localStorage.user_twap,
+            avatar,
+            nickname
+        },
+        "POST",
+        true
+    )
+/**
+ * 收藏列表
+ */
+export const CollectionIndex = (type, page,lat=0,lng=0) =>
+    axios(
+        "/api/collection/index", {
+            token: localStorage.user_twap,
+            type,
+            page,
+            lat,
+            lng
+        },
+        "POST",
+        true
+    );
+
+

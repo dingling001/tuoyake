@@ -13,12 +13,22 @@
                 <img :src="user_info.avatar" alt="">
             </div>
         </van-cell>
-        <van-cell title="昵称" :value="user_info.nickname" is-link/>
+        <van-cell title="昵称" :value="user_info.nickname" @click="showname=true"/>
         <van-cell title="手机号" :value="user_info.mobile" to="changephone" is-link/>
         <van-cell title="登录密码" is-link to="changepass"/>
         <van-cell title="社交账号" is-link to="mySocial"/>
+        <van-dialog
+                v-model="showname"
+                title="修改昵称"
+                show-cancel-button
+                className="nickname"
+                @confirm="changename"
+        >
+            <input type="text" v-model="user_info.nickname">
+        </van-dialog>
     </van-cell-group>
     <!--</div>-->
+
 </template>
 
 <script>
@@ -26,7 +36,9 @@
         name: "myset",
         data() {
             return {
-                user_info: {}
+                user_info: {},
+                showname: false,
+                avatar: ''
             }
         },
         mounted() {
@@ -42,6 +54,24 @@
                     }
                 })
             },
+            // 修改个人信息
+            _Profile() {
+                this.$api.Profile(this.avatar, this.user_info.nickname).then(res => {
+                    if (res.code == 1) {
+                        this.$com.showtoast('修改成功')
+                    } else {
+                        this.$com.showtoast(res.msg || '稍后在试')
+                    }
+                    this._GetUserInfo()
+                })
+            },
+            changename() {
+                if (this.user_info.nickname == '') {
+                    this.$com.showtoast('昵称不能为空')
+                } else {
+                    this._Profile()
+                }
+            }
         }
     }
 </script>
@@ -87,15 +117,27 @@
                     width: 100%;
                 }
             }
-            .van-cell__title{
+
+            .van-cell__title {
                 color: #333;
                 font-size: 16px;
                 /*px*/
             }
-          &:not(:last-child):after{
-              left: 20px;
-          }
 
+            &:not(:last-child):after {
+                left: 20px;
+            }
+
+
+        }
+
+        /deep/ .nickname {
+            input {
+                padding: 10px;
+            }
+        }
+        &:after{
+            border: 0;
         }
     }
 

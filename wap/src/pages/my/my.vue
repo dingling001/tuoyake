@@ -1,7 +1,7 @@
 <template>
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
-            <div class="mimg" ><van-image  :src="user_info.avatar" alt="" v-if="user_info.avatar" /></div>
+            <div class="mimg" @click="goset"><van-image  :src="user_info.avatar" alt="" v-if="user_info.avatar" /></div>
             <div class="namebox">
                 <van-sticky>
                     <div class="nickname">
@@ -80,7 +80,8 @@
                 </van-cell>
             </div>
         </div>
-        <div class="mbnt">退出登录</div>
+
+        <div class="mbnt" v-if="user_twap">退出登录</div>
     </div>
 </template>
 
@@ -91,7 +92,7 @@
             return {
                 adinfo: {},
                 user_twap: '',
-                user_info:{}
+                user_info:{},
             }
         },
         created() {

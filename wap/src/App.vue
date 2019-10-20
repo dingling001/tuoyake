@@ -2,7 +2,9 @@
     <div class="app" v-cloak>
         <top v-if="showH" :title="headtext" :iconfont="iconfont"></top>
         <keep-alive>
-            <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"></router-view>
+            <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"
+                         :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']"
+            ></router-view>
         </keep-alive>
         <router-view v-wechat-title="title" v-if="!$route.meta.keepAlive"
                      :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']">
@@ -23,7 +25,7 @@
                 plat: "",
                 title: '跳转中…',
                 f_index: 0,
-                iconfont:'iconfanhui'
+                iconfont: 'iconfanhui'
             };
         },
         created() {
@@ -39,7 +41,7 @@
                     this.showF = val.meta.showF;
                     this.showH = val.meta.showH;
                     this.headtext = val.meta.title;
-                    this.iconfont=val.meta.iconfont||'iconfanhui';
+                    this.iconfont = val.meta.iconfont || 'iconfanhui';
                     if (val.fullPath.indexOf('/gindex') !== -1) {
                         this.f_index = 1
                     } else if (val.fullPath.indexOf('/my') !== -1) {
@@ -66,6 +68,7 @@
             /*min-height: calc(100vh - 61px);*/
             /*overflow-y: scroll;*/
             padding-bottom: 61px;
+            min-height: 100vh;
 
             &.nonav {
                 /*min-height: 100vh;*/

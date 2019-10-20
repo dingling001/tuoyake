@@ -16,9 +16,9 @@ import api from "./http";
 
 import 'nprogress/nprogress.css' //这个样式必须引入
 // import "./theme.js";
-// import 'video.js/dist/video-js.css'
-// import 'vue-video-player/src/custom-theme.css'
-// import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+import 'vue-video-player/src/custom-theme.css'
+import VideoPlayer from 'vue-video-player'
 /*引入移动端手势库*/
 import directives from './directives/touch'
 import Com from "./bin/common";
@@ -41,7 +41,8 @@ Vue.prototype.$moment = moment;
 Vue.prototype.$com = Com;
 Vue.use(api);
 Vue.use(VueWechatTitle);
-Vue.use(Vant)
+Vue.use(Vant);
+Vue.use(VideoPlayer)
 Vue.config.productionTip = false;
 // 简单配置
 
