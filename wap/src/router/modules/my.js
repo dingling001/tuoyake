@@ -143,4 +143,63 @@ export default [
             iconfont:'iconguanbi-copy'
         },
     },
+    {
+        path: '/myRules',
+        name: 'myRules',
+        component: resolve => require(["../../pages/my/myRules"], resolve),
+        meta: {
+            title: "规则说明",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/myReward',
+        name: 'myReward',
+        component: resolve => require(["../../pages/my/myReward"], resolve),
+        meta: {
+            title: "奖励领取",
+            showF: false,
+            showH: true,
+            needLogin: true,
+            showright:true,
+            rlink:'/myGift',
+            right_text:'我的领取'
+        }
+    },
+    {
+        path: '/myGift',
+        name: 'myGift',
+        component: resolve => require(["../../pages/my/myGift"], resolve),
+        meta: {
+            title: "我的领取",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/myAddress',
+        name: 'myAddress',
+        component: resolve => require(["../../pages/my/myAddress"], resolve),
+        meta: {
+            title: "地址管理",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/editAddress',
+        name: 'editAddress',
+        component: resolve => require(["../../pages/my/editAddress"], resolve),
+        meta: {
+            title: "添加地址",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+
 ]

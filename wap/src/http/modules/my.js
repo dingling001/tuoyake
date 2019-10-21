@@ -98,5 +98,61 @@ export const CollectionIndex = (type, page,lat=0,lng=0) =>
         "POST",
         true
     );
+/**
+ * 我的积分
+ */
+export const ScoreIndex = () =>
+    axios(
+        "/api/score/index", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+/**
+ * 我的积分
+ */
+export const ScoreRule = () =>
+    axios(
+        "/api/score/rule", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+/**
+ * 奖品列表
+ */
+export const ScoreGoods = () =>
+    axios(
+        "/api/score/goods", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+
+/**
+ * 我的领取
+ */
+export const ScoreMyReceived = () =>
+    axios(
+        "/api/score/myReceived", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+/**
+ * 地址列表
+ */
+export const AddressIndex = () =>
+    axios(
+        "/api/address/index", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
 
 

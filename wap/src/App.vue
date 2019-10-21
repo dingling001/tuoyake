@@ -1,6 +1,7 @@
 <template>
     <div class="app" v-cloak>
-        <top v-if="showH" :title="headtext" :iconfont="iconfont"></top>
+        <top v-if="showH" :title="headtext" :iconfont="iconfont" :rlink="rlink" :showright="showright"
+             :right_text="right_text"></top>
         <keep-alive>
             <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"
                          :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']"
@@ -25,7 +26,10 @@
                 plat: "",
                 title: '跳转中…',
                 f_index: 0,
-                iconfont: 'iconfanhui'
+                iconfont: 'iconfanhui',
+                rlink: '',
+                showright: false,
+                right_text: ''
             };
         },
         created() {
@@ -42,6 +46,10 @@
                     this.showH = val.meta.showH;
                     this.headtext = val.meta.title;
                     this.iconfont = val.meta.iconfont || 'iconfanhui';
+
+                    this.showright = val.meta.showright || false;
+                    this.right_text = val.meta.right_text;
+                    this.rlink = val.meta.rlink;
                     if (val.fullPath.indexOf('/gindex') !== -1) {
                         this.f_index = 1
                     } else if (val.fullPath.indexOf('/my') !== -1) {

@@ -1,6 +1,6 @@
 <template>
     <div class="colbox">
-        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky color="#333"
+        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky  :offset-top="55" color="#333"
                   line-width="27px" @click="changetype">
             <van-tab title="网吧"></van-tab>
             <van-tab title="赛事"></van-tab>
@@ -67,7 +67,7 @@
                     <div class="videoitem" v-for="(item,index) in list" :key="item.id"
                          @click="govdetail(item.id)">
                         <div class="vimg">
-                            <img src="" alt="">
+                            <img :src="item.poster" alt="">
                         </div>
                         <div class="vname van-ellipsis">{{item.name}}</div>
                         <div class="vtime"><span class="iconfont icontime-circle"></span><span>{{item.create_time}}</span></div>

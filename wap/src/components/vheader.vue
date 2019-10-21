@@ -2,7 +2,7 @@
     <div class="nav">
         <span :class="'iconfont '+iconfont" @click="goback"></span>
         <span>{{title}}</span>
-        <span v-if="showright" class="navright"></span>
+        <router-link v-if="showright" class="navright" tag="span" :to="rlink">{{right_text}}</router-link>
     </div>
 </template>
 
@@ -25,6 +25,14 @@
             'iconfont': {
                 type: String,
                 default: 'iconfanhui'
+            },
+            'right_text': {
+                type: String,
+                default: ''
+            },
+            'rlink':{
+                type: String,
+                default: '/'
             }
         },
         methods: {
@@ -68,6 +76,9 @@
             right: 15px;
             top: 0;
             z-index: 1;
+            font-size: 13px;
+            /*px*/
+            color: #333333;
         }
     }
 </style>
