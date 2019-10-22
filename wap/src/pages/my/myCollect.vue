@@ -43,7 +43,7 @@
                     <div class="jitem van-row--flex" v-for="(item,index) in list" :key="item.id"
                          @click="gossdetail(item.id)">
                         <div class="jimg">
-                            <img :src="item.poster" alt="">
+                            <img :src="item.image" alt="">
                             <!--<video :src="item.file" preload="auto" controls></video>-->
                             <span>12:30</span>
                         </div>

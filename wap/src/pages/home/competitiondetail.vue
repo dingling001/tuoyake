@@ -109,7 +109,8 @@
                     goods: [],
                     info: {
                         album_images: [],
-                        star: 0
+                        star: 0,
+                        is_collection:0
                     },
                     match: []
                 },
@@ -143,7 +144,6 @@
             // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {
-                    console.log(res)
                     if (res.code == 1) {
                         this.comdata = res.data;
                     }

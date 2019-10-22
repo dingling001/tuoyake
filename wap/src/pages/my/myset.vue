@@ -26,6 +26,8 @@
         >
             <input type="text" v-model="user_info.nickname">
         </van-dialog>
+        <div class="mbnt" v-if="user_twap" @click="loginout">退出登录</div>
+
     </van-cell-group>
     <!--</div>-->
 
@@ -38,10 +40,12 @@
             return {
                 user_info: {},
                 showname: false,
-                avatar: ''
+                avatar: '',
+                user_twap: ''
             }
         },
         mounted() {
+            this.user_twap = localStorage.user_twap;
             this._GetUserInfo();
         },
         methods: {
@@ -65,12 +69,18 @@
                     this._GetUserInfo()
                 })
             },
+            // 修改昵称
             changename() {
                 if (this.user_info.nickname == '') {
                     this.$com.showtoast('昵称不能为空')
                 } else {
                     this._Profile()
                 }
+            },
+            // 退出登录
+            loginout() {
+                localStorage.removeItem('user_twap')
+                this.$router.replace('/')
             }
         }
     }
@@ -134,10 +144,24 @@
         /deep/ .nickname {
             input {
                 padding: 10px;
+                outline: none;
+                border: none;
+                width: 100%;
             }
         }
-        &:after{
+
+        &:after {
             border: 0;
+        }
+
+        .mbnt {
+            margin: 30px 14px;
+            border: 1px solid #E4E4E4;
+            line-height: 44px;
+            text-align: center;
+            font-size: 15px;
+            /*px*/
+            color: #999999;
         }
     }
 

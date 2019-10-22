@@ -10,8 +10,8 @@
                 <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
                 </van-button>
-                <!--<van-count-down :time="time" v-else />-->
-                <van-count-down :time="time" format="ss" ref="countDown" auto-start="fasle" @finish="endtime"/>
+                <!--                <van-count-down :time="time" v-else />-->
+                <van-count-down :time="time" format="ss" ref="countDown" auto-start="fasle" @finish="endtime" v-else/>
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
             <router-link to="/login" tag="div" class="login_pass">密码登录</router-link>
@@ -28,10 +28,15 @@
                 captcha: '',
                 show: false,
                 time: 60000,
-                showbtn: true
+                showbtn: true,
+                redirect: ''
             }
         },
         created() {
+            if (localStorage.user_twap) {
+                this.$router.replace('/')
+            }
+            this.redirect = this.$router.query.redirect
         },
         methods: {
             endtime() {
@@ -60,11 +65,18 @@
 
                 } else {
                     this.$api.MobileLogin(this.mobile, this.captcha).then((res) => {
-                        console.log(res)
+                        // console.log(res)
                         if (res.code == 1) {
                             localStorage.user_twap = res.data.userinfo.token
-                            this.$com.showtoast(res.msg)
-
+                            this.$com.showtoast('登录成功');
+                            let redirect = decodeURIComponent(this.$route.query.redirect || "/");
+                            if (this.redirect) {
+                                this.$router.push(redirect);
+                            } else {
+                                this.$router.replace('/');
+                            }
+                        } else {
+                            this.$com.showtoast(res.msg || '稍后再试')
                         }
                     })
                 }

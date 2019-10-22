@@ -66,7 +66,8 @@
             return {
                 goodinfo: {
                     star: 0,
-                    rules: []
+                    rules: [],
+                    is_collection:0
                 },
                 cid: '',
                 goods_id: '',

@@ -8,7 +8,7 @@
             <van-field v-model="account" placeholder="请输入您的账号" clearable/>
             <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable/>
             <div class="btns van-row--flex van-row--justify-space-between">
-                <router-link tag="span" to="/logincode">验证码登录</router-link>
+                <router-link tag="span" :to="'/logincode?redirect='+$route.query.redirect||'/my'">验证码登录</router-link>
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
             </div>
             <div class="login_btn" @click="loginpass">登录</div>
@@ -31,7 +31,9 @@
             }
         },
         created() {
-
+            if (localStorage.user_twap) {
+                this.$router.replace('/')
+            }
         },
         methods: {
             // 登录
@@ -40,21 +42,19 @@
                 if (!this.$com.checkPhone(this.account)) {
                     this.$com.showtoast('请输入正确的手机号')
                 } else if (this.password == '') {
-                    this.$com.showtoast('请输入密码', 'fail')
+                    this.$com.showtoast('请输入密码')
                 } else {
                     this.$api.Login(this.account, this.password).then((res) => {
                         console.log(res)
                         if (res.code == 1) {
-                            this.$com.showtoast('登录成功', 'fail')
-                            setTimeout(()=>{
+                            this.$com.showtoast('登录成功');
+                            setTimeout(() => {
                                 // this.$router.go(-1)
-                                let redirect = decodeURIComponent(
-                                    this.$route.query.redirect || "/"
-                                );
-                                this.$router.replace(redirect);
-                            },2000)
+                                let redirect = decodeURIComponent(this.$route.query.redirect);
+                                this.$router.push(redirect);
+                            }, 2000)
                         } else {
-                            this.$com.showtoast(res.msg, 'fail')
+                            this.$com.showtoast(res.msg)
 
                         }
                     })

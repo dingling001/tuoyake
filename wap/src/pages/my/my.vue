@@ -81,7 +81,6 @@
             </div>
         </div>
 
-        <div class="mbnt" v-if="user_twap">退出登录</div>
     </div>
 </template>
 
@@ -304,15 +303,6 @@
 
 
             }
-        }
-        .mbnt{
-            margin:0  14px 30px 14px;
-            border: 1px solid #E4E4E4;
-            line-height: 44px;
-            text-align: center;
-            font-size: 15px;
-            /*px*/
-            color: #999999;
         }
     }
 
