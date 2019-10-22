@@ -45,7 +45,7 @@
                 })
             },
             onAdd() {
-
+                this.$router.push({path: '/editAddress', query: {add: 0}})
             },
             onEdit() {
 
