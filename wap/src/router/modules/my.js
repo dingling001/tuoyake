@@ -49,7 +49,7 @@ export default [
         meta: {
             title: "我的报名",
             showF: false,
-            showH: true,
+            showH: false,
             needLogin: true
         },
     },
@@ -198,6 +198,17 @@ export default [
             title: "添加地址",
             showF: false,
             showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/myAchieve',
+        name: 'myAchieve',
+        component: resolve => require(["../../pages/my/myAchieve"], resolve),
+        meta: {
+            title: "获奖成就",
+            showF: false,
+            showH: false,
             needLogin: true,
         },
     },

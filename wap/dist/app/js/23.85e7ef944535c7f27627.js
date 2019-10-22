@@ -1,1 +1,0 @@
-webpackJsonp([23],{"+Z/z":function(e,n){},HxBs:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement;return(this._self._c||e)("div")},staticRenderFns:[]};var a=t("VU/8")({name:"myVersion"},r,!1,function(e){t("+Z/z")},"data-v-0c5444a0",null);n.default=a.exports}});

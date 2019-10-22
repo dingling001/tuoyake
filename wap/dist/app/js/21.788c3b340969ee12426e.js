@@ -1,1 +1,0 @@
-webpackJsonp([21],{"/Wqo":function(e,t){},"tU/f":function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement;return(this._self._c||e)("div")},staticRenderFns:[]};var a=n("VU/8")({name:"myPlatform"},r,!1,function(e){n("/Wqo")},"data-v-2304be92",null);t.default=a.exports}});

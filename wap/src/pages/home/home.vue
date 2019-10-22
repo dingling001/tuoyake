@@ -176,7 +176,11 @@
             /*padding: 22px 15px;*/
             /*height: 230px;*/
             background-attachment: fixed;
-            background: linear-gradient(90deg, #441219, #29182E);
+            /*background: linear-gradient(90deg, #441219, #29182E);*/
+            background-image: url("../../assets/img/index_bg.png");
+            background-size: 100% auto;
+            background-position: top center;
+            background-repeat: no-repeat;
 
             .htop {
                 display: flex;

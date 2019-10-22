@@ -82,6 +82,11 @@
                 this.$api.GetMatchInfo(this.match_id).then(res => {
                     if (res.code == 1) {
                         this.matchinfo = res.data
+                    }else{
+                        this.$com.showtoast(res.msg)
+                        setTimeout(()=>{
+                            this.$router.go(-1)
+                        },1000)
                     }
                 })
             },

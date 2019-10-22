@@ -3,6 +3,12 @@ import qs from "qs"; // 序列化请求数据，视服务端的要求
 import config from "./config.js"; // 导入入默认配置
 import {Toast} from "vant";
 
+if(process.env.NODE_ENV === 'development') {
+    // 开发环境
+} else if(process.env.NODE_ENV === 'production') {
+    // 生产环境
+    config.baseURL = "http://admin.tuoyake.com";   //这里是线上api请求地址
+}
 let cancel,
     promiseArr = {};
 const CancelToken = axios.CancelToken;

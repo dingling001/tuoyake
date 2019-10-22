@@ -86,7 +86,7 @@ export const Profile = (avatar, nickname) =>
 /**
  * 收藏列表
  */
-export const CollectionIndex = (type, page,lat=0,lng=0) =>
+export const CollectionIndex = (type, page, lat = 0, lng = 0) =>
     axios(
         "/api/collection/index", {
             token: localStorage.user_twap,
@@ -110,7 +110,7 @@ export const ScoreIndex = () =>
         true
     );
 /**
- * 我的积分
+ * 积分规则说明
  */
 export const ScoreRule = () =>
     axios(
@@ -120,6 +120,18 @@ export const ScoreRule = () =>
         "POST",
         true
     );
+/**
+ * 报名规则说明
+ */
+export const SignRule = () =>
+    axios(
+        "/api/sign/rule", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+
 /**
  * 奖品列表
  */
@@ -154,5 +166,29 @@ export const AddressIndex = () =>
         "POST",
         true
     );
+/**
+ * 地址列表
+ */
+export const SignIndex = () =>
+    axios(
+        "/api/sign/index", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
 
-
+/**
+ * 我的报名
+ */
+// :1=进行中,2=获奖,3=未获奖"
+export const GetSignList = (page = 0, status = 1) =>
+    axios(
+        "/api/sign/getSignList", {
+            token: localStorage.user_twap,
+            page,
+            status
+        },
+        "POST",
+        true
+    );

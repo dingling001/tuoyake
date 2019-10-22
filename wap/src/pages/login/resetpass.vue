@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">重置密码</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="新密码（6~12位）" type="password" clearable/>
-            <van-field v-model="password" placeholder="请再次输入新密码" type="password" clearable/>
+            <van-field v-model="account" placeholder="新密码（6~12位）" type="password" clearable autocomplete/>
+            <van-field v-model="password" placeholder="请再次输入新密码" type="password" clearable autocomplete/>
             <div class="login_btn" @click="gologin">前往登录</div>
         </form>
     </div>

@@ -6,9 +6,9 @@
         <div class="login_title">登录托亚克</div>
         <form class="loginform">
             <van-field v-model="account" placeholder="请输入您的账号" clearable/>
-            <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable/>
+            <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable autocomplete/>
             <div class="btns van-row--flex van-row--justify-space-between">
-                <router-link tag="span" :to="'/logincode?redirect='+$route.query.redirect||'/my'">验证码登录</router-link>
+                <span @click="gocode">验证码登录</span>
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
             </div>
             <div class="login_btn" @click="loginpass">登录</div>
@@ -59,6 +59,10 @@
                         }
                     })
                 }
+            },
+            // 验证码登录
+            gocode(){
+                this.$router.push({path:'/logincode',query:{redirect:this.$route.query.redirect||'/my'}})
             }
         }
     }

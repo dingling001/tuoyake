@@ -11,10 +11,15 @@
                     获取验证码
                 </van-button>
                 <!--                <van-count-down :time="time" v-else />-->
-                <van-count-down :time="time" format="ss" ref="countDown" auto-start="fasle" @finish="endtime" v-else/>
+                <span class="" slot="button" v-else>
+                    <span>重新获取</span>
+                <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
+                                @finish="endtime"/>
+                    <span>S</span>
+                </span>
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
-            <router-link to="/login" tag="div" class="login_pass">密码登录</router-link>
+            <div @click="backlogin" class="login_pass">密码登录</div>
         </div>
     </div>
 </template>
@@ -29,14 +34,16 @@
                 show: false,
                 time: 60000,
                 showbtn: true,
-                redirect: ''
+                redirect: '',
+                atuostart: true
             }
         },
         created() {
             if (localStorage.user_twap) {
                 this.$router.replace('/')
             }
-            this.redirect = this.$router.query.redirect
+            this.redirect = this.$route.query.redirect
+
         },
         methods: {
             endtime() {
@@ -56,6 +63,9 @@
                         }
                     })
                 }
+            },
+            backlogin() {
+                this.$router.go(-1)
             },
             gonext() {
                 if (this.mobile == '') {
@@ -148,6 +158,13 @@
 
                     &:before {
                         background: none;
+                    }
+                }
+
+                .van-field__button {
+                    span {
+                        display: flex;
+                        align-items: center;
                     }
                 }
             }

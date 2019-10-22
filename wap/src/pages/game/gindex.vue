@@ -95,7 +95,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: '',
+                city: '天津市',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -139,7 +139,7 @@
         watch: {
             'city': {
                 handler(val) {
-                    var _=this;
+                    var _ = this;
                     _.city = val;
                     _.page = 0;
                     _._GetAreaPidByName()
@@ -377,16 +377,22 @@
             /*align-items: center;*/
             /*justify-content: space-between;*/
             height: 220px;
-            background: linear-gradient(90deg, #441219, #29182E);
+            /*background: linear-gradient(90deg, #441219, #29182E);*/
+            background-image: url("../../assets/img/index_bg.png");
+            background-size: 100% auto;
+            background-position: top center;
+            background-repeat: no-repeat;
 
             .htop {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                background: linear-gradient(90deg, #441219, #29182E);
                 padding: 22px 15px;
                 width: 100%;
-
+                background-image: url("../../assets/img/index_bg.png");
+                background-size: 100% auto;
+                background-position: top center;
+                background-repeat: no-repeat;
                 .index_address {
                     color: #fff;
                     padding: 5px 8px;
@@ -399,23 +405,24 @@
                         margin-right: 2px;
                     }
                 }
-            }
 
-            .searchinput {
-                height: 32px;
-                background: rgba(255, 255, 255, .1);
-                border-radius: 16px;
-                line-height: 32px;
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(255, 255, 255, .3);
-                margin-right: 14px;
-                font-size: 14px;
-                /*px*/
-                .iconfont {
-                    margin-right: 8px;
+                .searchinput {
+                    height: 32px;
+                    background: rgba(255, 255, 255, .1);
+                    border-radius: 16px;
+                    line-height: 32px;
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: rgba(255, 255, 255, .3);
+                    margin-right: 14px;
+                    font-size: 14px;
+                    /*px*/
+                    .iconfont {
+                        margin-right: 8px;
+                    }
+
                 }
             }
 
