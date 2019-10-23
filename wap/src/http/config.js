@@ -10,7 +10,9 @@ export default {
   //
   // },
   headers: {
-    'Content-Type': "application/json;charset=utf-8"
+    'Content-Type': "application/json;charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers":"Origin, X-Requested-With, Content-Type, Accept"
   },
 
   // 设置超时时间
