@@ -87,6 +87,7 @@
         },
         created() {
             this.title = '托亚克 | ' + this.city;
+
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
@@ -118,7 +119,7 @@
             // 根据城市获取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
-                    // console.log(`${JSON.stringify(res)}res`)
+                    // console.log(`${(res)}res`)
                     Bus.$emit("citypid", res.data)
                     Bus.$emit("city", this.city);
                     Bus.$emit('lat', this.lat);
