@@ -175,7 +175,7 @@
             /*align-items: center;*/
             /*justify-content: space-between;*/
             /*padding: 22px 15px;*/
-            /*height: 230px;*/
+            height: 115px;
             background-attachment: fixed;
             /*background: linear-gradient(90deg, #441219, #29182E);*/
             background-image: url("../../assets/img/index_bg.png");
