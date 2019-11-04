@@ -86,7 +86,8 @@
                         this.navlist = res.data;
                     }
                 })
-            }, // 获取学院列表
+            },
+            // 获取学院列表
             _CollegeIndex() {
                 let pageNumber = this.page + 1;
                 this.$com.showtoast('加载中…', '', '', 1000, '', false, true)

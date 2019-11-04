@@ -29,14 +29,15 @@
             <div class="comlist" v-if="matchinfo.video.length">
                 <div class="taocan">
                     <div class="spanbox"><span>赛事视频</span></div>
-                    <div class="all" v-if="matchinfo.video.length>1" @click="allvideo">全部 <span class="iconfont iconjiantou"></span></div>
+                    <div class="all" v-if="matchinfo.video.length>1" @click="allvideo">全部 <span
+                            class="iconfont iconjiantou"></span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in matchinfo.video" :key="item.id"
                      @click="govdetail(item.id)">
                     <div class="jimg">
                         <img :src="item.poster" alt="">
                         <!--<video :src="item.file" preload="auto" controls></video>-->
-                        <span>12:30</span>
+                        <span>{{s_to_hs(item.duration)}}</span>
                     </div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -81,12 +82,12 @@
             _GetMatchInfo() {
                 this.$api.GetMatchInfo(this.match_id).then(res => {
                     if (res.code == 1) {
-                        this.matchinfo = res.data
-                    }else{
+                        this.matchinfo = res.data;
+                    } else {
                         this.$com.showtoast(res.msg)
-                        setTimeout(()=>{
+                        setTimeout(() => {
                             this.$router.go(-1)
-                        },1000)
+                        }, 1000)
                     }
                 })
             },
@@ -118,13 +119,33 @@
                 this.$router.push({path: '/videodetail', query: {video_id: id}})
             },
             // 全部视频
-            allvideo(){
+            allvideo() {
                 this.$router.push({path: '/videolist', query: {match_id: this.match_id}})
             },
             // 下载app
             goapp() {
                 this.$router.push({path: '/download'})
             },
+            /**
+             * 将秒转换为 分:秒
+             * s int 秒数
+             */
+            s_to_hs(s) {
+                //计算分钟
+                //算法：将秒数除以60，然后下舍入，既得到分钟数
+                var h;
+                h = Math.floor(s / 60);
+                //计算秒
+                //算法：取得秒%60的余数，既得到秒数
+                s = s % 60;
+                //将变量转换为字符串
+                h += '';
+                s += '';
+                //如果只有一位数，前面增加一个0
+                h = (h.length == 1) ? '0' + h : h;
+                s = (s.length == 1) ? '0' + s : s;
+                return h + ':' + s;
+            }
         }
     }
 </script>
