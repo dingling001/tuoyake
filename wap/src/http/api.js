@@ -45,7 +45,7 @@ instance.interceptors.response.use(
             localStorage.removeItem("user_twap");
             // 暂时缓存地址，授权成功后回跳这个地址
             localStorage.url = window.location.href;
-            window.location.href = window.location.origin + "/login";
+            window.location.href = window.location.origin + "#/login";
         } else {
             //     console.log(response)
             return response.data;
