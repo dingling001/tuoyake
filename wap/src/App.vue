@@ -46,7 +46,6 @@
                     this.showH = val.meta.showH;
                     this.headtext = val.meta.title;
                     this.iconfont = val.meta.iconfont || 'iconfanhui';
-
                     this.showright = val.meta.showright || false;
                     this.right_text = val.meta.right_text;
                     this.rlink = val.meta.rlink;

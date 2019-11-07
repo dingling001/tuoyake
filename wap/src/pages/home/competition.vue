@@ -64,7 +64,6 @@
             </van-list>
         </van-pull-refresh>
         <div class="nodata" v-else> 暂无数据</div>
-
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
