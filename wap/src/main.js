@@ -25,6 +25,7 @@ import Com from "./bin/common";
 import Vant from 'vant'
 import 'vant/lib/index.css';
 import 'animate.css'
+import NoData from '@/components/NoData'
 // import AMap from 'vue-amap';
 // Vue.use(AMap)
 // AMap.initAMapApiLoader({
@@ -45,7 +46,7 @@ Vue.use(Vant);
 Vue.use(VideoPlayer)
 Vue.config.productionTip = false;
 // 简单配置
-
+Vue.component('NoData',NoData)
 // simple history management
 /* eslint-disable no-new */
 new Vue({

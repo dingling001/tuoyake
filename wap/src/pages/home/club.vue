@@ -20,6 +20,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
+        <NoData v-else :top="140"></NoData>
     </div>
 </template>
 
@@ -29,7 +30,12 @@
         name: "club",
         data() {
             return {
-                clist: [],
+                clist: [
+                    {
+                        name: '全部',
+                        id: ''
+                    }
+                ],
                 clublist: [],
                 ind: 0,
                 page: 0,
@@ -61,7 +67,7 @@
             _Category() {
                 this.$api.Category().then(res => {
                     if (res.code == 1) {
-                        this.clist = res.data
+                        this.clist =this.clist.concat(res.data)
                     }
                 })
             },
@@ -97,7 +103,7 @@
                         } else {
                             console.log(res)
                             this.clublist = res.data.data;
-                            this.finishedtext = '没有更多了'
+                            this.finishedtext = '到底了'
                         }
                     }
 
@@ -108,6 +114,7 @@
                 setTimeout(() => {
                     this.$com.showtoast('刷新成功');
                     this.isDownLoading = false;
+                    this.clublist = [];
                     this.page = 0;
                     this._ClubIndex();
                 }, 500);
@@ -123,6 +130,7 @@
                 this.page = 0;
                 this.ind = index;
                 this.category_id = id;
+                this.clublist = [];
                 this._ClubIndex();
             },
             // 去详情

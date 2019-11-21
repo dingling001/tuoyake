@@ -49,7 +49,7 @@
             return {
                 transitionName: 'transitionLeft',
                 title: '',
-                city: '天津',
+                city: localStorage.wapcity || '北京',
                 ind: 0,
                 keyword: '',
                 swiperOption: {
@@ -146,8 +146,8 @@
                             _.lng = res.position.lng;
                             _._GetAreaPidByName()
                         } else {
-                            Bus.$emit("citypid", 2)
-                            Bus.$emit("city", '天津市');
+                            Bus.$emit("citypid", 372)
+                            Bus.$emit("city", '北京市');
                             Bus.$emit('lat', 0);
                             Bus.$emit('lng', 0);
                         }
@@ -170,19 +170,27 @@
     @import "../../style/reset";
 
     .index {
+        background-image: url("../../assets/img/index_bg.png");
+        background-size: 100% auto;
+        background-position: top center;
+        background-repeat: no-repeat;
+        /deep/ .van-sticky{
+            background-image: url("../../assets/img/index_bg.png");
+            background-size: 100% auto;
+            background-position: top center;
+            background-repeat: no-repeat;
+        }
         .index_top {
             /*display: flex;*/
             /*align-items: center;*/
             /*justify-content: space-between;*/
             /*padding: 22px 15px;*/
             height: 115px;
-            background-attachment: fixed;
             /*background: linear-gradient(90deg, #441219, #29182E);*/
             background-image: url("../../assets/img/index_bg.png");
             background-size: 100% auto;
             background-position: top center;
             background-repeat: no-repeat;
-
             .htop {
                 display: flex;
                 align-items: center;
