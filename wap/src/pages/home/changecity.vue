@@ -3,7 +3,7 @@
         <div class='main'>
             <div class="searchbox">
                 <form class="view_searchbg">
-                    <van-icon name="search"/>
+                    <van-icon name="search" style="font-size: 20px;color: #999"/>
                     <input v-model="inputText" type="search" class="input" placeholder="输入城市名称..." @input="oninput"/>
                 </form>
                 <van-button type="primary" color="#2F61D2" size="mini" @click="formSubmit">搜索</van-button>
@@ -223,7 +223,12 @@
                 background-color: #fff;
                 margin: 0 10px 0 0;
 
-                /depp/ .van-icon {
+                /deep/ .van-icon {
+                    font-size: 20px;
+                    /* px*/
+                }
+
+                > > > .van-icon {
                     font-size: 20px;
                     /* px*/
                 }
