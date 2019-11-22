@@ -45,6 +45,9 @@ Vue.use(VueWechatTitle);
 Vue.use(Vant);
 Vue.use(VideoPlayer)
 Vue.config.productionTip = false;
+import vueCity from 'vue-city-select'
+Vue.use(vueCity);
+//然后就可以在项目中引用了,热门城市 hotCityList 参数可以根据自己的需求传或者不传
 // 简单配置
 Vue.component('NoData',NoData)
 // simple history management

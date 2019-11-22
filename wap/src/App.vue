@@ -70,23 +70,20 @@
     };
 </script>
 <style lang="scss" scoped>
-    .app {
-        .router-view {
-            /*min-height: calc(100vh - 61px);*/
-            /*overflow-y: scroll;*/
-            padding-bottom: 61px;
-            min-height: 100vh;
+    .router-view {
+        /*min-height: calc(100vh - 61px);*/
+        /*overflow-y: scroll;*/
+        padding-bottom: 61px;
+        min-height: 100vh;
 
-            &.nonav {
-                /*min-height: 100vh;*/
-                padding-top: 56px;
-            }
-
-            &.noall {
-                /*min-height: 100vh;*/
-            }
+        &.nonav {
+            /*min-height: 100vh;*/
+            padding-top: 56px;
         }
 
+        &.noall {
+            /*min-height: 100vh;*/
+        }
     }
 </style>
 

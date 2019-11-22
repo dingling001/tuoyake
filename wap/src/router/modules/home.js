@@ -126,5 +126,17 @@ export default [
         },
         component: resolve => require(["../../pages/home/videodetail"], resolve)
     },
+    {
+        path: '/changecity',
+        name: 'changecity',
+        meta: {
+            title: "选择城市",
+            index: 1,
+            showF: false,
+            showH: true
+        },
+        component: resolve => require(["../../pages/home/changecity"], resolve)
+    },
+
 
 ]

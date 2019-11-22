@@ -4,7 +4,7 @@ import axios from "../api";
 /**
  * 获取首页轮播图
  */
-export const GetSlideList = (city) =>
+export const GetSlideList = (city = localStorage.wapcity) =>
     axios(
         "/api/index/getSlideList", {
             city
@@ -44,7 +44,7 @@ export const GetLabelList = () =>
 /**
  * 根据城市换id
  */
-export const GetAreaPidByName = (name = '北京市') =>
+export const GetAreaPidByName = (name = '北京') =>
     axios(
         "/api/common/getAreaPidByName", {name},
         "POST",

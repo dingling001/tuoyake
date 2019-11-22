@@ -26,7 +26,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!--<span>全部地区</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
                     <!--<div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">-->
@@ -35,7 +34,7 @@
                 </van-dropdown-menu>
             </div>
         </van-sticky>
-        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="netlist.length">
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                     finished-text="到底了">
@@ -43,19 +42,20 @@
                 <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
                     <div class="cimg">
                         <img :src="item.image" alt="">
+                        <span v-if="item.recommend==1">推荐</span>
                     </div>
                     <div class="cright">
+                        <div class="name single-line-text">{{item.name}}</div>
                         <div class="cname">
                             <div class="namebox">
-                                <div class="name single-line-text">{{item.name}}</div>
                                 <div class="startbox">
                                     <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>
                                 </div>
                             </div>
-                            <span class="juli">{{item.distance}}</span>
+                            <div class="juli">{{item.distance}}</div>
                         </div>
                         <div class="ctype"><span v-for="l in item.label_ids">{{l}}</span></div>
-                        <div class="caddress">
+                        <div class="caddress ">
                             <span class="iconfont icondingweiweizhi"></span>
                             <span class="single-line-text">{{item.address}}</span>
                         </div>
@@ -63,7 +63,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <div class="nodata" v-else> 暂无数据</div>
+        <NoData class="nodata" v-if="flag&&netlist.length==0">暂无数据</NoData>
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
@@ -81,7 +81,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: '',
+                city: localStorage.wapcity || '',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -106,7 +106,8 @@
                 lindex: 0,
                 rindex: 0,
                 totop: false,
-                showoverlay: false
+                showoverlay: false,
+                flag: false
             }
         },
         inject: ['app'],
@@ -173,7 +174,6 @@
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
-
                 this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.GetBarList(
                     pageNumber,
@@ -186,6 +186,7 @@
                     this.lindex == 0 ? '' : this.district,
                     this.circle,
                 ).then(res => {
+                    this.flag = true;
                     if (res.code == 1) {//请求成功
                         if (this.netlist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -222,7 +223,6 @@
                                 text: labellist[i]
                             })
                         }
-                        ;
                         this.label = this.labellist[0].value;
                         // console.log(this.labellist)
                     }
@@ -360,12 +360,11 @@
                     map.addControl(getlocation)
                     getlocation.getCurrentPosition(function (status, res) {
                         if (status == 'complete' && res.status == 1) {
-                            _.city = res.addressComponent.province;
+                            _.city = localStorage.wapcity || res.addressComponent.province;
                             _.lat = res.position.lat;
                             _.lng = res.position.lng;
-
                         } else {
-                            _.city = '天津市'
+                            _.city = '北京'
                         }
                         _._GetAreaPidByName()
                     })
@@ -491,7 +490,7 @@
             .citem {
                 display: flex;
                 justify-content: space-between;
-                padding: 0 15px;
+                padding: 0 0 0 15px;
                 margin: 0 0 30px 0;
 
                 .cimg {
@@ -503,39 +502,54 @@
                     justify-content: center;
                     margin-right: 20px;
                     background-color: #f2f2f2;
+                    position: relative;
+                    border-radius: 8px;
+                    overflow: hidden;
 
                     img {
                         width: 100%;
+                    }
+
+                    span {
+                        position: absolute;
+                        background: linear-gradient(90deg, #ec8215, #f0a532);
+                        top: 0;
+                        left: 0;
+                        border-radius: 8px 0 8px 0;
+                        color: #fff;
+                        text-align: center;
+                        line-height: 17px;
+                        font-size: 11px;
+                        /*    px*/
+                        width: 40px;
                     }
                 }
 
                 .cright {
                     flex: 1;
-                    height: 90px;
-                    display: flex;
-                    flex-direction: column;
+                    /*height: 90px;*/
+                    .name {
+                        color: #333333;
+                        font-weight: bold;
+                        font-size: 14px;
+                        /*px*/
+                        max-width: 235px;
+                    }
 
                     .cname {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        padding: 0 15px 0 0;
+                        margin: 5px 0;
 
                         .namebox {
                             display: flex;
                             align-items: center;
 
-                            .name {
-                                color: #333333;
-                                font-weight: bold;
-                                font-size: 14px;
-                                /*px*/
-                                max-width: 120px;
-                            }
-
                             .startbox {
                                 display: flex;
                                 align-items: center;
-                                margin: 0 5px;
 
                                 .iconfont {
                                     color: $baseRed;
@@ -544,14 +558,17 @@
                                 }
                             }
                         }
+
+                        .juli {
+                            color: #666666;
+                        }
                     }
 
                     .ctype {
                         display: flex;
                         align-items: center;
-                        margin: 15px 0;
+                        margin: 10px 0 5px 0;
                         flex-wrap: wrap;
-                        max-width: 240px;
 
                         span {
                             padding: 3px 5px;
@@ -559,7 +576,7 @@
                             background: rgba(242, 49, 59, .1);
                             color: $baseRed;
                             border-radius: 8px;
-                            margin-right: 5px;
+                            margin: 0 5px 5px 0;
                         }
                     }
 
@@ -569,7 +586,7 @@
                         color: #666666;
                         font-size: 12px;
                         /*px*/
-                        padding: 0 0 15px 0;
+                        padding: 0 15px 15px 0;
                         border-bottom: 1px solid #E4E4E4;
                         /*no*/
                         .iconfont {

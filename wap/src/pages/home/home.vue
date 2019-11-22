@@ -17,7 +17,7 @@
                         <span class="border_b border_b1 " v-if="ind==2"></span>
                     </span>
                     </div>
-                    <div class="index_address"><span class="iconfont icondingweiweizhi"></span><span>{{city}}</span>
+                    <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span><span>{{city}}</span>
                     </div>
                 </div>
                 <div class="searchbox">
@@ -33,7 +33,6 @@
                 <div class="swiper-pagination" slot="pagination"></div>
             </swiper>
         </div>
-        <!--<router-view class="router-view"></router-view>-->
         <router-view class="router-view" :lat="lat" :lng="lng" :city="city"></router-view>
     </div>
 </template>
@@ -83,6 +82,13 @@
                 // console.log(this.offsettop)
                 Bus.$emit("home", this.offsettop);
                 this._GetAreaPidByName()
+            },
+            city: {
+                handler(val) {
+                    var _ = this;
+                    _._GetSlideList();
+                },
+                immediate: true
             }
         },
         created() {
@@ -140,20 +146,25 @@
                     getlocation.getCurrentPosition(function (status, res) {
                         if (status == 'complete' && res.status == 1) {
                             // console.log(res)
-                            _.city = res.addressComponent.province;
+                            localStorage.loccity = res.addressComponent.province;
+                            _.city = localStorage.wapcity || res.addressComponent.province;
                             _.keyword = res.addressComponent.street;
                             _.lat = res.position.lat;
                             _.lng = res.position.lng;
-                            _._GetAreaPidByName()
+                            _._GetAreaPidByName();
                         } else {
-                            Bus.$emit("citypid", 372)
-                            Bus.$emit("city", '北京市');
+                            Bus.$emit("citypid", 2)
+                            Bus.$emit("city", '北京');
                             Bus.$emit('lat', 0);
                             Bus.$emit('lng', 0);
+                            localStorage.wapcity = '北京'
                         }
                         _._GetSlideList();
                     })
                 })
+            },
+            go_city() {
+                this.$router.push({path: '/changecity'})
             }
         },
         computed: {
@@ -174,12 +185,14 @@
         background-size: 100% auto;
         background-position: top center;
         background-repeat: no-repeat;
-        /deep/ .van-sticky{
+
+        /deep/ .van-sticky {
             background-image: url("../../assets/img/index_bg.png");
             background-size: 100% auto;
             background-position: top center;
             background-repeat: no-repeat;
         }
+
         .index_top {
             /*display: flex;*/
             /*align-items: center;*/
@@ -191,6 +204,7 @@
             background-size: 100% auto;
             background-position: top center;
             background-repeat: no-repeat;
+
             .htop {
                 display: flex;
                 align-items: center;

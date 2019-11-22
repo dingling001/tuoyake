@@ -95,7 +95,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: '天津市',
+                city: '北京',
                 lat: 0,
                 lng: 0,
                 recommend: 0,

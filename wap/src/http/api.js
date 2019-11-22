@@ -52,7 +52,11 @@ instance.interceptors.response.use(
         }
     },
     function (err) {
-        if (!err=='timeout of 10000ms exceeded') {
+        if (!err) {
+            location.href = '/';
+            return
+        }
+        if (err == 'timeout of 10000ms exceeded') {
             err.message = '网络超时';
             return
         }
