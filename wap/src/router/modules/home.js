@@ -137,6 +137,15 @@ export default [
         },
         component: resolve => require(["../../pages/home/changecity"], resolve)
     },
-
-
+    {
+        path: '/search/:keyword',
+        name: 'search',
+        meta: {
+            title: "搜索",
+            index: 1,
+            showF: false,
+            showH: false
+        },
+        component: resolve => require(["../../pages/home/search"], resolve)
+    },
 ]

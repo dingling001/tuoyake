@@ -3,10 +3,10 @@
         <div class='main'>
             <div class="searchbox">
                 <form class="view_searchbg">
-                    <van-icon name="search" style="font-size: 20px;color: #999"/>
+                    <van-icon name="search"/>
                     <input v-model="inputText" type="search" class="input" placeholder="输入城市名称..." @input="oninput"/>
                 </form>
-                <van-button type="primary" color="#2F61D2" size="mini" @click="formSubmit">搜索</van-button>
+                <van-button type="primary" color="#2F61D2" size="small" @click="formSubmit">搜索</van-button>
             </div>
             <div v-if="showseach">
                 <div class="slide">
@@ -19,7 +19,7 @@
                 </div>
                 <div class="top" :style="`height: ${screenHeight}px`" ref="topContainer">
                     <div class="common sort">当前城市</div>
-                    <div class="city">{{loccity}}</div>
+                    <div class="city" @click="hotcity(loccity)">{{loccity}}</div>
                     <div class="common sort">热门城市</div>
                     <div class="hotaddr">
                         <div v-for="(item, index) in hotaddr" :key="index">
@@ -35,9 +35,8 @@
                     </div>
                 </div>
             </div>
-            <b v-if="address&&!showseach" class="add">{{address}}</b>
+            <b v-if="address&&!showseach" class="add" @click="hotcity(address)">{{address}}</b>
         </div>
-
     </div>
 </template>
 <script>
@@ -170,14 +169,16 @@
                 location.href = '/'
             },
             oninput() {
-                this.showseach = false;
+                this.showseach = this.address;
             },
             formSubmit() {  //找出与搜索框对应的城市，
-                console.log(addr[0].item[0].city)
+                // console.log(addr[0].item[0].city)
                 for (let i in addr) {
                     for (let j in addr[i].item) {
-                        if (this.inputText == addr[i].item[j].city) {
+                        console.log(addr[i].item[j].city.indexOf(this.inputText))
+                        if (addr[i].item[j].city.indexOf(this.inputText) > -1) {
                             this.address = addr[i].item[j].city
+                            return
                         } else {
                             this.address = '抱歉，未找到相关位置，可尝试修改后重试'
                         }
@@ -223,14 +224,16 @@
                 background-color: #fff;
                 margin: 0 10px 0 0;
 
-                /deep/ .van-icon {
+                /deep/ i.van-icon-search {
                     font-size: 20px;
                     /* px*/
+                    color: #999;
                 }
 
-                > > > .van-icon {
+                > > > i.van-icon-search {
                     font-size: 20px;
                     /* px*/
+                    color: #999;
                 }
 
                 .input {

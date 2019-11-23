@@ -20,9 +20,9 @@
                     <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span><span>{{city}}</span>
                     </div>
                 </div>
-                <div class="searchbox">
+                <router-link :to="{name:'search', params: {keyword:keyword}}" tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
-                </div>
+                </router-link>
             </div>
         </van-sticky>
         <div class="swiperbox">
@@ -50,7 +50,7 @@
                 title: '',
                 city: localStorage.wapcity || '北京',
                 ind: 0,
-                keyword: '',
+                keyword: '电竞馆名称/地址',
                 swiperOption: {
                     pagination: '.swiper-pagination',
                     observers: true,
