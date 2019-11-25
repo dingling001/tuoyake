@@ -22,7 +22,8 @@
                             </div>
                             <div class="citems dright">
                                 <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
-                                     :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">{{c.name}}
+                                     :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
+                                    {{c.name}}
                                 </div>
                             </div>
                         </div>
@@ -63,7 +64,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <NoData class="nodata" v-if="flag&&netlist.length==0">暂无数据</NoData>
+        <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150">暂无数据</NoData>
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
@@ -272,12 +273,14 @@
                     this.netlist = [];
                     this._GetBarList();
                 }
+                // this.district = this.districtlist[index].name;
             },
             // 选择地区
-            selcetarea(index, name) {
+            selcetarea(index, name, cname) {
                 this.rindex = index;
                 this.$refs.item.toggle();
-                this.district = name;
+                // this.district = name;
+                this.circle = name;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
