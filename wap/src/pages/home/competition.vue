@@ -179,7 +179,7 @@
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
-                    this.city,
+                    localStorage.wapcity ,
                     this.lat,
                     this.lng,
                     this.recommend,
@@ -238,6 +238,7 @@
                     this.recommend = 1
                 }
                 // console.log(this.recommend)
+                this.netlist=[];
                 this._GetBarList();
             },
             // 下拉刷新
@@ -490,11 +491,13 @@
         }
 
         .clist {
+            transition: ease-in-out .3s;
             .citem {
                 display: flex;
                 justify-content: space-between;
                 padding: 0 0 0 15px;
                 margin: 0 0 30px 0;
+                transition: ease-in-out .3s;
 
                 .cimg {
                     flex-shrink: 0;
