@@ -30,7 +30,7 @@
             <swiper :options="swiperOption" ref="mySwiper" v-if="swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
                 </swiper-slide>
-                <div class="swiper-pagination" slot="pagination"></div>
+                <div class="swiper-pagination" slot="pagination" v-if="swiperlist.length>1"></div>
             </swiper>
         </div>
         <router-view class="router-view" :lat="lat" :lng="lng" :city="city"></router-view>
@@ -148,7 +148,7 @@
                             // console.log(res)
                             localStorage.loccity = res.addressComponent.province;
                             _.city = localStorage.wapcity || res.addressComponent.province;
-                            _.keyword = res.addressComponent.street;
+                            // _.keyword = res.addressComponent.street;
                             _.lat = res.position.lat;
                             _.lng = res.position.lng;
                             _._GetAreaPidByName();

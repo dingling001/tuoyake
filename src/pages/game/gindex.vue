@@ -51,7 +51,7 @@
                     </van-dropdown-menu>
                 </div>
             </van-sticky>
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="netlist.length">
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                         finished-text="到底了">
@@ -79,7 +79,8 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="nodata" v-else> 暂无数据</div>
+            <div class="nodata" v-else> <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150">暂无数据</NoData>
+            </div>
         </div>
     </div>
 </template>
@@ -95,7 +96,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: '北京',
+                city: localStorage.wapcity||'北京',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -121,7 +122,8 @@
                 rindex: 0,
                 totop: false,
                 adimg: '',
-                street: '大兴'
+                street: '大兴',
+                flag:false
             }
         },
         inject: ['app'],
@@ -150,29 +152,29 @@
         },
         methods: {
             // 初始化位置
-            initMap() {
-                var _ = this;
-                let map = new AMap.Map('map', {
-                    zoom: 0
-                });
-                map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
-                    let getlocation = new AMap.Geolocation({
-                        timeout: 6000,
-                    })
-                    map.addControl(getlocation)
-                    getlocation.getCurrentPosition(function (status, res) {
-                        if (status == 'complete' && res.status == 1) {
-                            console.log(res)
-                            _.city = res.addressComponent.province;
-                            _.street = res.addressComponent.street;
-                            _.lat = res.position.lat;
-                            _.lng = res.position.lng;
-                            _._GetAreaPidByName()
-                            _._GetBarList();
-                        }
-                    })
-                })
-            },
+            // initMap() {
+            //     var _ = this;
+            //     let map = new AMap.Map('map', {
+            //         zoom: 0
+            //     });
+            //     map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
+            //         let getlocation = new AMap.Geolocation({
+            //             timeout: 6000,
+            //         })
+            //         map.addControl(getlocation)
+            //         getlocation.getCurrentPosition(function (status, res) {
+            //             if (status == 'complete' && res.status == 1) {
+            //                 console.log(res)
+            //                 _.city = res.addressComponent.province;
+            //                 _.street = res.addressComponent.street;
+            //                 _.lat = res.position.lat;
+            //                 _.lng = res.position.lng;
+            //                 _._GetAreaPidByName()
+            //                 _._GetBarList();
+            //             }
+            //         })
+            //     })
+            // },
             // 根据城市获取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
@@ -197,6 +199,7 @@
                     this.lindex == 0 ? '' : this.district,
                     this.circle,
                 ).then(res => {
+                    this.flag=true;
                     if (res.code == 1) {//请求成功
                         if (this.netlist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
