@@ -1,6 +1,5 @@
 <template>
     <div class="cbox">
-        <div id="map"></div>
         <van-sticky :offset-top="offsettop" class="sticky ">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
@@ -64,7 +63,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150">暂无数据</NoData>
+        <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150" :text="'暂无匹配的商家'"></NoData>
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
@@ -82,7 +81,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: localStorage.wapcity || '',
+                city: localStorage.wapcity || '北京',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -114,62 +113,15 @@
         inject: ['app'],
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
-            Bus.$on("home", (val, val1) => {    //取  Bus.$on
-                this.offsettop = val;
-                // console.log(this.offsettop)
-            });
-            // 获取城市的pid
-            Bus.$on("citypid", (val, val1) => {    //取  Bus.$on
-                this.citypid = val;
-                // console.log(this.citypid)
-                // this._GetAreaListTree()
-                // this._GetBarList();
-            });
-            Bus.$on("lat", (val, val1) => {    //取  Bus.$on
-                this.lat = val;
-                // console.log(this.lat, 'lat1')
-            });
-            Bus.$on("lng", (val, val1) => {    //取  Bus.$on
-                this.lng = val;
-                // console.log(this.lng, 'lng1')
-                // this._GetBarList();
-                // console.log(this.lng, 'lng3')
-            });
-            Bus.$on("city", (val, val1) => {    //取  Bus.$on
-                this.city = val;
-                // this._GetBarList();
-            });
 
         },
         mounted() {
-            // this._GetBarList();
-            this.initMap()
+            this._GetBarList();
             this._GetLabelList();
+            this._GetAreaPidByName()
         },
         watch: {
-            'lat'(val) {
-                this.lat = val;
-                // console.log(this.lat, 'lat2')
-            },
-            'lng'(val) {
-                this.lng = val;
-                // console.log(this.lng, 'lng2')
-                // this._GetBarList();
-            },
-            'city'(val) {
-                this.city = val;
-                // this._GetBarList();
-            },
-            'citypid'(val) {
-                // console.log(val)
-                // this._GetAreaListTree()
-            },
-            $route: {
-                handler(to, from) {
-                    // this._GetBarList();
-                },
-                immediate: true
-            }
+
         },
         methods: {
             // 获取列表
@@ -179,7 +131,7 @@
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
-                    localStorage.wapcity ,
+                    localStorage.wapcity ||'北京',
                     this.lat,
                     this.lng,
                     this.recommend,
@@ -351,38 +303,9 @@
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
-            // 初始化地图
-            initMap() {
-                var _ = this;
-                let map = new AMap.Map('map', {
-                    zoom: 0
-                });
-                map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
-                    let getlocation = new AMap.Geolocation({
-                        timeout: 6000,
-                    })
-                    map.addControl(getlocation)
-                    getlocation.getCurrentPosition(function (status, res) {
-                        if (status == 'complete' && res.status == 1) {
-                            _.city = localStorage.wapcity || res.addressComponent.province;
-                            _.lat = res.position.lat;
-                            _.lng = res.position.lng;
-                        } else {
-                            _.city = '北京'
-                        }
-                        _._GetAreaPidByName()
-                    })
-                })
-            },
             // 根据城市换取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
-                    console.log(res)
-                    // console.log(`${JSON.stringify(res)}res`)
-                    // Bus.$emit("citypid", res.data)
-                    // Bus.$emit("city", this.city);
-                    // Bus.$emit('lat', this.lat);
-                    // Bus.$emit('lng', this.lng);
                     this.citypid = res.data;
                     this._GetAreaListTree();
                     this._GetBarList();

@@ -1,7 +1,7 @@
 <template>
     <div class="nodatabox" :style="{top:top+'px'}">
         <img :src="img" alt="">
-        <span class="text">暂无数据</span>
+        <span class="text">{{text}}</span>
     </div>
 </template>
 
@@ -16,6 +16,10 @@
             'top': {
                 type: Number || String,
                 default: 0
+            },
+            'text':{
+                type:String,
+                default:'暂无数据'
             }
         }
     }

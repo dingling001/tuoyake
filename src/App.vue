@@ -11,11 +11,13 @@
                      :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']">
         </router-view>
         <bottom v-if="showF" :gindex="f_index"></bottom>
+        <NetError v-if="showneterror"></NetError>
     </div>
 </template>
 <script>
     import VHeader from "./components/vheader.vue";
     import VFooter from "./components/foot.vue";
+    import NetError from './components/NetError'
 
     export default {
         name: "App",
@@ -29,14 +31,23 @@
                 iconfont: 'iconfanhui',
                 rlink: '',
                 showright: false,
-                right_text: ''
+                right_text: '',
+                showneterror: localStorage.showneterror || false
             };
         },
         created() {
+            var _ = this;
+            window.addEventListener('offline', function () {
+                _.showneterror = true
+            });
+            window.addEventListener('online', function () {
+                _.showneterror = false
+            })
         },
         components: {
             'top': VHeader,
-            'bottom': VFooter
+            'bottom': VFooter,
+            NetError,
         },
         watch: {
             '$route': {

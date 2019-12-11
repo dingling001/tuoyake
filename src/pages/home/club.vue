@@ -4,12 +4,12 @@
             <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
                   @click="activeList(index,item.id)">{{item.name}}</span>
         </div>
-        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length" class="jlist">
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="cshow&&clublist.length" class="jlist">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
                     :finished-text="finishedtext">
-                <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.category_id"
-                     @click="godetail(item.category_id)">
+                <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.id"
+                     @click="godetail(item.id)">
                     <div class="jimg"><img :src="item.image" alt=""></div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -20,7 +20,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <NoData v-else :top="140"></NoData>
+        <NoData v-if="cshow&&clublist.length==0" :top="140"></NoData>
     </div>
 </template>
 
@@ -35,6 +35,7 @@
                         id: ''
                     }
                 ],
+                cshow:false,
                 clublist: [],
                 ind: 0,
                 page: 0,
@@ -80,6 +81,7 @@
                     this.keyword,
                     this.city,
                 ).then(res => {
+                    this.cshow=true;
                     if (res.code == 1) {//请求成功
                         if (this.clublist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载

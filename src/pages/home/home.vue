@@ -114,7 +114,7 @@
             },
             // 获取轮播图
             _GetSlideList() {
-                this.$api.GetSlideList(localStorage.wapcity ).then((res) => {
+                this.$api.GetSlideList(this.city).then((res) => {
                     if (res.code == 1) {
                         this.swiperlist = res.data;
                     } else {
@@ -124,10 +124,10 @@
             },
             // 根据城市获取id
             _GetAreaPidByName() {
-                this.$api.GetAreaPidByName(localStorage.wapcity ).then(res => {
+                this.$api.GetAreaPidByName(this.city).then(res => {
                     // console.log(`${(res)}res`)
                     Bus.$emit("citypid", res.data)
-                    Bus.$emit("city",localStorage.wapcity );
+                    Bus.$emit("city", localStorage.wapcity);
                     Bus.$emit('lat', this.lat);
                     Bus.$emit('lng', this.lng);
                 })
