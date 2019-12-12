@@ -64,7 +64,7 @@
                     video: []
                 },
                 match_id: '',
-                is_share: 0
+                is_share: 0,
             }
         },
         created() {
