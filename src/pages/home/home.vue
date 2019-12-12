@@ -9,13 +9,15 @@
                         <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">电竞馆<span
                                 class="border_b" v-if="ind==0"></span></span>
                         <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部<span class="border_b "
-                                                                                                   v-if="ind==1"></span>
+                                                                                                  v-if="ind==1"></span>
                     </span>
                         <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">学院<span
                                 class="border_b border_b1 " v-if="ind==2"></span>
                     </span>
                     </div>
-                    <div class="index_address" @click="go_city"><van-icon name="location" /><span>{{city}}</span>
+                    <div class="index_address" @click="go_city">
+                        <van-icon name="location"/>
+                        <span>{{city||'定位中...'}}</span>
                     </div>
                 </div>
                 <router-link :to="{name:'search'}" tag="div" class="searchbox">
@@ -32,7 +34,7 @@
             </swiper>
             <NoData class="nodata" v-if="flag&&swiperlist.length==0" :top="0" :text="'商家还没有传图'"></NoData>
         </div>
-        <router-view class="router-view" :wapcity="city"></router-view>
+        <router-view class="router-view" :wapcity="city" v-if="city"></router-view>
     </div>
 </template>
 
@@ -47,9 +49,8 @@
         data() {
             var _ = this;
             return {
-                transitionName: 'transitionLeft',
                 title: '',
-                city: localStorage.wapcity || '北京',
+                city: '',
                 ind: 0,
                 keyword: '电竞馆名称/地址',
                 swiperOption: {
@@ -104,14 +105,16 @@
                 },
                 swiperlist: [],
                 offsettop: 0,
-                lat: 0,
-                lng: 0,
-                flag: false
+                flag: false,
+                loccity: '',//定位城市
             };
         },
-        provide: {
-            app: this
+        provide() {
+            return {
+                app: this
+            };
         },
+        props: ['wapcity'],
         watch: {
             '$route'(val) {
                 console.log(val.fullPath)
@@ -145,7 +148,6 @@
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
             this.initMap();
-
         },
         components: {
             swiper,
@@ -182,11 +184,9 @@
                     getlocation.getCurrentPosition(function (status, res) {
                         console.log(res)
                         if (status == 'complete' && res.status == 1) {
-                            // console.log(res)
-                            localStorage.loccity = res.addressComponent.city || res.addressComponent.province;
-                            _.city = localStorage.wapcity || res.addressComponent.province;
-                            localStorage.wapcity = res.addressComponent.province;
-                            this.$store.dispatch('getnewcity', _.city)
+                            _.loccity = res.addressComponent.city || res.addressComponent.province;
+                            _.city = sessionStorage.wapcity || _.loccity;
+                            console.log(_.city)
                             // _.keyword = res.addressComponent.street;
                         } else {
                             // Bus.$emit("citypid", 2)
@@ -199,16 +199,13 @@
                 })
             },
             go_city() {
-                this.$router.push({path: '/changecity'})
+                this.$router.push({path: '/changecity', query: {loccity: this.loccity}})
             }
         },
         computed: {
             swiper() {
                 return this.$refs.mySwiper.swiper
             },
-            wapcity(){
-               return  this.$store.getters.getchangecity;
-            }
         },
     }
 

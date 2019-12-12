@@ -43,12 +43,12 @@
 </template>
 <script>
     import {Dialog} from 'vant'
-    import addr from '@/bin/add'  //引用add.js
+    import addr from '@/bin/add' //引用add.js
     export default {
         props: ['position'], //父组件传过来的值，由于是模拟，所以可以将position的数据写死
         data() {
             return {
-                loccity: localStorage.loccity || '北京',
+                loccity: '',
                 // position: {
                 //     city: "深圳市",
                 //     lat: parseFloat(22.553329),
@@ -144,15 +144,16 @@
         },
 
         mounted() {
+            this.loccity = this.$route.query.loccity;
             this.screenHeight = window.screen.availHeight - 200; //设置#topdiv的高度
             if (sessionStorage.changecity) {
-                if (localStorage.wapcity != localStorage.loccity) {
+                if (sessionStorage.wapcity != this.loccity) {
                     Dialog.confirm({
                         title: '',
-                        message: '检测到您目前所在城市是' + localStorage.loccity + '\n是否要切换'
+                        message: '检测到您目前所在城市是' + this.loccity + '\n是否要切换'
                     }).then(() => {
                         // on confirm
-                        localStorage.wapcity = localStorage.loccity;
+                        sessionStorage.wapcity = this.loccity;
                         location.href = '/'
                     }).catch(() => {
                         // on cancel
@@ -177,12 +178,12 @@
 
             },
             choosecity(a, b, c) {
-                localStorage.wapcity = c;
+                sessionStorage.wapcity = c;
                 sessionStorage.changecity = true;
                 location.href = '/'
             },
             hotcity(item) {
-                localStorage.wapcity = item;
+                sessionStorage.wapcity = item;
                 sessionStorage.changecity = true;
                 location.href = '/'
             },
@@ -203,7 +204,7 @@
                     }
                 }
             },
-            backindex(){
+            backindex() {
                 this.$router.go(-1)
             }
         }

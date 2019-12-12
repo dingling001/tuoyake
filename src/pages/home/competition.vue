@@ -1,5 +1,5 @@
 <template>
-    <div class="cbox">
+    <div class="cbox" @wapcity="wapcityval">
         <van-sticky :offset-top="offsettop" class="sticky ">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
@@ -106,25 +106,23 @@
                 flag: false
             }
         },
-        props: ['wapcity'],
-        computed: {
-            wapcity(val) {
-                this.city = val
-                alert(this.wapcity)
-                console.log(this.wapcity)
-            }
-        },
+
         inject: ['app'],
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
-
+            this.city = sessionStorage.wapcity;
         },
         mounted() {
+            this.wapcityval();
             this._GetBarList();
             this._GetLabelList();
-            this._GetAreaPidByName()
+            this._GetAreaPidByName();
+
         },
         methods: {
+            wapcityval(val) {
+                console.log(val,'wap')
+            },
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
@@ -132,7 +130,7 @@
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
-                    localStorage.wapcity || '北京',
+                    sessionStorage.wapcity,
                     this.lat,
                     this.lng,
                     this.recommend,
