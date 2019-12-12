@@ -15,8 +15,7 @@
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
                                      :class="{activecity:index==lindex}"
-                                     @click="selcetcity(index)">
-                                    {{item.name}}
+                                     @click="selcetcity(index)">{{item.name}}
                                 </div>
                             </div>
                             <div class="citems dright">
@@ -26,11 +25,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--<span>全部地区</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <!--<div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">-->
-                    <!--<span>推荐电竞馆</span>-->
-                    <!--</div>-->
                 </van-dropdown-menu>
             </div>
         </van-sticky>
@@ -54,9 +49,12 @@
                             </div>
                             <div class="juli">{{item.distance}}</div>
                         </div>
-                        <div class="ctype"><span v-for="l in item.label_ids">{{l}}</span></div>
+                        <div class="ctype"><span v-for="l in item.label_ids" class="single-line-text"
+                                                 :style="{maxWidth:(1/item.label_ids.length)*100+'%'}">{{l}}</span>
+                        </div>
                         <div class="caddress ">
-                            <span class="iconfont icondingweiweizhi"></span>
+                            <!--                            <span class="iconfont van-icon-location"></span>-->
+                            <van-icon name="location-o"/>
                             <span class="single-line-text">{{item.address}}</span>
                         </div>
                     </div>
@@ -69,8 +67,6 @@
 </template>
 
 <script>
-    import Bus from '../../bin/Bus'
-
     export default {
         name: "competition",
         data() {
@@ -110,6 +106,14 @@
                 flag: false
             }
         },
+        props: ['wapcity'],
+        computed: {
+            wapcity(val) {
+                this.city = val
+                alert(this.wapcity)
+                console.log(this.wapcity)
+            }
+        },
         inject: ['app'],
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
@@ -120,9 +124,6 @@
             this._GetLabelList();
             this._GetAreaPidByName()
         },
-        watch: {
-
-        },
         methods: {
             // 获取列表
             _GetBarList() {
@@ -131,7 +132,7 @@
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
-                    localStorage.wapcity ||'北京',
+                    localStorage.wapcity || '北京',
                     this.lat,
                     this.lng,
                     this.recommend,
@@ -181,6 +182,22 @@
                     }
                 })
             },
+            // 根据城市换取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    this.citypid = res.data;
+                    this._GetAreaListTree();
+                    this._GetBarList();
+                })
+            },
+            // 获取当前城市的区
+            _GetAreaListTree() {
+                this.$api.GetAreaListTree(this.citypid).then(res => {
+                    this.districtlist = this.districtlist.concat(res.data);
+                    // console.log(this.districtlist)
+                    this.district = this.districtlist[0].name;
+                })
+            },
             // 切换成推荐模式
             recommendlist() {
                 this.page = 0;
@@ -190,7 +207,7 @@
                     this.recommend = 1
                 }
                 // console.log(this.recommend)
-                this.netlist=[];
+                this.netlist = [];
                 this._GetBarList();
             },
             // 下拉刷新
@@ -207,14 +224,6 @@
                 this.page++;
                 this.isUpLoading = true;
                 this._GetBarList();
-            },
-            // 获取当前城市的区
-            _GetAreaListTree() {
-                this.$api.GetAreaListTree(this.citypid).then(res => {
-                    this.districtlist = this.districtlist.concat(res.data);
-                    // console.log(this.districtlist)
-                    this.district = this.districtlist[0].name;
-                })
             },
             // 选择城市
             selcetcity(index) {
@@ -252,49 +261,6 @@
                 this.netlist = [];
                 this._GetBarList();
             },
-            // 滚动到指定位置
-            gotop() {
-                let jump = document.querySelectorAll('.cselect')
-                let total = jump[0].offsetTop;
-                let distance = document.documentElement.scrollTop || document.body.scrollTop
-                // 平滑滚动，时长500ms，每10ms一跳，共50跳
-                console.log(distance)
-                let step = total / 10
-                if (total > distance) {
-                    smoothDown()
-                } else {
-                    let newTotal = distance - total;
-                    console.log(newTotal)
-                    step = newTotal / 50;
-                    smoothUp()
-                }
-
-                function smoothDown() {
-                    if (distance < total) {
-                        distance += step
-                        document.body.scrollTop = distance
-                        document.documentElement.scrollTop = distance
-                        setTimeout(smoothDown, 10)
-                    } else {
-                        document.body.scrollTop = total
-                        document.documentElement.scrollTop = total
-                    }
-                    console.log('smoothDown')
-                }
-
-                function smoothUp() {
-                    if (distance > total) {
-                        distance -= step
-                        document.body.scrollTop = distance
-                        document.documentElement.scrollTop = distance
-                        setTimeout(smoothUp, 10)
-                    } else {
-                        document.body.scrollTop = total;
-                        document.documentElement.scrollTop = total
-                    }
-                    console.log('smoothUp')
-                }
-            },
             // 打开全部列表
             opendistrict() {
                 this._GetAreaListTree()
@@ -303,14 +269,7 @@
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
-            // 根据城市换取id
-            _GetAreaPidByName() {
-                this.$api.GetAreaPidByName(this.city).then(res => {
-                    this.citypid = res.data;
-                    this._GetAreaListTree();
-                    this._GetBarList();
-                })
-            },
+
         }
     }
 </script>
@@ -322,6 +281,7 @@
         .sticky {
             position: relative;
             z-index: 10;
+            border: 0;
         }
 
         .cselect {
@@ -333,7 +293,6 @@
             background-color: #fff;
             font-size: 12px;
             /* px */
-            /*border-bottom: 1px solid #f5f5f5;*/
             .cselectitem {
                 display: flex;
                 align-items: center;
@@ -415,6 +374,7 @@
 
         .clist {
             transition: ease-in-out .3s;
+
             .citem {
                 display: flex;
                 justify-content: space-between;
@@ -498,6 +458,7 @@
                         align-items: center;
                         margin: 10px 0 5px 0;
                         flex-wrap: wrap;
+                        min-height: 15px;
 
                         span {
                             padding: 3px 5px;
@@ -515,14 +476,15 @@
                         color: #666666;
                         font-size: 12px;
                         /*px*/
-                        padding: 0 15px 15px 0;
+                        padding: 0 15px 10px 0;
                         border-bottom: 1px solid #E4E4E4;
                         /*no*/
-                        .iconfont {
+                        .van-icon {
                             color: #999999;
-                            font-size: 10px;
+                            font-weight: bold;
+                            font-size: 14px;
                             /*px*/
-                            margin-right: 5px;
+                            /*margin-right: 5px;*/
                         }
 
                         .single-line-text {

@@ -6,34 +6,33 @@
             <div class="index_top" ref="index_top">
                 <div class="htop">
                     <div class="htopleft">
-                    <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">
-                        电竞馆
-                        <span class="border_b" v-if="ind==0"></span>
+                        <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">电竞馆<span
+                                class="border_b" v-if="ind==0"></span></span>
+                        <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部<span class="border_b "
+                                                                                                   v-if="ind==1"></span>
                     </span>
-                        <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部
-                        <span class="border_b " v-if="ind==1"></span>
-                    </span>
-                        <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">学院
-                        <span class="border_b border_b1 " v-if="ind==2"></span>
+                        <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">学院<span
+                                class="border_b border_b1 " v-if="ind==2"></span>
                     </span>
                     </div>
-                    <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span><span>{{city}}</span>
+                    <div class="index_address" @click="go_city"><van-icon name="location" /><span>{{city}}</span>
                     </div>
                 </div>
-                <router-link :to="{name:'search', params: {keyword:keyword}}" tag="div" class="searchbox">
+                <router-link :to="{name:'search'}" tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
         </van-sticky>
         <div class="swiperbox">
             <div class="sbg"></div>
-            <swiper :options="swiperOption" ref="mySwiper" v-if="swiperlist.length">
+            <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination" v-if="swiperlist.length>1"></div>
             </swiper>
+            <NoData class="nodata" v-if="flag&&swiperlist.length==0" :top="0" :text="'商家还没有传图'"></NoData>
         </div>
-        <router-view class="router-view" :lat="lat" :lng="lng" :city="city"></router-view>
+        <router-view class="router-view" :wapcity="city"></router-view>
     </div>
 </template>
 
@@ -42,9 +41,11 @@
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
     import Bus from '../../bin/Bus'
 
+
     export default {
         name: "home",
         data() {
+            var _ = this;
             return {
                 transitionName: 'transitionLeft',
                 title: '',
@@ -58,11 +59,54 @@
                     spaceBetween: 10,
                     loop: true,
                     autoplay: 3000,
+                    onClick: function (swiper) {
+                        let i = swiper.realIndex;
+                        let flag = _.swiperlist[i];
+                        let type = parseInt(flag.type);
+                        switch (type) {
+                            case 0:
+                                break;
+                            case 1:
+                                if (flag.object_id == 0) {
+                                    _.$router.push({path: '/competition'});
+                                } else {
+                                    _.$router.push({path: '/competitiondetail/' + flag.object_id});
+                                }
+                                break;
+                            case 2:
+                                if (flag.object_id == 0) {
+
+                                } else {
+                                    _.$router.push({path: '/gamedetail', query: {match_id: flag.object_id}});
+                                }
+                                break;
+                            case 3:
+                                if (flag.object_id == 0) {
+                                    _.$router.push({path: '/club'});
+                                } else {
+                                    _.$router.push({path: '/clubdetail', query: {club_id: flag.object_id}});
+                                }
+                                break;
+                            case 4:
+                                if (flag.object_id == 0) {
+                                    _.$router.push({path: '/school'});
+                                } else {
+                                    _.$router.push({path: '/schooldetail', query: {college_id: flag.object_id}});
+                                }
+                                break;
+                            default:
+                                location.replace('/')
+                        }
+                        // "type": "类型:0=无需跳转,1=网吧详情,2=赛事详情,3=俱乐部,4=电竞学院",
+                        //   "object_id": "跳转对象ID，根据type跳转对应详情界面，0为列表页",
+                        // console.log(flag)
+                    }
                 },
                 swiperlist: [],
                 offsettop: 0,
                 lat: 0,
-                lng: 0
+                lng: 0,
+                flag: false
             };
         },
         provide: {
@@ -87,20 +131,21 @@
                 handler(val) {
                     var _ = this;
                     _._GetSlideList();
+
                 },
                 immediate: true
             }
         },
         created() {
             this.title = '托亚克 | ' + this.city;
-
         },
         mounted() {
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
-            this.initMap()
+            this.initMap();
+
         },
         components: {
             swiper,
@@ -115,21 +160,12 @@
             // 获取轮播图
             _GetSlideList() {
                 this.$api.GetSlideList(this.city).then((res) => {
+                    this.flag = true;
                     if (res.code == 1) {
                         this.swiperlist = res.data;
                     } else {
                         this.$com.showtoast(res.msg)
                     }
-                })
-            },
-            // 根据城市获取id
-            _GetAreaPidByName() {
-                this.$api.GetAreaPidByName(this.city).then(res => {
-                    // console.log(`${(res)}res`)
-                    Bus.$emit("citypid", res.data)
-                    Bus.$emit("city", localStorage.wapcity);
-                    Bus.$emit('lat', this.lat);
-                    Bus.$emit('lng', this.lng);
                 })
             },
             // 初始化地图
@@ -144,14 +180,14 @@
                     })
                     map.addControl(getlocation)
                     getlocation.getCurrentPosition(function (status, res) {
+                        console.log(res)
                         if (status == 'complete' && res.status == 1) {
                             // console.log(res)
-                            localStorage.loccity = res.addressComponent.province;
+                            localStorage.loccity = res.addressComponent.city || res.addressComponent.province;
                             _.city = localStorage.wapcity || res.addressComponent.province;
+                            localStorage.wapcity = res.addressComponent.province;
+                            this.$store.dispatch('getnewcity', _.city)
                             // _.keyword = res.addressComponent.street;
-                            _.lat = res.position.lat;
-                            _.lng = res.position.lng;
-                            _._GetAreaPidByName();
                         } else {
                             // Bus.$emit("citypid", 2)
                             // Bus.$emit("city", '北京');
@@ -170,6 +206,9 @@
             swiper() {
                 return this.$refs.mySwiper.swiper
             },
+            wapcity(){
+               return  this.$store.getters.getchangecity;
+            }
         },
     }
 
@@ -213,7 +252,7 @@
                 .htopleft {
                     span {
                         font-size: 15px;
-                        /*px*/
+                        /* px */
                         margin-right: 28px;
                         position: relative;
                         color: #fff;
@@ -282,6 +321,10 @@
                         margin-right: 8px;
                         font-weight: normal;
                     }
+
+                    &:active {
+                        opacity: .7;
+                    }
                 }
 
             }
@@ -315,11 +358,11 @@
                     align-items: center;
                     justify-content: center;
                     color: #fff;
-                    background-color: #000;
+                    /*background-color: #000;*/
                     border-radius: 10px;
                     overflow: hidden;
                     border: 1px solid $baseRed;
-
+                    /*no*/
                     img {
                         width: 100%;
                     }

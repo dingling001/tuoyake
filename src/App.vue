@@ -12,13 +12,14 @@
         </router-view>
         <bottom v-if="showF" :gindex="f_index"></bottom>
         <NetError v-if="showneterror"></NetError>
+        <backTop></backTop>
     </div>
 </template>
 <script>
     import VHeader from "./components/vheader.vue";
     import VFooter from "./components/foot.vue";
     import NetError from './components/NetError'
-
+import backTop from './components/backTop'
     export default {
         name: "App",
         data() {
@@ -48,6 +49,7 @@
             'top': VHeader,
             'bottom': VFooter,
             NetError,
+            backTop
         },
         watch: {
             '$route': {

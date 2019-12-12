@@ -26,7 +26,7 @@ body {
 }
 
 html {
-  -webkit-text-size-adjust: 100%;
+  //-webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -254,9 +254,9 @@ li {
 
 $baseRed: #F2313B;
 $baseBlue: #2F61D2;
-.nodata{
+.nodata {
   text-align: center;
   color: #666;
   font-size: 12px;
-
+  /*px*/
 }

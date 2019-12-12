@@ -320,6 +320,9 @@
 
             .machdes {
                 padding: 30px 18px;
+                /deep/ img{
+                    width: 100%;
+                }
             }
 
             .comlist {

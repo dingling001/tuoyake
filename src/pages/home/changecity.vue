@@ -2,9 +2,11 @@
     <div class="citybox">
         <div class='main'>
             <div class="searchbox">
+                <i class="iconfont iconfanhui" @click="backindex"></i>
                 <form class="view_searchbg">
-                    <van-icon name="search"/>
-                    <input v-model="inputText" type="search" class="input" placeholder="输入城市名称..." @input="oninput"/>
+                    <i class="iconfont iconsousuo1"></i>
+                    <input v-model="inputText" type="search" class="input" placeholder="输入城市名称..." @input="oninput"
+                           @keyup.enter="formSubmit"/>
                 </form>
                 <van-button type="primary" color="#2F61D2" size="small" @click="formSubmit">搜索</van-button>
             </div>
@@ -40,7 +42,7 @@
     </div>
 </template>
 <script>
-
+    import {Dialog} from 'vant'
     import addr from '@/bin/add'  //引用add.js
     export default {
         props: ['position'], //父组件传过来的值，由于是模拟，所以可以将position的数据写死
@@ -143,6 +145,20 @@
 
         mounted() {
             this.screenHeight = window.screen.availHeight - 200; //设置#topdiv的高度
+            if (sessionStorage.changecity) {
+                if (localStorage.wapcity != localStorage.loccity) {
+                    Dialog.confirm({
+                        title: '',
+                        message: '检测到您目前所在城市是' + localStorage.loccity + '\n是否要切换'
+                    }).then(() => {
+                        // on confirm
+                        localStorage.wapcity = localStorage.loccity;
+                        location.href = '/'
+                    }).catch(() => {
+                        // on cancel
+                    });
+                }
+            }
         },
         methods: {
             slide(item) {
@@ -162,10 +178,12 @@
             },
             choosecity(a, b, c) {
                 localStorage.wapcity = c;
+                sessionStorage.changecity = true;
                 location.href = '/'
             },
             hotcity(item) {
                 localStorage.wapcity = item;
+                sessionStorage.changecity = true;
                 location.href = '/'
             },
             oninput() {
@@ -184,6 +202,9 @@
                         }
                     }
                 }
+            },
+            backindex(){
+                this.$router.go(-1)
             }
         }
     }
@@ -208,6 +229,12 @@
             align-items: center;
             margin: 25px;
 
+            .iconfanhui {
+                font-size: 14px;
+                color: #666;
+                margin-right: 10px;
+            }
+
             .view_searchbg {
                 flex: 1;
                 display: flex;
@@ -224,17 +251,12 @@
                 background-color: #fff;
                 margin: 0 10px 0 0;
 
-                /deep/ i.van-icon-search {
-                    font-size: 20px;
+                i.iconsousuo1 {
+                    font-size: 12px;
                     /* px*/
                     color: #999;
                 }
 
-                > > > i.van-icon-search {
-                    font-size: 20px;
-                    /* px*/
-                    color: #999;
-                }
 
                 .input {
                     border: 0;

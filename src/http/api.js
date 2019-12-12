@@ -35,7 +35,8 @@ const instance = axios.create(config);
 
 instance.interceptors.response.use(
     function (response) {
-        console.log(response)
+        // console.log(response)
+        if (!response) return
         if (response.data.status == 401) {
             Toast({
                 message: "登录已过期，请重新登录！",
@@ -57,7 +58,7 @@ instance.interceptors.response.use(
             location.href = '/';
             return
         }
-        if (error == 'Error: timeout of 10000ms exceeded') {
+        if (err == 'Error: timeout of 10000ms exceeded') {
             console.log('网络超时了')
             localStorage.showneterror = true;
             window.location.reload();
@@ -140,13 +141,13 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
         instance(options)
             .then(function (res) {
                 // console.log(res);
-                localStorage.removeItem('showneterror');
+                // localStorage.removeItem('showneterror');
                 resolve(res);
                 return false;
             })
             .catch(function (err) {
                 // console.log(err)
-                localStorage.removeItem('showneterror');
+                // localStorage.removeItem('showneterror');
                 Toast({
                     message: err.message,
                     position: "center",

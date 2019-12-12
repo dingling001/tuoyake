@@ -4,7 +4,7 @@ import "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import 'lib-flexible/flexible'
+import 'lib-flexible'
 // import './assets/js/window'
 import "@/style/reset.scss";
 import VueWechatTitle from "vue-wechat-title";
@@ -15,7 +15,6 @@ import api from "./http";
 // import VueQrcode from "@xkeshi/vue-qrcode";
 
 import 'nprogress/nprogress.css' //这个样式必须引入
-// import "./theme.js";
 import 'video.js/dist/video-js.css'
 import 'vue-video-player/src/custom-theme.css'
 import VideoPlayer from 'vue-video-player'
@@ -50,12 +49,13 @@ Vue.use(vueCity);
 //然后就可以在项目中引用了,热门城市 hotCityList 参数可以根据自己的需求传或者不传
 // 简单配置
 Vue.component('NoData',NoData)
+import store from './store'//引入store
 // simple history management
 /* eslint-disable no-new */
 new Vue({
     el: "#app",
     router,
-    // store,
+    store,
     components: {
         App
     }

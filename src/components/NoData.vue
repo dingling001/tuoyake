@@ -17,9 +17,9 @@
                 type: Number || String,
                 default: 0
             },
-            'text':{
-                type:String,
-                default:'暂无数据'
+            'text': {
+                type: String,
+                default: '暂无数据'
             }
         }
     }
@@ -37,6 +37,7 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        background-color: #fff;
 
         img {
             /*width: 297px;*/
@@ -44,7 +45,8 @@
             width: 144px;
             height: 111px
         }
-        .text{
+
+        .text {
             line-height: 30px;
             font-size: 14px;
             /*px*/

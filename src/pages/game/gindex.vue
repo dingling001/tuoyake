@@ -79,8 +79,7 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="nodata" v-else> <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150">暂无数据</NoData>
-            </div>
+            <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150" :text="'暂无数据'"></NoData>
         </div>
     </div>
 </template>
@@ -96,7 +95,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: localStorage.wapcity||'北京',
+                city: localStorage.wapcity || '北京',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -122,8 +121,8 @@
                 rindex: 0,
                 totop: false,
                 adimg: '',
-                street: '大兴',
-                flag:false
+                street: '电竞馆名称/地址',
+                flag: false
             }
         },
         inject: ['app'],
@@ -134,7 +133,6 @@
 
         mounted() {
             // this._GetBarList();
-            this.initMap();
             this._GetLabelList();
             this._GetAdv();
         },
@@ -199,7 +197,7 @@
                     this.lindex == 0 ? '' : this.district,
                     this.circle,
                 ).then(res => {
-                    this.flag=true;
+                    this.flag = true;
                     if (res.code == 1) {//请求成功
                         if (this.netlist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -396,6 +394,7 @@
                 background-size: 100% auto;
                 background-position: top center;
                 background-repeat: no-repeat;
+
                 .index_address {
                     color: #fff;
                     padding: 5px 8px;
