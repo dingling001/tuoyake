@@ -15,7 +15,6 @@ let cancel,
 const CancelToken = axios.CancelToken;
 //配置全局取消数组
 window.__axiosPromiseArr = [];
-
 const instance = axios.create(config);
 // 去掉请求控制拦截
 // instance.interceptors.request.use(
@@ -32,7 +31,6 @@ const instance = axios.create(config);
 //     return Promise.reject(error);
 //   }
 // );
-
 instance.interceptors.response.use(
     function (response) {
         // console.log(response)
@@ -54,14 +52,14 @@ instance.interceptors.response.use(
     },
     function (err) {
         console.log(err)
-        if (!err) {
-            location.href = '/';
+        if (!err.response) {
+            // location.href = '/';
             return
         }
-        if (err == 'Error: timeout of 10000ms exceeded') {
-            console.log('网络超时了')
-            localStorage.showneterror = true;
-            window.location.reload();
+        var originalRequest = err.config;
+        if (err.code == 'ECONNABORTED' && err.message.indexOf('timeout') != -1 && !originalRequest._retry) {
+            originalRequest._retry = true
+            return axios.request(originalRequest);
         }
         switch (err.response.status) {
             case 400:

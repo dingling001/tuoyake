@@ -1,5 +1,5 @@
 <template>
-    <div class="cbox" @wapcity="wapcityval">
+    <div class="cbox">
         <van-sticky :offset-top="offsettop" class="sticky ">
             <div class="cselect">
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
@@ -21,7 +21,7 @@
                             <div class="citems dright">
                                 <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
                                      :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
-                                    {{c.name}}
+                                    {{districtlist[lindex].childlist[rindex].name}}
                                 </div>
                             </div>
                         </div>
@@ -61,7 +61,9 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150" :text="'暂无匹配的商家'"></NoData>
+        <div class="clist" v-if="flag&&netlist.length==0" >
+            <NoData class="nodata" :top="0" :text="'暂无匹配的商家'"></NoData>
+        </div>
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
@@ -69,6 +71,12 @@
 <script>
     export default {
         name: "competition",
+        props: {
+            wapcity: {
+                type: String,
+                default: '北京'
+            }
+        },
         data() {
             return {
                 isDownLoading: false,
@@ -110,19 +118,14 @@
         inject: ['app'],
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
-            this.city = sessionStorage.wapcity;
+            this.city = this.wapcity;
         },
         mounted() {
-            this.wapcityval();
             this._GetBarList();
             this._GetLabelList();
             this._GetAreaPidByName();
-
         },
         methods: {
-            wapcityval(val) {
-                console.log(val,'wap')
-            },
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
@@ -130,7 +133,7 @@
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
-                    sessionStorage.wapcity,
+                    this.city,
                     this.lat,
                     this.lng,
                     this.recommend,
@@ -226,10 +229,12 @@
             // 选择城市
             selcetcity(index) {
                 this.lindex = index;
+                console.log(index)
                 if (index == 0) {
                     this.$refs.item.toggle();
                     this.district = this.districtlist[index].name;
                     this.page = 0;
+                    this.circle = '';
                     this.netlist = [];
                     this._GetBarList();
                 }
@@ -372,6 +377,8 @@
 
         .clist {
             transition: ease-in-out .3s;
+            position: relative;
+            min-height: 200px;
 
             .citem {
                 display: flex;

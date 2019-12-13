@@ -20,4 +20,5 @@ export default {
   // 携带凭证
   // 返回数据类型
   responseType: "json",
+
 };
