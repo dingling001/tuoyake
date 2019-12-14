@@ -104,7 +104,6 @@
                 swiperlist: [],
                 offsettop: 0,
                 flag: false,
-                loccity: '',//定位城市
             };
         },
         provide() {
@@ -126,7 +125,6 @@
                 this.offsettop = this.$refs.index_top.offsetHeight;
                 // console.log(this.offsettop)
                 Bus.$emit("home", this.offsettop);
-                this._GetAreaPidByName()
             },
             city: {
                 handler(val) {
@@ -146,6 +144,8 @@
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
+            console.log(sessionStorage.wapcity, 'wapcity')
+            console.log(sessionStorage.pos, 'pos')
             if (sessionStorage.wapcity && sessionStorage.pos) {
                 this.city = sessionStorage.wapcity;
                 _.$emit('pos', JSON.parse(sessionStorage.pos))
@@ -168,8 +168,8 @@
             // 获取轮播图
             _GetSlideList() {
                 this.$api.GetSlideList(this.city).then((res) => {
-                    this.flag = true;
                     if (res.code == 1) {
+                        this.flag = true;
                         this.swiperlist = res.data;
                     } else {
                         // this.$com.showtoast(res.msg)
@@ -191,25 +191,25 @@
                         console.log(res, 'location')
                         if (status == 'complete' && res.status == 1) {
                             localStorage.loccity = res.addressComponent.city || res.addressComponent.province;
-                            _.city = sessionStorage.wapcity || _.loccity || '北京';
-                            var pos = [res.position.lat, res.position.lng]
+                            _.city = sessionStorage.wapcity || res.addressComponent.city || res.addressComponent.province || '北京';
+                            var pos = [res.position.lat, res.position.lng];
                             sessionStorage.pos = JSON.stringify(pos);
+                            sessionStorage.wapcity=res.addressComponent.city || res.addressComponent.province;
                             _.$emit('city', _.city);
                             _.$emit('pos', [res.position.lat, res.position.lng])
                             // _.keyword = res.addressComponent.street;
                         } else {
+                            _.$com.showtoast('获取位置失败');
                             Dialog.alert({
                                 title: '',
                                 message: '为了正常使用，\n 请开启GPRS定位功能'
                             }).then(() => {
                                 _.city = '北京';
-                                _.$com.showtoast('获取位置失败');
                                 _.$emit('pos', ['39.73', '116.33'])
                                 _.$emit('city', _.city);
                             })
                         }
                         _._GetSlideList();
-
                     })
                 })
             },

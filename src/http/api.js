@@ -52,14 +52,15 @@ instance.interceptors.response.use(
     },
     function (err) {
         console.log(err)
-        if (!err.response) {
-            // location.href = '/';
+        if (!err) {
+            localStorage.showneterror = true;
+            window.location.reload();
             return
         }
-        var originalRequest = err.config;
-        if (err.code == 'ECONNABORTED' && err.message.indexOf('timeout') != -1 && !originalRequest._retry) {
-            originalRequest._retry = true
-            return axios.request(originalRequest);
+        if (JSON.stringify(err).indexOf('timeout') != -1) {
+            console.log('网络超时了')
+            localStorage.showneterror = true;
+           window.location.reload();
         }
         switch (err.response.status) {
             case 400:

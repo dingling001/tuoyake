@@ -1,19 +1,38 @@
 <template>
     <div class="sbox">
-        <div class="swiperbox">
-            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span
-                    class="iconfont iconjiantouarrow486"></span></div>
-            <swiper :options="swiperOption" ref="mySwiper" class="swiper_r">
+        <van-sticky :offset-top="offsettop" class=" swiperbox sticky ">
+            <!--            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span-->
+            <!--                    class="iconfont iconjiantouarrow486"></span></div>-->
+            <van-dropdown-menu active-color="#f2313b">
+                <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false">
+                    <div class="citybox">
+                        <div class="citems dleft">
+                            <div v-for="(item ,index) in districtlist" :key="index"
+                                 :class="{activecity:index==lindex}"
+                                 @click="selcetcity(index)">{{item.name}}
+                            </div>
+                        </div>
+                        <div class="citems dright">
+                            <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
+                                 :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
+                                {{c.name}}
+                            </div>
+                        </div>
+                    </div>
+                </van-dropdown-item>
+            </van-dropdown-menu>
+            <swiper :options="swiperOption" ref="mySwiper" class="swiper_r" v-if="navlist.length">
                 <swiper-slide v-for="(item,index) in navlist" :key="item.id" @click.native="activeList(index,item.id)">
                     <span :class="{activespan:ind==index}">{{item.name}}</span>
                 </swiper-slide>
             </swiper>
-        </div>
-        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="clublist.length" class="jlist">
+        </van-sticky>
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="schoolshow&&clublist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
                     :finished-text="finishedtext">
-                <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.category_id" @click="godetail(item.category_id)">
+                <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.id"
+                     @click="godetail(item.category_id)">
                     <div class="jimg"><img :src="item.image" alt=""></div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -24,6 +43,10 @@
                 </div>
             </van-list>
         </van-pull-refresh>
+        <div class="jlist" v-if="schoolshow&&clublist.length==0">
+            <NoData class="nodata" :top="0" :text="'暂无相关学院'"></NoData>
+        </div>
+        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
     </div>
 </template>
 
@@ -33,6 +56,16 @@
 
     export default {
         name: "school",
+        props: {
+            wapcity: {
+                type: String,
+                default: '北京'
+            },
+            pos: {
+                type: Array,
+                default: ['39.73', '116.33']
+            }
+        },
         data() {
             return {
                 swiperOption: {
@@ -44,7 +77,12 @@
                     observers: true,
                     observeParents: true,
                 },
-                navlist: [],
+                navlist: [
+                    {
+                        name: '全部',
+                        id: ''
+                    }
+                ],
                 ind: -1,
                 clist: [],
                 clublist: [],
@@ -56,8 +94,24 @@
                 isDownLoading: false,
                 finished: false,
                 offset: -200,
-                finishedtext: '到底了'
-
+                finishedtext: '到底了',
+                citypid: '',
+                district: '',
+                circle: '',
+                districtlist: [
+                    {
+                        id: '',
+                        childlist: [],
+                        name: "全部地区",
+                        pid: '',
+                        spacer: ""
+                    }
+                ],
+                lindex: 0,
+                rindex: -1,
+                schoolshow: false,
+                showoverlay: false,
+                offsettop: 0
             }
         },
         components: {
@@ -65,17 +119,12 @@
             swiperSlide
         },
         created() {
+            this.city = this.wapcity;
+
             this.get_CollegeCategory()
-        },
-        watch: {
-            'city': {
-                handler(val) {
-                    this.city = val;
-                    console.log(val)
-                    this._CollegeIndex();
-                },
-                immediate: true
-            }
+            this._CollegeIndex();
+            this._GetAreaPidByName();
+
         },
         methods: {
             // 获取学院分类
@@ -83,7 +132,7 @@
                 this.$api.CollegeCategory().then(res => {
                     console.log(res)
                     if (res.code == 1) {
-                        this.navlist = res.data;
+                        this.navlist.concat(res.data);
                     }
                 })
             },
@@ -94,9 +143,12 @@
                 this.$api.CollegeIndex(
                     pageNumber,
                     this.category_id,
-                    this.keyword,
                     this.city,
+                    this.district,
+                    this.circle,
+                    this.keyword,
                 ).then(res => {
+                    this.schoolshow = true;
                     if (res.code == 1) {//请求成功
                         if (this.clublist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -119,11 +171,50 @@
                         } else {
                             console.log(res)
                             this.clublist = res.data.data;
-                            this.finishedtext = '没有更多了'
+                            this.finishedtext = '到底了'
                         }
                     }
-
                 })
+            },
+            // 根据城市换取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    this.citypid = res.data;
+                    this._GetAreaListTree();
+                    this._CollegeIndex();
+                })
+            },
+            // 获取当前城市的区
+            _GetAreaListTree() {
+                this.$api.GetAreaListTree(this.citypid).then(res => {
+                    this.districtlist = this.districtlist.concat(res.data);
+                    // console.log(this.districtlist)
+                    this.district = this.districtlist[0].name;
+                })
+            },
+            // 选择城市
+            selcetcity(index) {
+                this.lindex = index;
+                console.log(index)
+                if (index == 0) {
+                    this.$refs.item.toggle();
+                    this.district = '';
+                    this.page = 0;
+                    this.circle = '';
+                    this.clublist = [];
+                    this._CollegeIndex();
+                }
+                this.district = this.districtlist[index].name;
+            },
+            // 选择地区
+            selcetarea(index, name, cname) {
+                this.rindex = index;
+                this.$refs.item.toggle();
+                // this.district = name;
+                this.circle = name;
+                this.page = 0;
+                this.clublist = [];
+                this._CollegeIndex();
             },
             // 下拉刷新
             onRefresh() {
@@ -137,7 +228,6 @@
             // 上拉加载
             onLoad() {
                 this.page++;
-                console.log('onload')
                 this.isUpLoading = true;
                 this._CollegeIndex();
             },
@@ -145,6 +235,7 @@
             activeList(index, id) {
                 this.page = 0;
                 this.ind = index;
+                this.schoolshow = false;
                 this.category_id = id;
                 this._CollegeIndex();
             },
@@ -157,6 +248,8 @@
 </script>
 
 <style scoped lang="scss">
+    @import "../../style/reset";
+
     .sbox {
         background-color: #fff;
         margin-top: -10px;
@@ -166,16 +259,98 @@
         .swiperbox {
             display: flex;
             align-items: center;
-            padding: 0 0 0 20px;
+            padding: 0 39px;
+            justify-content: space-between;
+            color: #333333;
+            background-color: #fff;
+            font-size: 12px;
+            /* px */
+            .cselectitem {
+                display: flex;
+                align-items: center;
+                padding: 25px 0;
+                flex: 1;
+                justify-content: center;
+
+                .iconfont {
+                    color: #BBBBBB;
+                    font-size: 14px;
+                    /*px*/
+                    margin-left: 5px;
+                }
+
+                &.cselectitemactive {
+                    color: $baseRed;
+                    font-weight: bold;
+                }
+            }
+
+            /deep/ .van-cell {
+                font-size: 12px;
+                /*px*/
+            }
+
+            /deep/ .van-dropdown-menu {
+                flex: 2;
+
+                .van-ellipsis {
+                    font-size: 12px;
+                    /*px*/
+                }
+
+
+                &:after {
+                    border: 0;
+                }
+
+                .citybox {
+                    /*align-items: center;*/
+                    /*justify-content: space-between;*/
+                    position: relative;
+                    max-height: 300px;
+                    min-height: 220px;
+                    overflow: hidden;
+
+                    .citems {
+                        position: absolute;
+                        flex: 1;
+                        text-align: center;
+                        width: 50%;
+                        height: 100%;
+                        overflow: scroll;
+
+                        div {
+                            padding: 10px 0;
+                            font-size: 12px;
+                            /*px*/
+                            color: #666;
+
+                            &.activecity {
+                                color: $baseRed;
+                                font-weight: bold;
+                            }
+                        }
+
+                        &.dleft {
+                            left: 0;
+                        }
+
+                        &.dright {
+                            right: 0;
+
+                        }
+                    }
+                }
+            }
 
             .all {
                 flex-shrink: 0;
+                padding: 25px 0;
 
                 span {
                     color: #999;
                     font-size: 12px;
                     /*px*/
-
                 }
 
                 .iconfont {
@@ -223,9 +398,20 @@
                 }
 
             }
+
+            &.sticky {
+                /deep/ .van-sticky {
+                    display: flex;
+                    align-items: center;
+                }
+            }
         }
 
         .jlist {
+            padding: 20px 0;
+            min-height: 300px;
+            position: relative;
+
             .jitem {
                 margin: 0 17px 17px 17px;
                 /*display: flex;*/

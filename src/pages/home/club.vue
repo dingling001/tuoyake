@@ -2,9 +2,9 @@
     <div class="jbox">
         <div class="jnav">
             <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
-                  @click="activeList(index,item.id)">{{item.name}}</span>
+                  @click="activeList(index,item.id)" style="flex: 1">{{item.name}}</span>
         </div>
-        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="cshow&&clublist.length" class="jlist">
+        <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="cshow&&clublist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
                     :finished-text="finishedtext">
@@ -27,6 +27,16 @@
 <script>
     export default {
         name: "club",
+        props: {
+            wapcity: {
+                type: String,
+                default: '北京'
+            },
+            pos: {
+                type: Array,
+                default: ['39.73', '116.33']
+            }
+        },
         data() {
             return {
                 clist: [
@@ -35,7 +45,7 @@
                         id: ''
                     }
                 ],
-                cshow:false,
+                cshow: false,
                 clublist: [],
                 ind: 0,
                 page: 0,
@@ -50,24 +60,17 @@
             }
         },
         created() {
-            this._Category()
-        },
-        watch: {
-            'city': {
-                handler(val) {
-                    this.city = val;
-                    console.log(this.city)
-                    this._ClubIndex();
-                },
-                immediate: true
-            }
+            this.city = this.wapcity;
+            this.position = this.pos;
+            this._Category();
+            this._ClubIndex()
         },
         methods: {
             // 获取俱乐部分类
             _Category() {
                 this.$api.Category().then(res => {
                     if (res.code == 1) {
-                        this.clist =this.clist.concat(res.data)
+                        this.clist = this.clist.concat(res.data)
                     }
                 })
             },
@@ -78,10 +81,10 @@
                 this.$api.ClubIndex(
                     pageNumber,
                     this.category_id,
-                    this.keyword,
                     this.city,
+                    this.keyword,
                 ).then(res => {
-                    this.cshow=true;
+                    this.cshow = true;
                     if (res.code == 1) {//请求成功
                         if (this.clublist.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -130,6 +133,7 @@
             activeList(index, id) {
                 this.page = 0;
                 this.ind = index;
+                this.cshow=false;
                 this.category_id = id;
                 this.clublist = [];
                 this._ClubIndex();
@@ -153,14 +157,13 @@
             display: flex;
             align-items: center;
             /*justify-content: space-between;*/
-            padding: 0 20px;
-
+            padding:20px;
+            /*border-bottom: 1px solid #f5f5f5;*/
             span {
                 font-size: 12px;
                 /*px*/
-                padding: 25px 10px 25px 0;
                 color: #999;
-
+                text-align: center;
             }
 
             .activespan {
@@ -171,6 +174,7 @@
         }
 
         .jlist {
+            padding: 15px 0;
             .jitem {
                 margin: 0 17px 17px 17px;
                 /*display: flex;*/
