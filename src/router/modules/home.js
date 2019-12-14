@@ -29,7 +29,7 @@ export default [
                 path: '/club',
                 name: 'club',
                 meta: {
-                    title: "电竞俱乐部",
+                    title: "俱乐部",
                     index: 1,
                     showF: true,
                     showH: false
@@ -138,7 +138,7 @@ export default [
         component: resolve => require(["../../pages/home/changecity"], resolve)
     },
     {
-        path: '/search/:keyword',
+        path: '/search',
         name: 'search',
         meta: {
             title: "搜索",

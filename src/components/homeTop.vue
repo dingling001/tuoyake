@@ -19,7 +19,7 @@
                         <span>{{city||'定位中...'}}</span>
                     </div>
                 </div>
-                <router-link :to="{name:'search'}" tag="div" class="searchbox">
+                <router-link to="/search" tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
@@ -40,8 +40,7 @@
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
     import Bus from '../bin/Bus'
-    import axios from 'axios'
-    import qs from 'qs'
+    import {Dialog} from 'vant'
 
     export default {
         name: "homeTop",
@@ -142,12 +141,19 @@
             this.title = '托亚克 | ' + this.city;
         },
         mounted() {
+            var _ = this;
             this.ind = this.$route.meta.index || 0;
             this.offsettop = this.$refs.index_top.offsetHeight;
             localStorage.offsettop = this.offsettop;
             Bus.$emit("home", this.offsettop);
-            this.city = sessionStorage.wapcity;
-            this.initMap();
+            if (sessionStorage.wapcity && sessionStorage.pos) {
+                this.city = sessionStorage.wapcity;
+                _.$emit('pos', JSON.parse(sessionStorage.pos))
+                _.$emit('city', _.city);
+                _._GetSlideList()
+            } else {
+                this.initMap();
+            }
         },
         components: {
             swiper,
@@ -162,7 +168,7 @@
             // 获取轮播图
             _GetSlideList() {
                 this.$api.GetSlideList(this.city).then((res) => {
-
+                    this.flag = true;
                     if (res.code == 1) {
                         this.swiperlist = res.data;
                     } else {
@@ -182,26 +188,33 @@
                     })
                     map.addControl(getlocation)
                     getlocation.getCurrentPosition(function (status, res) {
-                        _.flag = true;
+                        console.log(res, 'location')
                         if (status == 'complete' && res.status == 1) {
-                            _.loccity = res.addressComponent.city || res.addressComponent.province;
+                            localStorage.loccity = res.addressComponent.city || res.addressComponent.province;
                             _.city = sessionStorage.wapcity || _.loccity || '北京';
+                            var pos = [res.position.lat, res.position.lng]
+                            sessionStorage.pos = JSON.stringify(pos);
+                            _.$emit('city', _.city);
+                            _.$emit('pos', [res.position.lat, res.position.lng])
                             // _.keyword = res.addressComponent.street;
                         } else {
-                            _.city = '北京';
-                            _.$com.showtoast('获取位置失败')
-                            // Bus.$emit("citypid", 2)
-                            // Bus.$emit("city", '北京');
-                            // Bus.$emit('lat', 0);
-                            // Bus.$emit('lng', 0);
+                            Dialog.alert({
+                                title: '',
+                                message: '为了正常使用，\n 请开启GPRS定位功能'
+                            }).then(() => {
+                                _.city = '北京';
+                                _.$com.showtoast('获取位置失败');
+                                _.$emit('pos', ['39.73', '116.33'])
+                                _.$emit('city', _.city);
+                            })
                         }
                         _._GetSlideList();
-                        _.$emit('city', _.city);
+
                     })
                 })
             },
             go_city() {
-                this.$router.push({path: '/changecity', query: {loccity: this.loccity}})
+                this.$router.push({path: '/changecity'})
             }
         },
         computed: {
@@ -311,6 +324,7 @@
                 .iconfont {
                     margin-right: 8px;
                     font-weight: normal;
+                    font-size: 16px;
                 }
 
                 &:active {

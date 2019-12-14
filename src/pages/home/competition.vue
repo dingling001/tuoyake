@@ -61,7 +61,7 @@
                 </div>
             </van-list>
         </van-pull-refresh>
-        <div class="clist" v-if="flag&&netlist.length==0" >
+        <div class="clist" v-if="flag&&netlist.length==0">
             <NoData class="nodata" :top="0" :text="'暂无匹配的商家'"></NoData>
         </div>
         <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
@@ -75,6 +75,10 @@
             wapcity: {
                 type: String,
                 default: '北京'
+            },
+            pos: {
+                type: Array,
+                default: ['39.73', '116.33']
             }
         },
         data() {
@@ -111,7 +115,8 @@
                 rindex: 0,
                 totop: false,
                 showoverlay: false,
-                flag: false
+                flag: false,
+                position: []
             }
         },
 
@@ -119,6 +124,7 @@
         created() {
             this.offsettop = parseInt(localStorage.offsettop);
             this.city = this.wapcity;
+            this.position = this.pos;
         },
         mounted() {
             this._GetBarList();
@@ -134,8 +140,8 @@
                     pageNumber,
                     this.keyword,
                     this.city,
-                    this.lat,
-                    this.lng,
+                    this.position[0],
+                    this.position[1],
                     this.recommend,
                     this.label,
                     this.lindex == 0 ? '' : this.district,
@@ -428,6 +434,7 @@
                         font-size: 14px;
                         /*px*/
                         max-width: 235px;
+                        line-height: 18px;
                     }
 
                     .cname {
@@ -435,7 +442,7 @@
                         align-items: center;
                         justify-content: space-between;
                         padding: 0 15px 0 0;
-                        margin: 5px 0;
+                        margin: 5px 0 0 0;
 
                         .namebox {
                             display: flex;
@@ -461,7 +468,7 @@
                     .ctype {
                         display: flex;
                         align-items: center;
-                        margin: 10px 0 5px 0;
+                        margin: 5px 0 0 0;
                         flex-wrap: wrap;
                         min-height: 15px;
 
@@ -481,7 +488,7 @@
                         color: #666666;
                         font-size: 12px;
                         /*px*/
-                        padding: 0 15px 10px 0;
+                        padding: 5px 15px 5px 0;
                         border-bottom: 1px solid #E4E4E4;
                         /*no*/
                         .van-icon {
@@ -489,7 +496,7 @@
                             font-weight: bold;
                             font-size: 14px;
                             /*px*/
-                            /*margin-right: 5px;*/
+                            margin-right: 2px;
                         }
 
                         .single-line-text {

@@ -144,16 +144,16 @@
         },
 
         mounted() {
-            this.loccity = this.$route.query.loccity;
+            this.loccity = localStorage.loccity;
             this.screenHeight = window.screen.availHeight - 200; //设置#topdiv的高度
             if (sessionStorage.changecity) {
-                if (sessionStorage.wapcity != this.loccity) {
+                if (sessionStorage.wapcity != localStorage.loccity) {
                     Dialog.confirm({
                         title: '',
-                        message: '检测到您目前所在城市是' + this.loccity + '\n是否要切换'
+                        message: '检测到您目前所在城市是<b>' + localStorage.loccity + '</b>\n是否要切换'
                     }).then(() => {
                         // on confirm
-                        sessionStorage.wapcity = this.loccity;
+                        sessionStorage.wapcity = localStorage.loccity;
                         location.href = '/'
                     }).catch(() => {
                         // on cancel

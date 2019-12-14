@@ -1,8 +1,8 @@
 <template>
     <div class="index">
         <!--<el-amap class="amap-box" vid="map" :plugin="plugin"></el-amap>-->
-        <homeTop @city="getcity"></homeTop>
-        <router-view class="router-view" :wapcity="city" v-if="city"></router-view>
+        <homeTop @city="getcity" @pos="getpos"></homeTop>
+        <router-view class="router-view" :wapcity="city" :pos="position" v-if="city&&position.length"></router-view>
     </div>
 </template>
 
@@ -14,7 +14,8 @@
         name: "home",
         data() {
             return {
-                city: ''
+                city: '',
+                position: []
             }
         },
         created() {
@@ -23,6 +24,10 @@
             getcity(val) {
                 console.log(val, 'val')
                 this.city = val
+            },
+            getpos(val) {
+                console.log(val)
+                this.position = val;
             }
         },
         components: {
@@ -41,6 +46,7 @@
         background-size: 100% auto;
         background-position: top center;
         background-repeat: no-repeat;
+
         .router-view {
             margin-top: -60px;
             position: relative;

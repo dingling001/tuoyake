@@ -21,7 +21,7 @@
             }
         },
         created() {
-            this.placeholder = this.$route.params.keyword
+            this.placeholder = this.$route.query.keyword
         }
     }
 </script>
@@ -33,7 +33,7 @@
             height: 56px;
             display: flex;
             align-items: center;
-            background: linear-gradient(90deg, #441219, #29182E);
+            /*background: linear-gradient(90deg, #441219, #29182E);*/
             padding: 0 15px;
 
             .search_input {
