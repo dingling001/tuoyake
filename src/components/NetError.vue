@@ -1,7 +1,8 @@
 <template>
     <div class="netbox">
         <div class="netitem">
-            <span class="iconfont iconzanwushuju"></span>
+            <!--<span class="iconfont iconzanwushuju"></span>-->
+            <img src="../assets/img/nonet.png" alt="">
             <div class="text">网络连接超时了...</div>
             <van-button type="warning" size="small" @click="refresh">刷新</van-button>
         </div>
@@ -51,6 +52,9 @@
                 font-size: 13px;
                 /*px*/
                 color: #ccc;
+            }
+            img{
+                width: 60%;
             }
         }
 

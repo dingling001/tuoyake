@@ -17,7 +17,6 @@
         <NoData v-else :img="noorder"></NoData>
     </div>
 </template>
-
 <script>
     // import NoData from '../../components/NoData'
     export default {
