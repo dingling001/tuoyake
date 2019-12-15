@@ -26,7 +26,7 @@
                 <van-tab title="正在进行"></van-tab>
                 <van-tab title="获奖赛事"></van-tab>
                 <van-tab title="已结束"></van-tab>
-                <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="singList.length">
+                <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="show&&singList.length">
                     <van-list
                             v-model="isUpLoading" :finished="finished" @load="onLoad" class="comlist" :offset="offset"
                             finished-text="到底了">
@@ -42,18 +42,22 @@
                                 <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>
                                     {{item.start_time}} ~ {{item.end_time}}
                                 </div>
-                                <div class="synopsis van-ellipsis">{{item.remark}}</div>
+                                <div class="synopsis van-ellipsis">{{item.bar_name}}</div>
                             </div>
                         </div>
                     </van-list>
                 </van-pull-refresh>
-                <div class="nodata">暂无数据</div>
+                <div class="comlist" v-if="show&&singList.length==0">
+                    <NoData :img="img" :text="''" :top="100"></NoData>
+                </div>
             </van-tabs>
         </div>
     </div>
 </template>
 
 <script>
+    import img from '../../assets/img/noapplication.png'
+
     export default {
         name: "myApplication",
         data() {
@@ -67,7 +71,9 @@
                 page: 0,
                 status: 1,
                 singList: [],
-                nav_active: 0
+                nav_active: 0,
+                show: false,
+                img: img
             }
         },
         created() {
@@ -87,7 +93,8 @@
             changgeNav() {
                 this.status = this.nav_active + 1;
                 this.page = 0;
-                this.singList=[];
+                this.show=false;
+                this.singList = [];
                 this._GetSignList()
             },
             // 返回上一页
@@ -117,6 +124,7 @@
                 this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 let pageNumber = this.page + 1;
                 this.$api.GetSignList(pageNumber, this.status).then(res => {
+                    this.show = true;
                     if (res.code == 1) {//请求成功
                         if (this.singList.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -141,8 +149,8 @@
                     }
                 })
             },
-             // 去赛事详情
-            gossdetail(id){
+            // 去赛事详情
+            gossdetail(id) {
                 this.$router.push({path: '/gamedetail', query: {match_id: id, cid: this.id}})
             },
         }
@@ -170,6 +178,8 @@
 
                 .iconfanhui {
                     font-weight: bold;
+                    font-size: 16px;
+                    /*px*/
                 }
 
                 .iconcaret-right {
@@ -240,6 +250,15 @@
 
             .comlist {
                 padding: 20px 0;
+                min-height: 300px;
+                position: relative;
+
+                /deep/ .nodatabox {
+                    img {
+                        width: 80%;
+                        height: auto;
+                    }
+                }
 
                 .taocan {
                     padding: 15px 18px;

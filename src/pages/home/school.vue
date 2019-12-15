@@ -1,6 +1,6 @@
 <template>
     <div class="sbox">
-        <van-sticky :offset-top="offsettop" class=" swiperbox sticky ">
+        <van-sticky :offset-top="offsettop" class=" swiperbox sticky" ref="sticky">
             <!--            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span-->
             <!--                    class="iconfont iconjiantouarrow486"></span></div>-->
             <van-dropdown-menu active-color="#f2313b">
@@ -111,7 +111,7 @@
                 rindex: -1,
                 schoolshow: false,
                 showoverlay: false,
-                offsettop: 0
+                offsettop: parseInt(localStorage.offsettop)
             }
         },
         components: {
@@ -126,6 +126,7 @@
             this._GetAreaPidByName();
 
         },
+
         methods: {
             // 获取学院分类
             get_CollegeCategory() {
@@ -403,6 +404,7 @@
                 /deep/ .van-sticky {
                     display: flex;
                     align-items: center;
+                    background-color: #fff;
                 }
             }
         }

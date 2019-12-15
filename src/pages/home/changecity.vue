@@ -19,9 +19,9 @@
                 <div v-if="show==1">
                     <div class="yin">{{strA}}</div>
                 </div>
-                <div class="top" :style="`height: ${screenHeight}px`" ref="topContainer">
+                <div class="top" :style="`height: ${screenHeight}`" ref="topContainer">
                     <div class="common sort">当前城市</div>
-                    <div class="city" @click="hotcity(loccity)">{{loccity}}</div>
+                    <div class="city" @click="hotcity(loccity)">{{loccity||'尚未开启定位'}}</div>
                     <div class="common sort">热门城市</div>
                     <div class="hotaddr">
                         <div v-for="(item, index) in hotaddr" :key="index">
@@ -145,8 +145,8 @@
 
         mounted() {
             this.loccity = localStorage.loccity;
-            this.screenHeight = window.screen.availHeight - 200; //设置#topdiv的高度
-            if (sessionStorage.changecity) {
+            this.screenHeight = 100 + 'vh'; //设置#topdiv的高度
+            if (sessionStorage.changecity && localStorage.loccity) {
                 if (sessionStorage.wapcity != localStorage.loccity) {
                     Dialog.confirm({
                         title: '',
@@ -183,9 +183,11 @@
                 location.href = '/'
             },
             hotcity(item) {
-                sessionStorage.wapcity = item;
-                sessionStorage.changecity = true;
-                location.href = '/'
+                if (item) {
+                    sessionStorage.wapcity = item;
+                    sessionStorage.changecity = true;
+                    location.href = '/'
+                }
             },
             oninput() {
                 this.showseach = this.address;

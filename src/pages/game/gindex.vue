@@ -1,23 +1,24 @@
 <template>
     <div class="index">
-        <div class="index_top">
-            <van-sticky :offset-top="0">
-                <div class="htop">
-                    <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{street}}</span></div>
-                    <div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>
-                </div>
-            </van-sticky>
-            <div class="swiperbox">
-                <!--<swiper :options="swiperOption" ref="mySwiper">-->
-                <!--<swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">-->
-                <!--</swiper-slide>-->
-                <!--<div class="swiper-pagination" slot="pagination"></div>-->
-                <!--</swiper>-->
-                <img :src="adimg" alt="">
-            </div>
-        </div>
+        <!--<div class="index_top">-->
+        <!--<van-sticky :offset-top="0">-->
+        <!--<div class="htop">-->
+        <!--<div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{street}}</span></div>-->
+        <!--<div class="index_address"><span class="iconfont icondingweiweizhi"></span> {{city}}</div>-->
+        <!--</div>-->
+        <!--</van-sticky>-->
+        <!--<div class="swiperbox">-->
+        <!--&lt;!&ndash;<swiper :options="swiperOption" ref="mySwiper">&ndash;&gt;-->
+        <!--&lt;!&ndash;<swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">&ndash;&gt;-->
+        <!--&lt;!&ndash;</swiper-slide>&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="swiper-pagination" slot="pagination"></div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</swiper>&ndash;&gt;-->
+        <!--<img :src="adimg" alt="">-->
+        <!--</div>-->
+        <!--</div>-->
+        <homeTop @cityinfo="getcityinfo" :showhome="false" :showtop="false" ref="htop"></homeTop>
         <div class="cbox">
-            <van-sticky :offset-top="75">
+            <van-sticky :offset-top="offsettop">
                 <div class="cselect">
                     <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
                         <span>推荐电竞馆</span>
@@ -59,32 +60,40 @@
                     <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
                         <div class="cimg">
                             <img :src="item.image" alt="">
+                            <span v-if="item.recommend==1">推荐</span>
                         </div>
                         <div class="cright">
+                            <div class="name single-line-text">{{item.name}}</div>
                             <div class="cname">
                                 <div class="namebox">
-                                    <div class="name single-line-text">{{item.name}}</div>
                                     <div class="startbox">
                                         <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>
                                     </div>
                                 </div>
-                                <span class="juli">{{item.distance}}</span>
+                                <div class="juli">{{item.distance}}</div>
                             </div>
-                            <div class="ctype"><span v-for="l in item.label_ids">{{l}}</span></div>
-                            <div class="caddress">
-                                <span class="iconfont icondingweiweizhi"></span>
+                            <div class="ctype"><span v-for="l in item.label_ids" class="single-line-text"
+                                                     :style="{maxWidth:(1/item.label_ids.length)*100+'%'}">{{l}}</span>
+                            </div>
+                            <div class="caddress ">
+                                <!--                            <span class="iconfont van-icon-location"></span>-->
+                                <van-icon name="location-o"/>
                                 <span class="single-line-text">{{item.address}}</span>
                             </div>
                         </div>
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <NoData class="nodata" v-if="flag&&netlist.length==0" :top="150" :text="'暂无数据'"></NoData>
+            <div class="clist" v-if="flag&&netlist.length==0">
+                <NoData class="nodata" :top="0" :text="'暂无匹配的商家'"></NoData>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import homeTop from '../../components/homeTop'
+
     export default {
         name: "competition",
         data() {
@@ -92,7 +101,7 @@
                 isDownLoading: false,
                 isUpLoading: false,
                 finished: false,
-                offsettop: 0,
+                offsettop: parseInt(localStorage.gindex_top) || 0,
                 page: 0,
                 keyword: '',
                 city: localStorage.wapcity || '北京',
@@ -120,59 +129,40 @@
                 lindex: 0,
                 rindex: 0,
                 totop: false,
-                adimg: '',
-                street: '电竞馆名称/地址',
-                flag: false
+                flag: false,
+
+            }
+        },
+        components: {
+            homeTop
+        },
+        watch: {
+            $route(val) {
+                console.log(val)
             }
         },
         inject: ['app'],
         created() {
 
-
         },
 
         mounted() {
             // this._GetBarList();
+            // this.getcityinfo();
+
             this._GetLabelList();
-            this._GetAdv();
-        },
-        watch: {
-            'city': {
-                handler(val) {
-                    var _ = this;
-                    _.city = val;
-                    _.page = 0;
-                    _._GetAreaPidByName()
-                    _._GetBarList();
-                },
-                immediate: true
-            }
         },
         methods: {
-            // 初始化位置
-            // initMap() {
-            //     var _ = this;
-            //     let map = new AMap.Map('map', {
-            //         zoom: 0
-            //     });
-            //     map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function () {
-            //         let getlocation = new AMap.Geolocation({
-            //             timeout: 6000,
-            //         })
-            //         map.addControl(getlocation)
-            //         getlocation.getCurrentPosition(function (status, res) {
-            //             if (status == 'complete' && res.status == 1) {
-            //                 console.log(res)
-            //                 _.city = res.addressComponent.province;
-            //                 _.street = res.addressComponent.street;
-            //                 _.lat = res.position.lat;
-            //                 _.lng = res.position.lng;
-            //                 _._GetAreaPidByName()
-            //                 _._GetBarList();
-            //             }
-            //         })
-            //     })
-            // },
+            // 获取当前城市
+            getcityinfo(val, val1) {
+                console.log(val1, 'gindex')
+                this.city = val;
+                this.lat = val1[0];
+                this.lng = val1[1];
+                this._GetBarList();
+                this._GetAreaPidByName()
+            },
+
             // 根据城市获取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
@@ -248,7 +238,9 @@
                 } else {
                     this.recommend = 1
                 }
-                console.log(this.recommend)
+                this.flag = false;
+                this.netlist = [];
+
                 this._GetBarList();
             },
             // 下拉刷新
@@ -307,49 +299,6 @@
                 this.netlist = [];
                 this._GetBarList();
             },
-            // 滚动到指定位置
-            gotop() {
-                let jump = document.querySelectorAll('.cselect')
-                let total = jump[0].offsetTop;
-                let distance = document.documentElement.scrollTop || document.body.scrollTop
-                // 平滑滚动，时长500ms，每10ms一跳，共50跳
-                console.log(distance)
-                let step = total / 10
-                if (total > distance) {
-                    smoothDown()
-                } else {
-                    let newTotal = distance - total;
-                    console.log(newTotal)
-                    step = newTotal / 50;
-                    smoothUp()
-                }
-
-                function smoothDown() {
-                    if (distance < total) {
-                        distance += step
-                        document.body.scrollTop = distance
-                        document.documentElement.scrollTop = distance
-                        setTimeout(smoothDown, 10)
-                    } else {
-                        document.body.scrollTop = total
-                        document.documentElement.scrollTop = total
-                    }
-                    console.log('smoothDown')
-                }
-
-                function smoothUp() {
-                    if (distance > total) {
-                        distance -= step
-                        document.body.scrollTop = distance
-                        document.documentElement.scrollTop = distance
-                        setTimeout(smoothUp, 10)
-                    } else {
-                        document.body.scrollTop = total;
-                        document.documentElement.scrollTop = total
-                    }
-                    console.log('smoothUp')
-                }
-            },
             // 打开全部列表
             opendistrict() {
                 this._GetAreaListTree()
@@ -358,13 +307,6 @@
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
-            // 获取广告位
-            _GetAdv() {
-                this.$api.GetAdv(2).then(res => {
-                    console.log(res)
-                    this.adimg = res.data.image;
-                })
-            }
         }
     }
 </script>
@@ -575,11 +517,16 @@
             }
 
             .clist {
+                transition: ease-in-out .3s;
+                position: relative;
+                min-height: 200px;
+
                 .citem {
                     display: flex;
                     justify-content: space-between;
-                    padding: 0 15px;
+                    padding: 0 0 0 15px;
                     margin: 0 0 30px 0;
+                    transition: ease-in-out .3s;
 
                     .cimg {
                         flex-shrink: 0;
@@ -590,39 +537,55 @@
                         justify-content: center;
                         margin-right: 20px;
                         background-color: #f2f2f2;
+                        position: relative;
+                        border-radius: 8px;
+                        overflow: hidden;
 
                         img {
                             width: 100%;
+                        }
+
+                        span {
+                            position: absolute;
+                            background: linear-gradient(90deg, #ec8215, #f0a532);
+                            top: 0;
+                            left: 0;
+                            border-radius: 8px 0 8px 0;
+                            color: #fff;
+                            text-align: center;
+                            line-height: 17px;
+                            font-size: 11px;
+                            /*    px*/
+                            width: 40px;
                         }
                     }
 
                     .cright {
                         flex: 1;
-                        height: 90px;
-                        display: flex;
-                        flex-direction: column;
+                        /*height: 90px;*/
+                        .name {
+                            color: #333333;
+                            font-weight: bold;
+                            font-size: 14px;
+                            /*px*/
+                            max-width: 235px;
+                            line-height: 18px;
+                        }
 
                         .cname {
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
+                            padding: 0 15px 0 0;
+                            margin: 5px 0 0 0;
 
                             .namebox {
                                 display: flex;
                                 align-items: center;
 
-                                .name {
-                                    color: #333333;
-                                    font-weight: bold;
-                                    font-size: 14px;
-                                    /*px*/
-                                    max-width: 120px;
-                                }
-
                                 .startbox {
                                     display: flex;
                                     align-items: center;
-                                    margin: 0 5px;
 
                                     .iconfont {
                                         color: $baseRed;
@@ -631,14 +594,18 @@
                                     }
                                 }
                             }
+
+                            .juli {
+                                color: #666666;
+                            }
                         }
 
                         .ctype {
                             display: flex;
                             align-items: center;
-                            margin: 15px 0;
+                            margin: 5px 0 0 0;
                             flex-wrap: wrap;
-                            max-width: 240px;
+                            min-height: 15px;
 
                             span {
                                 padding: 3px 5px;
@@ -646,7 +613,7 @@
                                 background: rgba(242, 49, 59, .1);
                                 color: $baseRed;
                                 border-radius: 8px;
-                                margin-right: 5px;
+                                margin: 0 5px 5px 0;
                             }
                         }
 
@@ -656,14 +623,15 @@
                             color: #666666;
                             font-size: 12px;
                             /*px*/
-                            padding: 0 0 15px 0;
+                            padding: 5px 15px 5px 0;
                             border-bottom: 1px solid #E4E4E4;
                             /*no*/
-                            .iconfont {
+                            .van-icon {
                                 color: #999999;
-                                font-size: 10px;
+                                font-weight: bold;
+                                font-size: 14px;
                                 /*px*/
-                                margin-right: 5px;
+                                margin-right: 2px;
                             }
 
                             .single-line-text {

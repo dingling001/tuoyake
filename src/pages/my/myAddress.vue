@@ -3,12 +3,13 @@
         <van-address-list
                 v-model="chosenAddressId"
                 :list="list"
+                :default-tag-text="'默认'"
                 @add="onAdd"
                 @edit="onEdit"
                 add-button-text="+ 新建收货地址"
         >
             <div slot="default" class="nodata" v-if="list.length==0">
-                暂无地址
+                <NoData :text="'暂无地址'"></NoData>
             </div>
         </van-address-list>
     </div>
@@ -37,12 +38,14 @@
                                 id: list[i].id,
                                 name: list[i].name,
                                 tel: list[i].mobile,
-                                address: list[i].address
+                                address: list[i].address,
+                                isDefault: list[i].is_default == 1 ? true : false
                             })
                         }
 
                     }
                 })
+                console.log(this.list)
             },
             onAdd() {
                 this.$router.push({path: '/editAddress', query: {add: 0}})

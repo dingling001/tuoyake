@@ -1,7 +1,9 @@
 <template>
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
-            <div class="mimg" @click="goset"><van-image  :src="user_info.avatar" alt="" v-if="user_info.avatar" /></div>
+            <div class="mimg" @click="goset">
+                <van-image :src="user_info.avatar" alt="" v-if="user_info.avatar"/>
+            </div>
             <div class="namebox">
                 <van-sticky>
                     <div class="nickname">
@@ -9,10 +11,11 @@
                         <div class="iconfont iconshezhi1" @click="goset"></div>
                     </div>
                 </van-sticky>
-                <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span></div>
+                <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span>
+                </div>
             </div>
         </div>
-        <div class="mhead" v-else >
+        <div class="mhead" v-else>
             <div class="mimg nologin" @click="gologin">登录/注册</div>
             <div class="namebox">
                 <div class="nickname">
@@ -48,7 +51,7 @@
                     <div class="navtext">我的积分</div>
                 </router-link>
             </div>
-            <div class="mad"><img :src="adinfo.image" alt=""></div>
+            <div class="mad" @click="openad" v-if="adinfo.image"><img :src="adinfo.image" alt=""></div>
             <div class="mlink">
                 <van-cell is-link :border='false' to="myCoupon">
                     <!-- 使用 title 插槽来自定义标题 -->
@@ -65,11 +68,11 @@
                     </template>
                 </van-cell>
                 <!--<van-cell is-link :border='false' to="myVersion">-->
-                    <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
-                    <!--<template slot="title">-->
-                        <!--<span class="iconfont iconshu"></span>-->
-                        <!--<span class="custom-title">版本信息</span>-->
-                    <!--</template>-->
+                <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
+                <!--<template slot="title">-->
+                <!--<span class="iconfont iconshu"></span>-->
+                <!--<span class="custom-title">版本信息</span>-->
+                <!--</template>-->
                 <!--</van-cell>-->
                 <van-cell is-link :border='false' to="myPlatform">
                     <!-- 使用 title 插槽来自定义标题 -->
@@ -91,27 +94,27 @@
             return {
                 adinfo: {},
                 user_twap: '',
-                user_info:{},
+                user_info: {},
             }
         },
         created() {
             this._GetAdv();
             if (localStorage.user_twap) {
-                this.user_twap=localStorage.user_twap;
+                this.user_twap = localStorage.user_twap;
                 this._GetUserInfo()
             }
         },
         methods: {
             // 去设置页面
             goset() {
-                this.$router.push({path:'/myset'})
+                this.$router.push({path: '/myset'})
             },
             // 获取个人信息
             _GetUserInfo() {
                 this.$api.GetUserInfo().then(res => {
                     // console.log(res)
-                    if(res.code==1){
-                        this.user_info=res.data;
+                    if (res.code == 1) {
+                        this.user_info = res.data;
                     }
                 })
             },
@@ -119,12 +122,17 @@
             _GetAdv() {
                 this.$api.GetAdv(1).then(res => {
                     // console.log(res)
-                    this.adinfo = res.data;
+                    if (res.code == 1 && res.data) {
+                        this.adinfo = res.data;
+                    }
                 })
             },
             // 登录
             gologin() {
                 this.$router.push({path: '/login'})
+            },
+            openad() {
+                window.open(this.adinfo.url)
             }
         }
 
@@ -271,6 +279,8 @@
             }
 
             .mlink {
+                padding: 25px 0;
+
                 /deep/ .van-cell__title {
                     display: flex;
                     align-items: center;

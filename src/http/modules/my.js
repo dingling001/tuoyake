@@ -132,7 +132,20 @@ export const SignRule = () =>
         true
     );
 
+
 /**
+ * 奖品列表
+ */
+export const SignGoods = () =>
+    axios(
+        "/api/sign/goods", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+/**
+ /**
  * 奖品列表
  */
 export const ScoreGoods = () =>
@@ -143,6 +156,19 @@ export const ScoreGoods = () =>
         "POST",
         true
     );
+/**
+ * 奖品列表
+ */
+export const GoodsDetail = (goods_id) =>
+    axios(
+        "/api/sign/goodsDetail", {
+            token: localStorage.user_twap,
+            goods_id
+        },
+        "POST",
+        true
+    );
+
 
 /**
  * 我的领取
@@ -166,8 +192,54 @@ export const AddressIndex = () =>
         "POST",
         true
     );
+
+// 添加地址
+export const AddressSetAddress = (name, mobile, province, city, district, address, is_default, id) =>
+    axios(
+        "/api/address/setAddress", {
+            name,
+            mobile,
+            province,
+            city,
+            district,
+            address,
+            is_default,
+            id,
+        },
+        "POST",
+        true
+    );
+// 默认地址
+export const addressSingle = () =>
+    axios(
+        "/api/address/single", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+// 删除地址
+export const addressDel = (id) =>
+    axios(
+        "/api/address/del", {
+            token: localStorage.user_twap,
+            id
+        },
+        "POST",
+        true
+    );
+//地址详情
+export const AddressDetail = (id) =>
+    axios(
+        "/api/address/detail", {
+            token: localStorage.user_twap,
+            id
+        },
+        "POST",
+        true
+    );
 /**
- * 地址列表
+ * 报名列表
  */
 export const SignIndex = () =>
     axios(
@@ -188,6 +260,17 @@ export const GetSignList = (page = 0, status = 1) =>
             token: localStorage.user_twap,
             page,
             status
+        },
+        "POST",
+        true
+    );
+/**
+ 获奖成就 /api/sign/achievement
+ **/
+export const SignAchievement = () =>
+    axios(
+        "/api/sign/achievement", {
+            token: localStorage.user_twap,
         },
         "POST",
         true

@@ -2,7 +2,7 @@
     <div class="rbox">
         <div class="rlist" v-if="show&&sglist.length">
             <div class="ritem" v-for="(item,index) in sglist" :key="item.id" @click="gotakereward(item.id,item.status)">
-                <div class="rname">累计积分 {{item.score}} 分可领取：</div>
+                <div class="rname">累计获奖 {{item.times}} 次可领取：</div>
                 <div class="rinfo">
                     <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
                     <van-image fit="contain" width="1.6rem" height="1.6rem" :src="item.image"/>
@@ -41,7 +41,7 @@
         },
         methods: {
             _ScoreGoods() {
-                this.$api.ScoreGoods().then(res => {
+                this.$api.SignGoods().then(res => {
                     this.show = true;
                     if (res.code == 1) {
                         this.sglist = res.data;

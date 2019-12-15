@@ -2,7 +2,7 @@
     <div>
         <div id="map"></div>
         <van-sticky>
-            <div class="index_top" ref="index_top">
+            <div class="index_top" ref="index_top" v-if="showtop">
                 <div class="htop">
                     <div class="htopleft">
                         <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">电竞馆<span
@@ -23,8 +23,14 @@
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
+            <div v-else class="htop" ref="gindex_top">
+                <router-link tag="div" to="/search" class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
+                </router-link>
+                <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span> {{city}}
+                </div>
+            </div>
         </van-sticky>
-        <div class="swiperbox">
+        <div class="swiperbox" v-if="showhome">
             <div class="sbg"></div>
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
@@ -33,13 +39,18 @@
             </swiper>
             <NoData class="nodata" v-if="flag&&swiperlist.length==0" :top="0" :text="'商家还没有传图'"></NoData>
         </div>
+        <div class="swiperbox" v-else @click="goad">
+            <div class="sbg"></div>
+            <div class="adimg">
+                <img :src="adimginfo.image" alt="">
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
-    import Bus from '../bin/Bus'
     import {Dialog} from 'vant'
 
     export default {
@@ -104,6 +115,7 @@
                 swiperlist: [],
                 offsettop: 0,
                 flag: false,
+                adimginfo: {}
             };
         },
         provide() {
@@ -111,7 +123,20 @@
                 app: this
             };
         },
-        props: ['wapcity'],
+        props: {
+            wapcity: {
+                type: String,
+                default: ''
+            },
+            showhome: {
+                type: Boolean,
+                default: true
+            },
+            showtop: {
+                type: Boolean,
+                default: true
+            }
+        },
         watch: {
             '$route'(val) {
                 console.log(val.fullPath)
@@ -122,18 +147,13 @@
                 } else {
                     this.ind = 2
                 }
-                this.offsettop = this.$refs.index_top.offsetHeight;
-                // console.log(this.offsettop)
-                Bus.$emit("home", this.offsettop);
+                if (this.showtop) {
+                    this.offsettop = this.$refs.index_top.offsetHeight;
+                    localStorage.offsettop = this.offsettop;
+                } else {
+                    localStorage.gindex_top = this.$refs.gindex_top.offsetHeight;
+                }
             },
-            city: {
-                handler(val) {
-                    var _ = this;
-                    _._GetSlideList();
-
-                },
-                immediate: true
-            }
         },
         created() {
             this.title = '托亚克 | ' + this.city;
@@ -141,19 +161,28 @@
         mounted() {
             var _ = this;
             this.ind = this.$route.meta.index || 0;
-            this.offsettop = this.$refs.index_top.offsetHeight;
-            localStorage.offsettop = this.offsettop;
-            Bus.$emit("home", this.offsettop);
-            console.log(sessionStorage.wapcity, 'wapcity')
-            console.log(sessionStorage.pos, 'pos')
-            if (sessionStorage.wapcity && sessionStorage.pos) {
+            if (this.showtop) {
+                this.offsettop = this.$refs.index_top.offsetHeight;
+                localStorage.offsettop = this.offsettop;
+            } else {
+                localStorage.gindex_top = this.$refs.gindex_top.offsetHeight;
+            }
+
+
+            if (sessionStorage.wapcity) {
                 this.city = sessionStorage.wapcity;
                 _.$emit('pos', JSON.parse(sessionStorage.pos))
                 _.$emit('city', _.city);
-                _._GetSlideList()
+                _.$emit('cityinfo', _.city, JSON.parse(sessionStorage.pos));
+                if (this.showhome) {
+                    _._GetSlideList()
+                } else {
+                    this._GetAdv();
+                }
             } else {
                 this.initMap();
             }
+
         },
         components: {
             swiper,
@@ -176,6 +205,56 @@
                     }
                 })
             },
+            // 获取广告位
+            _GetAdv() {
+                this.$api.GetAdv(2).then(res => {
+                    console.log(res)
+                    if (res.code == 1) {
+                        this.adimginfo = res.data;
+                    }
+                })
+            },
+            goad() {
+                let _ = this;
+                let flag = this.adimginfo;
+                let type = parseInt(this.adimginfo.type);
+                flag.url && window.open(flag.url)
+                // console.log(type)
+                // switch (type) {
+                //     case 0:
+                //         break;
+                //     case 1:
+                //         if (flag.id == 0) {
+                //             _.$router.push({path: '/competition'});
+                //         } else {
+                //             _.$router.push({path: '/competitiondetail/' + flag.object_id});
+                //         }
+                //         break;
+                //     case 2:
+                //         if (flag.object_id == 0) {
+                //
+                //         } else {
+                //             _.$router.push({path: '/gamedetail', query: {match_id: flag.object_id}});
+                //         }
+                //         break;
+                //     case 3:
+                //         if (flag.object_id == 0) {
+                //             _.$router.push({path: '/club'});
+                //         } else {
+                //             _.$router.push({path: '/clubdetail', query: {club_id: flag.object_id}});
+                //         }
+                //         break;
+                //     case 4:
+                //         if (flag.object_id == 0) {
+                //             _.$router.push({path: '/school'});
+                //         } else {
+                //             _.$router.push({path: '/schooldetail', query: {college_id: flag.object_id}});
+                //         }
+                //         break;
+                //     default:
+                //         location.replace('/')
+                // }
+            },
             // 初始化地图
             initMap() {
                 var _ = this;
@@ -194,10 +273,17 @@
                             _.city = sessionStorage.wapcity || res.addressComponent.city || res.addressComponent.province || '北京';
                             var pos = [res.position.lat, res.position.lng];
                             sessionStorage.pos = JSON.stringify(pos);
-                            sessionStorage.wapcity=res.addressComponent.city || res.addressComponent.province;
+                            sessionStorage.wapcity = res.addressComponent.city || res.addressComponent.province;
                             _.$emit('city', _.city);
                             _.$emit('pos', [res.position.lat, res.position.lng])
                             // _.keyword = res.addressComponent.street;
+                            _.$emit('cityinfo', _.city, pos);
+                            if (_.showhome) {
+                                console.log(111)
+                                _._GetSlideList()
+                            } else {
+                                _._GetAdv();
+                            }
                         } else {
                             _.$com.showtoast('获取位置失败');
                             Dialog.alert({
@@ -205,11 +291,20 @@
                                 message: '为了正常使用，\n 请开启GPRS定位功能'
                             }).then(() => {
                                 _.city = '北京';
+
                                 _.$emit('pos', ['39.73', '116.33'])
+                                sessionStorage.pos = JSON.stringify(['39.73', '116.33']);
                                 _.$emit('city', _.city);
+                                _.$emit('cityinfo', _.city, ['39.73', '116.33']);
+                                if (_.showhome) {
+                                    console.log(112221)
+                                    _._GetSlideList()
+                                } else {
+                                    _._GetAdv();
+                                }
                             })
                         }
-                        _._GetSlideList();
+
                     })
                 })
             },
@@ -336,10 +431,59 @@
 
     }
 
+    .htop {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 15px;
+        width: 100%;
+        background-image: url("../assets/img/index_bg.png");
+        background-size: 100% auto;
+        background-position: top center;
+        background-repeat: no-repeat;
+
+        .index_address {
+            color: #fff;
+            padding: 5px 8px;
+            background-color: $baseRed;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+
+            .iconfont {
+                margin-right: 2px;
+                font-size: 16px;
+                /*px*/
+            }
+        }
+
+        .searchinput {
+            height: 32px;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 16px;
+            line-height: 32px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, .3);
+            margin-right: 14px;
+            font-size: 14px;
+            /*px*/
+            .iconfont {
+                margin-right: 8px;
+                font-size: 16px;
+                /*px*/
+            }
+
+        }
+    }
+
     .swiperbox {
         height: 160px;
-        border-radius: 16px;
+        /*border-radius: 16px;*/
         position: relative;
+        overflow: hidden;
 
         .sbg {
             background: linear-gradient(90deg, #441219, #29182E);
@@ -388,6 +532,22 @@
                     transition: all .3s;
                 }
             }
+        }
+
+        .adimg {
+            width: 354px;
+            height: 160px;
+            margin: 0 auto;
+            border-radius: 10px;
+            position: relative;
+            z-index: 3;
+            display: block;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+            }
+
         }
     }
 

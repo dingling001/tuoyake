@@ -73,7 +73,7 @@ export default [
             showF: false,
             showH: true,
             needLogin: true,
-            keepAlive:true
+            keepAlive: true
         },
     },
     {
@@ -140,7 +140,7 @@ export default [
             showF: false,
             showH: true,
             needLogin: false,
-            iconfont:'iconguanbi-copy'
+            iconfont: 'iconguanbi-copy'
         },
     },
     {
@@ -163,9 +163,37 @@ export default [
             showF: false,
             showH: true,
             needLogin: true,
-            showright:true,
-            rlink:'/myGift',
-            right_text:'我的领取'
+            showright: true,
+            rlink: '/myGift',
+            right_text: '我的领取'
+        }
+    },
+    {
+        path: '/myReward_app',
+        name: 'myReward',
+        component: resolve => require(["../../pages/my/myReward_app"], resolve),
+        meta: {
+            title: "奖励领取",
+            showF: false,
+            showH: true,
+            needLogin: true,
+            showright: true,
+            rlink: '/myGift',
+            right_text: '我的领取'
+        }
+    },
+    {
+        path: '/takeReward',
+        name: 'takeReward',
+        component: resolve => require(["../../pages/my/takeReward"], resolve),
+        meta: {
+            title: "奖品详情",
+            showF: false,
+            showH: true,
+            needLogin: true,
+            showright: true,
+            // rlink:'/myGift',
+            // right_text:'我的领取'
         }
     },
     {

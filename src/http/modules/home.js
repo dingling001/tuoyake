@@ -203,3 +203,28 @@ export const GetVideoInfo = (video_id) =>
         "POST",
         true
     );
+
+/**
+ * 获取历史记录
+ */
+export const SearchHistory = (type = 0) =>
+    axios(
+        "/api/search/history", {
+            token: localStorage.user_twap,
+            type
+        },
+        "POST",
+        true
+    );
+/**
+ * 清除历史记录
+ */
+export const SearchClear = (type = 0) =>
+    axios(
+        "/api/search/clear", {
+            token: localStorage.user_twap,
+            type
+        },
+        "POST",
+        true
+    );

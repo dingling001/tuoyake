@@ -60,7 +60,7 @@ instance.interceptors.response.use(
         if (JSON.stringify(err).indexOf('timeout') != -1) {
             console.log('网络超时了')
             localStorage.showneterror = true;
-           window.location.reload();
+            window.location.reload();
         }
         switch (err.response.status) {
             case 400:
@@ -133,8 +133,25 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
                 data: qs.stringify(data),
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-                    'Accept': 'application/json'
+                    'Accept': 'application/json',
+                    'token': localStorage.user_twap
                 }
+            });
+        } else if (type === 'FORMDATA') {
+            const formData = new FormData();
+
+            Object.entries(data).forEach((item) => {
+                formData.append(item[0], item[1]);
+            });
+
+            options = Object.assign(options, {
+                method: 'post',
+                data: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'token': localStorage.user_twap,
+                    Accept: 'application/json'
+                },
             });
         }
         instance(options)

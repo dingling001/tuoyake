@@ -1,7 +1,7 @@
 <template>
     <div class="index">
         <!--<el-amap class="amap-box" vid="map" :plugin="plugin"></el-amap>-->
-        <homeTop @city="getcity" @pos="getpos"></homeTop>
+        <homeTop @city="getcity" @pos="getpos" :showhome="true" :showtop="true"></homeTop>
         <router-view class="router-view" :wapcity="city" :pos="position" v-if="city&&position.length"></router-view>
     </div>
 </template>

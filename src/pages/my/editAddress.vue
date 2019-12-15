@@ -2,8 +2,7 @@
     <div class="ebox">
         <van-address-edit
                 :area-list="areaList"
-                show-postal
-                show-delete
+                :show-delete="id"
                 show-set-default
                 show-search-result
                 :search-result="searchResult"
@@ -16,21 +15,42 @@
 </template>
 
 <script>
+    import AreaList from '../../bin/area'
+
     export default {
         name: "editAddress",
         data() {
             return {
-                areaList,
+                areaList: AreaList,
                 searchResult: [],
-                placeholder:['请选择', '请选择', '请选择']
+                id: null,
+                placeholder: ['请选择', '请选择', '请选择']
             }
         },
         created() {
-
+            this.id = this.$route.query.aid;
         },
         methods: {
-            onSave() {
-                Toast('save');
+            onSave(info) {
+                console.log(info)
+                this.$api.AddressSetAddress(
+                    info.name,
+                    info.tel,
+                    info.province,
+                    info.city,
+                    info.county,
+                    info.addressDetail,
+                    info.isDefault ? 1 : 0,
+                    this.aid
+                ).then(res => {
+                    console.log(res)
+                    if (res.code == 1) {
+                        this.$com.showtoast(this.aid ? '编辑成功' : '添加成功')
+                        this.$router.go(-1)
+                    } else {
+                        this.$com.showtoast(res.msg)
+                    }
+                })
             },
             onDelete() {
                 Toast('delete');

@@ -10,7 +10,8 @@
                                        @close="showoverlay=false" @change="changelabel">
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false">
+                    <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false"
+                                       v-if="districtlist.length>1">
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
@@ -89,7 +90,7 @@
                 offsettop: 0,
                 page: 0,
                 keyword: '',
-                city: localStorage.wapcity || '北京',
+                city: '北京',
                 lat: 0,
                 lng: 0,
                 recommend: 0,
@@ -173,6 +174,25 @@
                     // console.log(this.netlist)
                 })
             },
+            // 下拉刷新
+            onRefresh() {
+                setTimeout(() => {
+                    this.$com.showtoast('刷新成功');
+                    this.isDownLoading = false;
+                    this.page = 0;
+                    this._GetBarList();
+                }, 500);
+            },
+            // 上拉加载
+            onLoad() {
+                this.page++;
+                this.isUpLoading = true;
+                this._GetBarList();
+            },
+            // 去详情
+            godetail(id) {
+                this.$router.push({path: '/competitiondetail', query: {id: id}})
+            },
             // 获取服务标签
             _GetLabelList() {
                 this.$api.GetLabelList().then(res => {
@@ -192,9 +212,12 @@
             // 根据城市换取id
             _GetAreaPidByName() {
                 this.$api.GetAreaPidByName(this.city).then(res => {
-                    this.citypid = res.data;
-                    this._GetAreaListTree();
-                    this._GetBarList();
+                    if (res.code == 1 && res.data) {
+                        this.citypid = res.data;
+                        this._GetAreaListTree();
+                        this._GetBarList();
+                    }
+
                 })
             },
             // 获取当前城市的区
@@ -215,21 +238,6 @@
                 }
                 // console.log(this.recommend)
                 this.netlist = [];
-                this._GetBarList();
-            },
-            // 下拉刷新
-            onRefresh() {
-                setTimeout(() => {
-                    this.$com.showtoast('刷新成功');
-                    this.isDownLoading = false;
-                    this.page = 0;
-                    this._GetBarList();
-                }, 500);
-            },
-            // 上拉加载
-            onLoad() {
-                this.page++;
-                this.isUpLoading = true;
                 this._GetBarList();
             },
             // 选择城市
@@ -274,10 +282,7 @@
             opendistrict() {
                 this._GetAreaListTree()
             },
-            // 去详情
-            godetail(id) {
-                this.$router.push({path: '/competitiondetail', query: {id: id}})
-            },
+
 
         }
     }

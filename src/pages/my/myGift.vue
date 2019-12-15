@@ -25,7 +25,7 @@
         data() {
             return {
                 mylist: [],
-                noorder:require('../../assets/img/noorder.png')
+                noorder:require('../../assets/img/nodata.png')
             }
         },
         created() {
