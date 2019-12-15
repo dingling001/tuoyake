@@ -1,16 +1,18 @@
 <template>
     <div class="myadd">
         <van-address-list
+                v-if="list.length"
                 v-model="chosenAddressId"
                 :list="list"
-                :default-tag-text="'默认'"
                 @add="onAdd"
+                @select="setdefault"
                 @edit="onEdit"
                 add-button-text="+ 新建收货地址"
         >
             <div slot="default" class="nodata" v-if="list.length==0">
                 <NoData :text="'暂无地址'"></NoData>
             </div>
+            <div class="default_a">默认</div>
         </van-address-list>
     </div>
 
@@ -21,11 +23,13 @@
         name: "myAddress",
         data() {
             return {
-                chosenAddressId: '1',
+                chosenAddressId: '',
                 list: [],
+                choose: 0
             }
         },
         created() {
+            this.choose = this.$route.query.choose;
             this._AddressIndex();
         },
         methods: {
@@ -38,11 +42,14 @@
                                 id: list[i].id,
                                 name: list[i].name,
                                 tel: list[i].mobile,
-                                address: list[i].address,
+                                province: list[i].province,
+                                city: list[i].city,
+                                district: list[i].district,
+                                addressd: list[i].address,
+                                address: list[i].province + list[i].city + list[i].district + list[i].address,
                                 isDefault: list[i].is_default == 1 ? true : false
                             })
                         }
-
                     }
                 })
                 console.log(this.list)
@@ -50,8 +57,34 @@
             onAdd() {
                 this.$router.push({path: '/editAddress', query: {add: 0}})
             },
-            onEdit() {
+            onEdit(item) {
+                this.$router.push({path: '/editAddress', query: {aid: item.id}})
+            },
+            setdefault(item) {
+                this.$api.AddressSetAddress(
+                    item.name,
+                    item.tel,
+                    item.province,
+                    item.city,
+                    item.district,
+                    item.addressd,
+                    1,
+                    item.id
+                ).then(res => {
+                    console.log(res)
+                    if (res.code == 1) {
+                        if (this.choose == 1) {
+                            this.$router.go(-1);
+                        } else {
+                            this.$com.showtoast('已设置为默认地址');
+                            this.list = [];
+                            this._AddressIndex();
+                        }
 
+                    } else {
+                        this.$com.showtoast(res.msg)
+                    }
+                })
             }
         }
     }
@@ -75,6 +108,28 @@
                 width: 342px;
                 left: 0;
                 right: 0;
+            }
+
+            .van-radio__icon {
+                font-size: 16px !important;
+            }
+
+            .van-icon {
+                font-size: 16px;
+                /*px*/
+            }
+
+            .default_a {
+                position: absolute;
+                top: 75px;
+                right: 40px;
+                border-radius: 16px;
+                color: #fff;
+                background-color: $baseRed;
+                font-size: 12px;
+                /*px*/
+                padding: 2px 5px;
+
             }
         }
     }

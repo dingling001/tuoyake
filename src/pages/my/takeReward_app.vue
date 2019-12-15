@@ -72,7 +72,7 @@
                 this.$router.push({path: '/myAddress', query: {choose: 1}})
             },
             _ScoreMyReceived() {
-                this.$api.ScoreDetail(this.goods_id).then(res => {
+                this.$api.GoodsDetail(this.goods_id).then(res => {
                     if (res.code == 1) {
                         this.item = res.data;
                     }
@@ -84,7 +84,7 @@
                 })
             },
             _SignReceive() {
-                this.$api.ScoreReceive(this.item.id, this.addinfo.id).then(res => {
+                this.$api.SignReceive(this.item.id, this.addinfo.id).then(res => {
                     if (res.code == 1) {
                         this.$com.showtoast('领取成功，等待工作人员处理...');
                         this.$router.go(-1)

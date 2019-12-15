@@ -51,7 +51,7 @@
             gotakereward(id, status) {
                 if (status == 1) {
                     this.$router.push({
-                        path: '/takeReward',
+                        path: '/takeReward_app',
                         query: {goods_id: id}
                     })
                 }

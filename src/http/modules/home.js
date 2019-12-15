@@ -228,3 +228,12 @@ export const SearchClear = (type = 0) =>
         "POST",
         true
     );
+/**
+ * 清除历史记录
+ */
+export const CommonGetConfig = () =>
+    axios(
+        "/api/common/getConfig", {},
+        "POST",
+        true
+    );

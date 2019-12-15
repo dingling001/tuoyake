@@ -157,7 +157,7 @@ export const ScoreGoods = () =>
         true
     );
 /**
- * 奖品列表
+ * 奖品详情
  */
 export const GoodsDetail = (goods_id) =>
     axios(
@@ -168,14 +168,63 @@ export const GoodsDetail = (goods_id) =>
         "POST",
         true
     );
+/**
+ * 奖品积分详情
+ */
+export const ScoreDetail = (goods_id) =>
+    axios(
+        "/api/score/goodsDetail", {
+            token: localStorage.user_twap,
+            goods_id
+        },
+        "POST",
+        true
+    );
+/**
+ * 领取奖品
+ */
+export const SignReceive = (goods_id,address_id) =>
+    axios(
+        "/api/sign/receive", {
+            token: localStorage.user_twap,
+            goods_id,
+            address_id
+        },
+        "POST",
+        true
+    );
+/**
+ * 领取奖品
+ */
+export const ScoreReceive = (goods_id,address_id) =>
+    axios(
+        "/api/score/receive", {
+            token: localStorage.user_twap,
+            goods_id,
+            address_id
+        },
+        "POST",
+        true
+    );
 
 
 /**
- * 我的领取
+ * 我的积分领取
  */
 export const ScoreMyReceived = () =>
     axios(
         "/api/score/myReceived", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+/**
+ * 我的领取
+ */
+export const SignMyReceived = () =>
+    axios(
+        "/api/sign/myReceived", {
             token: localStorage.user_twap,
         },
         "POST",

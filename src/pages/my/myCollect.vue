@@ -1,6 +1,7 @@
 <template>
     <div class="colbox">
-        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky  :offset-top="55" color="#333"
+        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky :offset-top="55"
+                  color="#333"
                   line-width="27px" @click="changetype">
             <van-tab title="网吧"></van-tab>
             <van-tab title="赛事"></van-tab>
@@ -35,6 +36,9 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
+            <div class="clist" v-if="list.length==0&&active==0">
+                <NoData :img="img1" :text="''"></NoData>
+            </div>
             <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==1"
                               :offset="offset">
                 <van-list
@@ -59,6 +63,9 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
+            <div class="clist" v-if="list.length==0&&active==1">
+                <NoData :img="img1" :text="''"></NoData>
+            </div>
             <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==2"
                               :offset="offset">
                 <van-list
@@ -70,11 +77,14 @@
                             <img :src="item.poster" alt="">
                         </div>
                         <div class="vname van-ellipsis">{{item.name}}</div>
-                        <div class="vtime"><span class="iconfont icontime-circle"></span><span>{{item.create_time}}</span></div>
+                        <div class="vtime"><span
+                                class="iconfont icontime-circle"></span><span>{{item.create_time}}</span></div>
                     </div>
                 </van-list>
             </van-pull-refresh>
-
+            <div class="clist" v-if="list.length==0&&active==2">
+                <NoData :img="img1" :text="''"></NoData>
+            </div>
             <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==3"
                               :offset="offset">
                 <van-list
@@ -94,6 +104,9 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
+            <div class="clist" v-if="list.length==0&&active==3">
+                <NoData :img="img1" :text="''"></NoData>
+            </div>
         </van-tabs>
     </div>
 </template>
@@ -123,6 +136,7 @@
                 isUpLoading3: false,
                 finished3: false,
                 page3: 0,
+                img1: require('../../assets/img/nocollect.png')
             }
         },
         created() {
@@ -225,8 +239,8 @@
             godetail(id) {
                 this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
-             // 去赛事详情
-            gossdetail(id){
+            // 去赛事详情
+            gossdetail(id) {
                 this.$router.push({path: '/gamedetail', query: {match_id: id}})
             },
             // 视频详情
@@ -245,13 +259,24 @@
     @import "../../style/reset";
 
     .colbox {
-        /deep/ .van-tabs{
-            .van-pull-refresh{
+        /deep/ .van-tabs {
+            .van-pull-refresh {
                 min-height: 100vh;
             }
         }
+
         .clist {
             padding: 23px 0;
+            min-height: 300px;
+            position: relative;
+
+            /deep/ .nodatabox {
+                img {
+                    width: 80%;
+                    height: auto;
+                }
+            }
+
             .citem {
                 display: flex;
                 justify-content: space-between;
@@ -358,6 +383,7 @@
 
         .comlist {
             padding: 23px 0;
+
             .taocan {
                 padding: 15px 18px;
                 font-weight: bold;
@@ -508,6 +534,7 @@
                 }
             }
         }
+
         .vlist {
             display: flex;
             align-items: center;

@@ -1,7 +1,7 @@
 <template>
     <div class="rbox">
         <div class="rlist" v-if="mylist.length">
-            <div class="ritem" v-for="(item,index) in mylist" :key="item.id" >
+            <div class="ritem" v-for="(item,index) in mylist" :key="item.id">
                 <div class="rname">领取时间：{{item.create_time}}</div>
                 <div class="rinfo">
                     <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
@@ -9,8 +9,9 @@
                     <div class="rcontent">
                         <div class="rgname">{{item.goods_name}}</div>
                         <div class="rdes">X1</div>
+                        <div class="">{{item.content}}</div>
                     </div>
-                    <!--<div class="iconfont iconjiantou"></div>-->
+                    <div class="iconfont iconjiantou"></div>
                 </div>
             </div>
         </div>
@@ -19,25 +20,22 @@
 </template>
 
 <script>
-    // import NoData from '../../components/NoData'
     export default {
         name: "myGift",
         data() {
             return {
                 mylist: [],
-                noorder:require('../../assets/img/nodata.png')
+                noorder: require('../../assets/img/nodata.png')
             }
         },
         created() {
 
             this._ScoreMyReceived()
         },
-        components:{
-            // NoData
-        },
+
         methods: {
             _ScoreMyReceived() {
-                this.$api.ScoreMyReceived().then(res => {
+                this.$api.SignMyReceived().then(res => {
                     if (res.code == 1) {
                         this.mylist = res.data;
                     }

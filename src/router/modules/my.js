@@ -178,7 +178,7 @@ export default [
             showH: true,
             needLogin: true,
             showright: true,
-            rlink: '/myGift',
+            rlink: '/myGift_app',
             right_text: '我的领取'
         }
     },
@@ -197,9 +197,34 @@ export default [
         }
     },
     {
+        path: '/takeReward_app',
+        name: 'takeReward_app',
+        component: resolve => require(["../../pages/my/takeReward_app"], resolve),
+        meta: {
+            title: "奖品详情",
+            showF: false,
+            showH: true,
+            needLogin: true,
+            showright: true,
+            // rlink:'/myGift',
+            // right_text:'我的领取'
+        }
+    },
+    {
         path: '/myGift',
         name: 'myGift',
         component: resolve => require(["../../pages/my/myGift"], resolve),
+        meta: {
+            title: "我的领取",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/myGift_app',
+        name: 'myGift_app',
+        component: resolve => require(["../../pages/my/myGift_app"], resolve),
         meta: {
             title: "我的领取",
             showF: false,
@@ -225,7 +250,7 @@ export default [
         meta: {
             title: "添加地址",
             showF: false,
-            showH: true,
+            showH: false,
             needLogin: true,
         },
     },
