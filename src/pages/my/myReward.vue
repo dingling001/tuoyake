@@ -13,10 +13,9 @@
                             <span v-else>未达成</span>
                         </div>
                     </div>
-                    <van-button type="default" :disabled="item.status!=1">
-                        <span v-if="item.status==1">去领取</span>
-                        <span v-else-if="item.status==2">已领取</span>
-                        <span v-else-if="item.status==0" class="status">未达成</span>
+                    <van-button type="info" :disabled="item.status!=1">
+                        <span v-if="item.status==2">已领取</span>
+                        <span v-else>去领取</span>
                     </van-button>
                 </div>
             </div>
@@ -109,9 +108,14 @@
                         background-color: $baseBlue;
                         border-color: $baseBlue;
                         width: 55px;
+                        padding: 0;
                         height: 28px;
                         line-height: 28px;
                         color: #fff;
+
+                        .van-button__text {
+                            display: inline-block;
+                        }
 
                         &.van-button--disabled {
                             background-color: #DDDDDD;

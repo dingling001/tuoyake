@@ -8,10 +8,8 @@
                     <van-image fit="contain" width="1.6rem" height="1.6rem" :src="item.image"/>
                     <div class="rcontent">
                         <div class="rgname">{{item.goods_name}}</div>
-                        <div class="rdes">
-                            <span v-if="item.status>=1">已达成</span>
-                            <span v-else>未达成</span>
-                        </div>
+                        <div class="rdes">X1</div>
+                        <div>{{item.content}}</div>
                     </div>
                     <van-button type="default" :disabled="item.status!=1">
                         <span v-if="item.status==1">去领取</span>
@@ -89,18 +87,20 @@
                     .rcontent {
                         flex: 1;
                         margin: 0 13px;
-                        font-size: 14px;
+                        font-size: 12px;
                         /*px*/
                         color: #333;
                     }
 
                     .rgname {
-
+                        font-weight: bold;
+                        font-size: 14px;
+                        /*px*/
                     }
 
                     .rdes {
                         color: #666666;
-                        font-size: 14px;
+                        font-size: 12px;
                         /*px*/
                         padding: 12px 0
                     }

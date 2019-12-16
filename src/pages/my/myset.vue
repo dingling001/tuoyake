@@ -16,7 +16,7 @@
         <van-cell title="昵称" :value="user_info.nickname" @click="showname=true"/>
         <van-cell title="手机号" :value="user_info.mobile" to="changephone" is-link/>
         <van-cell title="登录密码" is-link to="changepass"/>
-        <van-cell title="社交账号" is-link to="mySocial"/>
+<!--        <van-cell title="社交账号" is-link to="mySocial"/>-->
         <van-dialog
                 v-model="showname"
                 title="修改昵称"

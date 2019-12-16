@@ -61,6 +61,7 @@ instance.interceptors.response.use(
             console.log('网络超时了')
             localStorage.showneterror = true;
             window.location.reload();
+            return
         }
         switch (err.response.status) {
             case 400:

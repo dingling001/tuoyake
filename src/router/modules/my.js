@@ -170,7 +170,7 @@ export default [
     },
     {
         path: '/myReward_app',
-        name: 'myReward',
+        name: 'myReward_app',
         component: resolve => require(["../../pages/my/myReward_app"], resolve),
         meta: {
             title: "奖励领取",

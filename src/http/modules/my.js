@@ -324,3 +324,24 @@ export const SignAchievement = () =>
         "POST",
         true
     );
+// 我的订单数量
+export const OrderGetOrderNum = () =>
+    axios(
+        "/api/order/getOrderNum", {
+            token: localStorage.user_twap,
+        },
+        "POST",
+        true
+    );
+// 我的订单
+// 状态:0=全部,1=未付款,2=未使用,3=已使用,4=取消/退款
+export const OrderIndex = (page = 0, status = 0) =>
+    axios(
+        "/api/order/index", {
+            token: localStorage.user_twap,
+            page,
+            status
+        },
+        "POST",
+        true
+    );

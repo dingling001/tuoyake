@@ -2,35 +2,33 @@
     <van-tabs v-model="active" swipeable @click="changetype" class="coupbox">
         <van-tab v-for="(item,index) in navs" :key="index" :title="item" class="tab">
         </van-tab>
-        <div v-show="active==0">
-            <div class="couponlist">
-                <div :class="['coupitem',item.status==3||item.status==4?'used':'']" v-for="(item,index) in couplist"
-                     @click="godetail(item.id)">
-                    <span class="leftcricle"></span>
-                    <span class="rightcricle"></span>
-                    <div class="cl">
-                        <div>{{item.name}}</div>
-                        <div class="date">{{item.expire_time}}</div>
-                    </div>
-                    <div class="cr">{{item.status_text}} <span v-if="item.status==1||item.status==2"
-                                                               class="iconfont iconcaret-right"></span></div>
+        <div class="couponlist" v-show="active==0&&couplist.length">
+            <div :class="['coupitem',item.status==3||item.status==4?'used':'']" v-for="(item,index) in couplist"
+                 @click="godetail(item.id)">
+                <span class="leftcricle"></span>
+                <span class="rightcricle"></span>
+                <div class="cl">
+                    <div>{{item.name}}</div>
+                    <div class="date">{{item.expire_time}}</div>
                 </div>
+                <div class="cr">{{item.status_text}} <span v-if="item.status==1||item.status==2"
+                                                           class="iconfont iconcaret-right"></span></div>
             </div>
         </div>
-        <div v-show="active==1">
-            <div class="couponlist" v-if="couplist.length">
-                <div :class="['coupitem',item.status==3||item.status==4?'used':'']" v-for="(item,index) in couplist">
-                    <span class="leftcricle"></span>
-                    <span class="rightcricle"></span>
-                    <div class="cl">
-                        <div>{{item.name}}</div>
-                        <div class="date">{{item.expire_time}}</div>
-                    </div>
-                    <div class="cr">{{item.status_text}} <span v-if="item.status==1||item.status==2"
-                                                               class="iconfont iconcaret-right"></span></div>
+        <div class="couponlist" v-if="active==1&&couplist.length">
+            <div :class="['coupitem',item.status==3||item.status==4?'used':'']" v-for="(item,index) in couplist">
+                <span class="leftcricle"></span>
+                <span class="rightcricle"></span>
+                <div class="cl">
+                    <div>{{item.name}}</div>
+                    <div class="date">{{item.expire_time}}</div>
                 </div>
+                <div class="cr">{{item.status_text}} <span v-if="item.status==1||item.status==2"
+                                                           class="iconfont iconcaret-right"></span></div>
             </div>
-            <div class="nodata" v-else>暂无数据</div>
+        </div>
+        <div class="couponlist" v-else>
+            <NoData :text="'暂无相关优惠券'"></NoData>
         </div>
     </van-tabs>
 </template>
@@ -86,6 +84,8 @@
         .couponlist {
             padding: 24px 0;
             margin: 0 16px;
+            position: relative;
+            min-height: 300px;
 
             .coupitem {
                 background: linear-gradient(90deg, rgba(252, 208, 116, 1), rgba(255, 85, 73, 1));
@@ -157,6 +157,9 @@
                         border: 0;
                     }
                 }
+            }
+            /deep/ .nodatabox{
+                background: transparent;
             }
         }
 

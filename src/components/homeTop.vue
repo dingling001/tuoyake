@@ -279,7 +279,6 @@
                             // _.keyword = res.addressComponent.street;
                             _.$emit('cityinfo', _.city, pos);
                             if (_.showhome) {
-                                console.log(111)
                                 _._GetSlideList()
                             } else {
                                 _._GetAdv();
@@ -297,7 +296,6 @@
                                 _.$emit('city', _.city);
                                 _.$emit('cityinfo', _.city, ['39.73', '116.33']);
                                 if (_.showhome) {
-                                    console.log(112221)
                                     _._GetSlideList()
                                 } else {
                                     _._GetAdv();
