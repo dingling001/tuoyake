@@ -345,3 +345,15 @@ export const OrderIndex = (page = 0, status = 0) =>
         "POST",
         true
     );
+/**
+ * 上传文件
+ */
+export const CommonUpload = (file) =>
+    axios(
+        "/api/common/upload", {
+            file
+        },
+        "FORMDATA",
+        true
+    );
+

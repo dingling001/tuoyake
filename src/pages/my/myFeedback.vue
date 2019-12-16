@@ -13,6 +13,8 @@
                 v-model="fileList"
                 multiple
                 :max-count="3"
+                :before-read="beforeRead"
+                :before-delete="beforeDelete"
         />
         <div class="fbtn" @click="feedback_fn">提交</div>
     </div>
@@ -24,21 +26,47 @@
         data() {
             return {
                 message: '',
-                fileList: []
+                fileList: [],
+                imgs: []
             }
         },
         methods: {
+            beforeRead(file) {
+                const isJPG = file.type == 'image/jpeg' || file.type == 'image/png' || file.type == 'image/gif'
+                let isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG) {
+                    this.$com.showtoast('请上传 png、jpg格式!')
+                    return;
+                }
+                if (!isLt2M) {
+                    this.$com.showtoast('上传文件大小不能超过 2MB!')
+                    return;
+                }
+                this._CommonUpload(file)
+            },
+            beforeDelete(file, fileList) {
+                this.imgs.splice(fileList.index, 1);
+                this.fileList.splice(fileList.index, 1)
+            },
+            _CommonUpload(file) {
+                this.$api.CommonUpload(file).then(res => {
+                    if (res.code == 401) {
+                        this.$router.push('/login')
+                        return;
+                    }
+                    if (res.code == 1) {
+                        this.$com.showtoast('上传成功！', 'success');
+                        this.fileList.push({url: res.data.url});
+                        this.imgs.push(res.data.url);
+                    }
+                })
+            },
             // 意见反馈
             feedback_fn() {
                 if (this.message == '') {
                     this.$com.showtoast('请输入内容')
                 } else {
-                    console.log(this.fileList)
-                    var fileList = [];
-                    for (var i in this.fileList) {
-                        fileList.push(this.fileList[i].content)
-                    }
-                    this.$api.SetFeedback(this.message, fileList.toString()).then(res => {
+                    this.$api.SetFeedback(this.message, this.imgs.toString()).then(res => {
                         if (res.code == 1) {
                             this.$com.showtoast('提交成功');
                             setTimeout(() => {

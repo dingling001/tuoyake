@@ -22,7 +22,8 @@
                             <div class="citems dright">
                                 <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
                                      :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
-                                    {{districtlist[lindex].childlist[rindex].name}}
+                                    <span v-if="rindex!=-1"> {{districtlist[lindex].childlist[rindex].name}}</span>
+                                    <span v-else>{{c.name}}</span>
                                 </div>
                             </div>
                         </div>
