@@ -45,7 +45,7 @@
                 <div class="adressitem">
                     <span class="iconfont icondingweiweizhi"></span>
                     <div class="address">{{comdata.info.address}}
-                        <div class="juli">距您{{comdata.info.distance}}</div>
+                        <div class="juli">距您 {{comdata.info.distance}}</div>
                     </div>
                 </div>
                 <a class="phonecall" :href="'tel:'+comdata.info.contact_number"><span
@@ -110,7 +110,7 @@
                     info: {
                         album_images: [],
                         star: 0,
-                        is_collection:0
+                        is_collection: 0
                     },
                     match: []
                 },
@@ -153,7 +153,7 @@
             gotaocandetail(id) {
                 this.$router.push({path: '/taocan', query: {goods_id: id, cid: this.id}})
             },
-            gossdetail(id){
+            gossdetail(id) {
                 this.$router.push({path: '/gamedetail', query: {match_id: id, cid: this.id}})
             },
             // 回到列表
@@ -182,7 +182,6 @@
                     }
                     // this._GetBarInfo()
                 })
-
             }
         }
     }
@@ -251,8 +250,6 @@
                     display: flex;
                     align-items: center;
                 }
-
-
             }
 
             .album {
@@ -388,6 +385,8 @@
 
                     .iconfont {
                         color: #aaaaaa;
+                        font-size: 16px;
+                        /*px*/
                     }
 
                     .address {
