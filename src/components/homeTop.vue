@@ -167,8 +167,7 @@
             } else {
                 localStorage.gindex_top = this.$refs.gindex_top.offsetHeight;
             }
-
-
+            // console.log(sessionStorage.wapcity ,'wapcity')
             if (sessionStorage.wapcity) {
                 this.city = sessionStorage.wapcity;
                 _.$emit('pos', JSON.parse(sessionStorage.pos))
@@ -181,6 +180,7 @@
                 }
             } else {
                 this.initMap();
+                // this.initmap1()
             }
 
         },
@@ -265,7 +265,6 @@
                     let getlocation = new AMap.Geolocation({
                         timeout: 6000,
                     })
-                    map.addControl(getlocation)
                     getlocation.getCurrentPosition(function (status, res) {
                         console.log(res, 'location')
                         if (status == 'complete' && res.status == 1) {
@@ -512,6 +511,9 @@
                 /*no*/
                 img {
                     width: 100%;
+                    display: block;
+                    font-size: 0;
+                    border: 0;
                 }
             }
 

@@ -24,9 +24,7 @@
                     <div class="city" @click="hotcity(loccity)">{{loccity||'尚未开启定位'}}</div>
                     <div class="common sort">热门城市</div>
                     <div class="hotaddr">
-                        <div v-for="(item, index) in hotaddr" :key="index">
-                            <div class="cityx" @click="hotcity(item.city)"> {{item.city}}</div>
-                        </div>
+                        <div class="cityx" @click="hotcity(item.city)" v-for="(item, index) in hotaddr" :key="index">{{item.city}}</div>
                     </div>
                     <!--                    <div class="common sort">排序城市</div>-->
                     <div v-for="(item, index) in addr" :key="index" :id="item.key">
@@ -80,7 +78,6 @@
                         "E": "106.33",
                         "firststr": "Z"
                     },
-
                     {
 
                         "city": "广州",
@@ -95,22 +92,104 @@
                         "firststr": "S"
                     },
                     {
-                        "city": "杭州",
-                        "N": "30.16",
-                        "E": "120.1",
-                        "firststr": "H"
+                        city: '杭州',
+                        id: 700
                     },
                     {
-                        "city": "武汉",
-                        "N": "30.35",
-                        "E": "114.17",
-                        "firststr": "W"
+                        city: '青岛',
+                        id: 800
                     },
                     {
-                        "city": "成都",
-                        "N": "30.4",
-                        "E": "104.04",
-                        "firststr": "C"
+                        city: '武汉',
+                        id: 800
+                    },
+                    {
+                        city: '成都',
+                        id: 900
+                    },
+                    {
+                        city: '长沙',
+                        id: 1
+                    },
+                    {
+                        city: '南京',
+                        id: 2
+                    },
+                    {
+                        city: '郑州',
+                        id: 3
+                    },
+                    {
+                        city: '武汉',
+                        id: 4
+                    },
+                    {
+                        city: '西安',
+                        id: 5
+                    },
+                    {
+                        city: '苏州',
+                        id: 6
+                    },
+                    {
+                        city: '太原',
+                        id: 7
+                    },
+                    {
+                        city: '石家庄',
+                        id: 8
+                    },
+                    {
+                        city: '福州',
+                        id: 9
+                    },
+                    {
+                        city: '济南',
+                        id: 10
+                    },
+                    {
+                        city: '南宁',
+                        id: 11
+                    },
+                    {
+                        city: '大连',
+                        id: 12
+                    },
+                    {
+                        city: '沈阳',
+                        id: 13
+                    },
+                    {
+                        city: '吉林',
+                        id: 14
+                    },
+                    {
+                        city: '哈尔滨',
+                        id: 15
+                    },
+                    {
+                        city: '呼和浩特',
+                        id: 16
+                    },
+                    {
+                        city: '乌鲁木齐',
+                        id: 17
+                    },
+                    {
+                        city: '银川',
+                        id: 18
+                    },
+                    {
+                        city: '贵州',
+                        id: 19
+                    },
+                    {
+                        city: '昆明',
+                        id: 20
+                    },
+                    {
+                        city: '南昌',
+                        id: 21
                     },
                     // {
                     //     "city": "南京",
@@ -154,7 +233,7 @@
                     }).then(() => {
                         // on confirm
                         sessionStorage.wapcity = localStorage.loccity;
-                        location.href = '/'
+                        this.$router.go(-1);
                     }).catch(() => {
                         // on cancel
                     });
@@ -180,13 +259,13 @@
             choosecity(a, b, c) {
                 sessionStorage.wapcity = c;
                 sessionStorage.changecity = true;
-                location.href = '/'
+                this.$router.go(-1);
             },
             hotcity(item) {
                 if (item) {
                     sessionStorage.wapcity = item;
                     sessionStorage.changecity = true;
-                    location.href = '/'
+                    this.$router.go(-1);
                 }
             },
             oninput() {
@@ -293,7 +372,7 @@
                 /*justify-content: center;*/
 
                 .cityx {
-                    width: 72px;
+                    width: 102px;
                     height: 30px;
                     text-align: center;
                     margin-right: 10px;
@@ -304,6 +383,10 @@
                     color: black;
                     display: inline-block;
                     font-size: 13px;
+                    /*    px*/
+                    &:nth-child(3n) {
+                        margin: 0 0 10px 0;
+                    }
                 }
             }
         }

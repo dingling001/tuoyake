@@ -102,6 +102,7 @@
             .clubname {
                 color: #333;
                 font-weight: bold;
+                line-height: 20px;
                 font-size: 20px;
                 /*px*/
             }

@@ -6,12 +6,10 @@
                     <span>推荐电竞馆</span>
                 </div>
                 <van-dropdown-menu active-color="#f2313b">
-                    <van-dropdown-item v-model="label" :options="labellist" @open="showoverlay=true"
-                                       @close="showoverlay=false" @change="changelabel">
+                    <van-dropdown-item v-model="label" :options="labellist"  @change="changelabel" overlay>
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false"
-                                       v-if="districtlist.length>1">
+                    <van-dropdown-item :title="selectName" ref="item" :disabled ="districtlist.length==1" v-model="selectName"  overlay>
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
@@ -22,8 +20,7 @@
                             <div class="citems dright">
                                 <div v-for="(c ,cindex) in districtlist[lindex].childlist" :key="cindex"
                                      :class="{activecity:rindex==cindex}" @click="selcetarea(cindex,c.name)">
-                                    <span v-if="rindex!=-1"> {{districtlist[lindex].childlist[rindex].name}}</span>
-                                    <span v-else>{{c.name}}</span>
+                                    <span>{{c.name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -66,7 +63,7 @@
         <div class="clist" v-if="flag&&netlist.length==0">
             <NoData class="nodata" :top="0" :text="'暂无匹配的商家'"></NoData>
         </div>
-        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
+        <!--        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>-->
     </div>
 </template>
 
@@ -118,7 +115,8 @@
                 totop: false,
                 showoverlay: false,
                 flag: false,
-                position: []
+                position: [],
+                selectName: ''
             }
         },
 
@@ -134,6 +132,33 @@
             this._GetAreaPidByName();
         },
         methods: {
+            // 获取服务标签
+            _GetLabelList() {
+                this.$api.GetLabelList().then(res => {
+                    if (res.code == 1) {
+                        var labellist = res.data;
+                        for (let i in labellist) {
+                            this.labellist.push({
+                                value: labellist[i],
+                                text: labellist[i]
+                            })
+                        }
+                        this.label = this.labellist[0].value;
+                        // console.log(this.labellist)
+                    }
+                })
+            },
+            // 根据城市换取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    if (res.code == 1 && res.data) {
+                        this.citypid = res.data;
+                        this._GetAreaListTree();
+                        this._GetBarList();
+                    }
+
+                })
+            },
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
@@ -190,64 +215,34 @@
                 this.isUpLoading = true;
                 this._GetBarList();
             },
-            // 去详情
-            godetail(id) {
-                this.$router.push({path: '/competitiondetail', query: {id: id}})
-            },
-            // 获取服务标签
-            _GetLabelList() {
-                this.$api.GetLabelList().then(res => {
-                    if (res.code == 1) {
-                        var labellist = res.data;
-                        for (let i in labellist) {
-                            this.labellist.push({
-                                value: labellist[i],
-                                text: labellist[i]
-                            })
-                        }
-                        this.label = this.labellist[0].value;
-                        // console.log(this.labellist)
-                    }
-                })
-            },
-            // 根据城市换取id
-            _GetAreaPidByName() {
-                this.$api.GetAreaPidByName(this.city).then(res => {
-                    if (res.code == 1 && res.data) {
-                        this.citypid = res.data;
-                        this._GetAreaListTree();
-                        this._GetBarList();
-                    }
-
-                })
-            },
             // 获取当前城市的区
             _GetAreaListTree() {
                 this.$api.GetAreaListTree(this.citypid).then(res => {
                     this.districtlist = this.districtlist.concat(res.data);
                     // console.log(this.districtlist)
-                    this.district = this.districtlist[0].name;
+                    this.selectName = this.districtlist[0].name;
                 })
             },
             // 切换成推荐模式
             recommendlist() {
-                this.page = 0;
                 if (this.recommend == 1) {
                     this.recommend = 0
                 } else {
                     this.recommend = 1
                 }
-                // console.log(this.recommend)
+                this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
             },
             // 选择城市
             selcetcity(index) {
                 this.lindex = index;
+                this.rindex = 0;
                 console.log(index)
                 if (index == 0) {
                     this.$refs.item.toggle();
-                    this.district = this.districtlist[index].name;
+                    this.district = '';
+                    this.selectName = this.district;
                     this.page = 0;
                     this.circle = '';
                     this.netlist = [];
@@ -260,18 +255,11 @@
                 this.rindex = index;
                 this.$refs.item.toggle();
                 // this.district = name;
+                this.selectName = name;
                 this.circle = name;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
-            },
-            // 打开全部服务
-            openlabel() {
-                // console.log(this.offsettop);
-                // window.scrollTo = 100
-                // window.scrollTo(0, 0)
-                // this.gotop()
-                this.showoverlay = true;
             },
             // 切换服务标签
             changelabel() {
@@ -279,12 +267,10 @@
                 this.netlist = [];
                 this._GetBarList();
             },
-            // 打开全部列表
-            opendistrict() {
-                this._GetAreaListTree()
+            // 去详情
+            godetail(id) {
+                this.$router.push({path: '/competitiondetail', query: {id: id}})
             },
-
-
         }
     }
 </script>
