@@ -4,7 +4,7 @@
             <!--            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span-->
             <!--                    class="iconfont iconjiantouarrow486"></span></div>-->
             <van-dropdown-menu active-color="#f2313b">
-                <van-dropdown-item :title="district" ref="item" @open="showoverlay=true" @close="showoverlay=false">
+                <van-dropdown-item :title="district" ref="item" overlay>
                     <div class="citybox">
                         <div class="citems dleft">
                             <div v-for="(item ,index) in districtlist" :key="index"
@@ -32,7 +32,7 @@
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
                     :finished-text="finishedtext">
                 <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.id"
-                     @click="godetail(item.category_id)">
+                     @click="godetail(item.id)">
                     <div class="jimg"><img :src="item.image" alt=""></div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -46,7 +46,7 @@
         <div class="jlist" v-if="schoolshow&&clublist.length==0">
             <NoData class="nodata" :top="0" :text="'暂无相关学院'"></NoData>
         </div>
-        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>
+        <!--        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>-->
     </div>
 </template>
 
@@ -110,7 +110,6 @@
                 lindex: 0,
                 rindex: -1,
                 schoolshow: false,
-                showoverlay: false,
                 offsettop: parseInt(localStorage.offsettop)
             }
         },
@@ -136,6 +135,47 @@
                         this.navlist.concat(res.data);
                     }
                 })
+            },
+
+            // 根据城市换取id
+            _GetAreaPidByName() {
+                this.$api.GetAreaPidByName(this.city).then(res => {
+                    this.citypid = res.data;
+                    this._GetAreaListTree();
+                    this._CollegeIndex();
+                })
+            },
+            // 获取当前城市的区
+            _GetAreaListTree() {
+                this.$api.GetAreaListTree(this.citypid).then(res => {
+                    this.districtlist = this.districtlist.concat(res.data);
+                    // console.log(this.districtlist)
+                    this.district = this.districtlist[0].name;
+                })
+            },
+            // 选择城市
+            selcetcity(index) {
+                this.lindex = index;
+                console.log(index)
+                if (index == 0) {
+                    this.$refs.item.toggle();
+                    this.district = '';
+                    this.page = 0;
+                    this.circle = '';
+                    this.clublist = [];
+                    this._CollegeIndex();
+                }
+                this.district = this.districtlist[index].name;
+            },
+            // 选择地区
+            selcetarea(index, name, cname) {
+                this.rindex = index;
+                this.$refs.item.toggle();
+                // this.district = name;
+                this.circle = name;
+                this.page = 0;
+                this.clublist = [];
+                this._CollegeIndex();
             },
             // 获取学院列表
             _CollegeIndex() {
@@ -176,46 +216,6 @@
                         }
                     }
                 })
-            },
-            // 根据城市换取id
-            _GetAreaPidByName() {
-                this.$api.GetAreaPidByName(this.city).then(res => {
-                    this.citypid = res.data;
-                    this._GetAreaListTree();
-                    this._CollegeIndex();
-                })
-            },
-            // 获取当前城市的区
-            _GetAreaListTree() {
-                this.$api.GetAreaListTree(this.citypid).then(res => {
-                    this.districtlist = this.districtlist.concat(res.data);
-                    // console.log(this.districtlist)
-                    this.district = this.districtlist[0].name;
-                })
-            },
-            // 选择城市
-            selcetcity(index) {
-                this.lindex = index;
-                console.log(index)
-                if (index == 0) {
-                    this.$refs.item.toggle();
-                    this.district = '';
-                    this.page = 0;
-                    this.circle = '';
-                    this.clublist = [];
-                    this._CollegeIndex();
-                }
-                this.district = this.districtlist[index].name;
-            },
-            // 选择地区
-            selcetarea(index, name, cname) {
-                this.rindex = index;
-                this.$refs.item.toggle();
-                // this.district = name;
-                this.circle = name;
-                this.page = 0;
-                this.clublist = [];
-                this._CollegeIndex();
             },
             // 下拉刷新
             onRefresh() {
@@ -266,6 +266,10 @@
             background-color: #fff;
             font-size: 12px;
             /* px */
+            /deep/ .van-sticky {
+                flex: 1;
+            }
+
             .cselectitem {
                 display: flex;
                 align-items: center;

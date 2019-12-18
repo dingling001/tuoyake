@@ -230,7 +230,7 @@ export const SearchClear = (type = 0) =>
         true
     );
 /**
- * 清除历史记录
+ * 获取基础配置
  */
 export const CommonGetConfig = () =>
     axios(

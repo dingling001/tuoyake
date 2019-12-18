@@ -9,10 +9,11 @@
                     value="13821452840"
             />
             <van-field
-                    v-model="password"
-                    type="password"
+                    v-model="account"
+                    type="text"
                     label="新手机号"
                     placeholder="请输入新手机号"
+                    @input="accountinput"
             />
             <van-field
                     v-model="password"
@@ -33,21 +34,24 @@
 
 <script>
     export default {
-        name: "changepass"
-        ,
+        name: "changepass",
         data() {
             return {
                 password: '',
                 time: 60000,
-                showbtn: true
+                showbtn: true,
+                account:''
             }
         },
-        methods:{
-            endtime(){
-console.log('11')
-            },
-            _SmsSend(){
+        methods: {
+            endtime() {
 
+            },
+            _SmsSend() {
+
+            },
+            accountinput() {
+                this.account = this.account.replace(/[^\d]/g, '');
             }
         }
     }

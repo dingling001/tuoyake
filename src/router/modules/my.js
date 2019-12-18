@@ -54,17 +54,6 @@ export default [
         },
     },
     {
-        path: '/mySocial',
-        name: 'mySocial',
-        component: resolve => require(["../../pages/my/mySocial"], resolve),
-        meta: {
-            title: "社交账号",
-            showF: false,
-            showH: true,
-            needLogin: true
-        },
-    },
-    {
         path: '/myCollect',
         name: 'myCollect',
         component: resolve => require(["../../pages/my/myCollect"], resolve),
@@ -265,5 +254,4 @@ export default [
             needLogin: true,
         },
     },
-
 ]
