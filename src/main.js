@@ -4,7 +4,7 @@ import "babel-polyfill";
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import 'lib-flexible'
+// import 'lib-flexible'
 // import './assets/js/window'
 import "@/style/reset.scss";
 import VueWechatTitle from "vue-wechat-title";
@@ -45,10 +45,11 @@ Vue.use(Vant);
 Vue.use(VideoPlayer)
 Vue.config.productionTip = false;
 import vueCity from 'vue-city-select'
+
 Vue.use(vueCity);
 //然后就可以在项目中引用了,热门城市 hotCityList 参数可以根据自己的需求传或者不传
 // 简单配置
-Vue.component('NoData',NoData)
+Vue.component('NoData', NoData)
 import store from './store'//引入store
 // simple history management
 /* eslint-disable no-new */
@@ -61,7 +62,8 @@ new Vue({
     }
 });
 window.onresize = setHtmlFontSize;
-function setHtmlFontSize(){
+
+function setHtmlFontSize() {
     const htmlWidth = document.documentElement.clientWidth || document.body.clientWidth;
     const htmlDom = document.getElementsByTagName('html')[0];
     htmlDom.style.fontSize = htmlWidth / 10 + 'px';

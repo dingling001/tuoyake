@@ -242,7 +242,7 @@
                 if (index == 0) {
                     this.$refs.item.toggle();
                     this.district = '';
-                    this.selectName = this.district;
+                    this.selectName = '全部地区';
                     this.page = 0;
                     this.circle = '';
                     this.netlist = [];

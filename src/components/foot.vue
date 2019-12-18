@@ -1,12 +1,12 @@
 <template>
     <div class="footer">
-        <div :class="['footer_item',findex==0?'footer_itemactive':'']" @click="tab(0,'/competition')">
+        <div :class="['footer_item ignore',findex==0?'footer_itemactive':'']" @click="tab(0,'/competition')">
             <span class="iconfont iconshouyex"></span><span>首页</span>
         </div>
-        <div :class="['footer_item',findex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
+        <div :class="['footer_item ignore',findex==1?'footer_itemactive':'']" @click="tab(1,'/gindex')">
             <span class="iconfont icondiannao"></span><span>电竞馆</span>
         </div>
-        <div :class="['footer_item',findex==2?'footer_itemactive':'']" @click="tab(2,'/my')">
+        <div :class="['footer_item ignore',findex==2?'footer_itemactive':'']" @click="tab(2,'/my')">
             <span class="iconfont iconwode"></span><span>我的</span>
         </div>
     </div>
@@ -74,22 +74,21 @@
             color: #909090;
             font-weight: bold;
             flex: 1;
-            font-size: 9px;
-            /*px*/
-            .iconfont {
-                color: rgba(154, 155, 168, .3);
-                font-size: 19px;
-                /*px*/
-                margin-bottom: 6px;
+            font-size: 12px;
+            span{
+                padding: 10px 0 0 0;
+                display: inline-block;
+                &.iconfont {
+                    padding: 0;
+                    color: rgba(154, 155, 168, .3);
+                    font-size: 19px;
+                }
             }
-        }
-
-        .footer_itemactive {
-            color: #333;
-
-            .iconfont {
-                color: $baseRed;
-
+            &.footer_itemactive {
+                color: #333;
+                .iconfont {
+                    color: $baseRed;
+                }
             }
         }
     }

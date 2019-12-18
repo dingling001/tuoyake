@@ -47,14 +47,18 @@ body {
   user-select: none;
 }
 
-*{
+input:-internal-autofill-selected {
+  background: none!important;
+}
+
+* {
   margin: 0;
 }
 
 /*去掉 a，input 在移动端浏览器中的默认样式*/
 
 a,
-//button,
+  //button,
 input,
 optgroup,
 select,

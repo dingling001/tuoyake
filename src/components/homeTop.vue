@@ -19,12 +19,12 @@
                         <span>{{city||'定位中...'}}</span>
                     </div>
                 </div>
-                <router-link to="/search" tag="div" class="searchbox">
+                <router-link :to="'/search?type='+ind"  tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
             <div v-else class="htop" ref="gindex_top">
-                <router-link tag="div" to="/search" class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
+                <router-link tag="div" to="/search?type=0" class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
                 </router-link>
                 <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span> {{city}}
                 </div>
@@ -115,7 +115,8 @@
                 swiperlist: [],
                 offsettop: 0,
                 flag: false,
-                adimginfo: {}
+                adimginfo: {},
+                keywords: ['电竞馆名称/地址', '俱乐部名称/地址', '学院名称/地址']
             };
         },
         provide() {
@@ -141,11 +142,14 @@
             '$route'(val) {
                 console.log(val.fullPath)
                 if (val.fullPath.indexOf('/competition') !== -1) {
-                    this.ind = 0
+                    this.ind = 0;
+                    this.keyword = '电竞馆名称/地址'
                 } else if (val.fullPath.indexOf('/club') !== -1) {
                     this.ind = 1;
+                    this.keyword = '俱乐部名称/地址'
                 } else {
-                    this.ind = 2
+                    this.ind = 2;
+                    this.keyword = '学院名称/地址'
                 }
                 if (this.showtop) {
                     this.offsettop = this.$refs.index_top.offsetHeight;
@@ -161,6 +165,7 @@
         mounted() {
             var _ = this;
             this.ind = this.$route.meta.index || 0;
+            this.keyword = this.keywords[this.ind];
             if (this.showtop) {
                 this.offsettop = this.$refs.index_top.offsetHeight;
                 localStorage.offsettop = this.offsettop;
