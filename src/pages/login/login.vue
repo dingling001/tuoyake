@@ -5,7 +5,7 @@
         </div>
         <div class="login_title">登录托亚克</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="请输入您的账号" clearable/>
+            <van-field v-model="account" maxlength="11" type="number" placeholder="请输入您的账号" clearable @input="accountinput"/>
             <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable autocomplete/>
             <div class="btns van-row--flex van-row--justify-space-between">
                 <span @click="gocode">验证码登录</span>
@@ -38,19 +38,22 @@
         methods: {
             // 登录
             loginpass() {
-                console.log(this.$com.checkPhone(this.account))
+                // console.log(this.$com.checkPhone(this.account))
                 if (!this.$com.checkPhone(this.account)) {
                     this.$com.showtoast('请输入正确的手机号')
                 } else if (this.password == '') {
                     this.$com.showtoast('请输入密码')
-                } else {
+                }
+                else {
                     this.$api.Login(this.account, this.password).then((res) => {
-                        console.log(res)
+                        // console.log(res)
                         if (res.code == 1) {
                             this.$com.showtoast('登录成功');
+                            localStorage.user_twap=res.data.userinfo.token;
                             setTimeout(() => {
                                 // this.$router.go(-1)
                                 let redirect = decodeURIComponent(this.$route.query.redirect);
+                                console.log(redirect)
                                 this.$router.push(redirect);
                             }, 2000)
                         } else {
@@ -59,6 +62,9 @@
                         }
                     })
                 }
+            },
+            accountinput() {
+                this.account = this.account.replace(/[^\d]/g, '');
             },
             // 验证码登录
             gocode(){

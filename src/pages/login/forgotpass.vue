@@ -5,7 +5,7 @@
         </div>
         <div class="login_title">验证手机</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="手机号" type="number" clearable/>
+            <van-field v-model="account" placeholder="手机号" type="text" maxlength="11" clearable @input="accountinput"/>
             <van-field v-model="password" placeholder="短信验证码" type="text" center clearable>
                 <van-button slot="button" type="default" class="code" size="small">获取验证码</van-button>
             </van-field>
@@ -29,6 +29,9 @@
             // 下一步
             gonext() {
                 this.$router.push({path: '/resetpass', query: {}})
+            },
+            accountinput() {
+                this.mobile = this.mobile.replace(/[^\d]/g, '');
             }
         }
     }

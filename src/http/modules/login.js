@@ -39,3 +39,28 @@ export const Login = (account, password) =>
         "POST",
         true
     );
+/**
+ * 　修改手机号 /api/user/changemobile
+ */
+export const ChangeMobile = (mobile, captcha) =>
+    axios(
+        "/api/user/changemobile", {
+            mobile,
+            captcha
+        },
+        "POST",
+        true
+    );
+/**
+ * 　修改手机号 /api/user/changemobile
+ */
+export const UserResetPassword = (password, repassword) =>
+    axios(
+        "/api/user/resetPassword", {
+            password,
+            repassword,
+            token:localStorage.user_twap
+        },
+        "POST",
+        true
+    );

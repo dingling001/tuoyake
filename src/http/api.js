@@ -33,7 +33,7 @@ const instance = axios.create(config);
 // );
 instance.interceptors.response.use(
     function (response) {
-        // console.log(response)
+        console.log(response)
         if (!response) return
         if (response.data.status == 401) {
             Toast({
@@ -51,24 +51,25 @@ instance.interceptors.response.use(
         }
     },
     function (err) {
-        console.log(err)
-        if (!err) {
-            localStorage.showneterror = true;
-            window.location.reload();
-            return
-        }
-        if (JSON.stringify(err).indexOf('timeout') != -1) {
-            console.log('网络超时了')
-            localStorage.showneterror = true;
-            window.location.reload();
-            return
-        }
+        console.log(err.response.status, '----error')
+        // if (!err) {
+        //     localStorage.showneterror = true;
+        //     // window.location.reload();
+        //     return
+        // }
+        // if (JSON.stringify(err).indexOf('timeout') != -1) {
+        //     console.log('网络超时了')
+        //     localStorage.showneterror = true;
+        //     localStorage.removeItem('user_twap');
+        //     // window.location.reload();
+        //     return
+        // }
         switch (err.response.status) {
             case 400:
                 err.message = "请求错误";
                 break;
             case 401:
-                err.message = "未授权，请登录";
+                err.message = "请登录";
                 break;
             case 403:
                 err.message = "拒绝访问";
@@ -158,12 +159,16 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
         instance(options)
             .then(function (res) {
                 // console.log(res);
-                // localStorage.removeItem('showneterror');
+                localStorage.removeItem('showneterror');
                 resolve(res);
                 return false;
             })
             .catch(function (err) {
-                // console.log(err)
+                console.log(err, '++++++err')
+                if (!err) {
+                    localStorage.showneterror = true;
+                    return
+                }
                 // localStorage.removeItem('showneterror');
                 Toast({
                     message: err.message,

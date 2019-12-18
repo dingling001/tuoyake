@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">验证码登录</div>
         <div class="loginform">
-            <van-field v-model="mobile" placeholder="手机号" type="number" clearable/>
-            <van-field v-model="captcha" placeholder="短信验证码" type="text" center clearable>
+            <van-field v-model="mobile" placeholder="手机号" maxlength="11" type="number" clearable/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
                 <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
                 </van-button>
@@ -60,13 +60,13 @@
                         if (res.code == 1) {
                             this.$com.showtoast(res.msg)
                             this.captcha = res.data
+                        }else{
+                            this.$com.showtoast(res.msg)
                         }
                     })
                 }
             },
-            backlogin() {
-                this.$router.go(-1)
-            },
+
             gonext() {
                 if (this.mobile == '') {
                     this.$com.showtoast('请输入手机号')
@@ -91,7 +91,10 @@
                     })
                 }
                 // this.$router.push({path: '/regnext', query: {}})
-            }
+            },
+            backlogin() {
+                this.$router.go(-1)
+            },
         }
     }
 </script>

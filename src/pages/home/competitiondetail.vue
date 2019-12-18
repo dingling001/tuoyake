@@ -13,7 +13,7 @@
                     <div class="comnanme van-ellipsis">{{comdata.info.name}}</div>
                     <div class="nright"><span @click="clllection"
                                               :class="['iconfont', comdata.info.is_collection==0? 'iconstar':'iconstar-fill']"></span>
-                        <span class="iconfont iconfenxiang"></span>
+                        <span class="iconfont iconfenxiang" @click="togshare=true" v-if="showshare"></span>
                     </div>
                 </div>
             </van-sticky>
@@ -63,7 +63,7 @@
                         <div class="jname van-ellipsis">{{item.name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis">{{item.content}}</div>
+                        <div class="jaddress van-ellipsis" v-html="item.content"></div>
                         <div class="price">￥{{item.price}}</div>
                     </div>
                     <div class="jbtn">抢购</div>
@@ -87,12 +87,17 @@
                         <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>
                             {{item.start_time}} ~ {{item.end_time}}
                         </div>
-                        <div class="synopsis van-ellipsis">{{item.synopsis}}</div>
+                        <div class="jaddress van-ellipsis" v-html="item.synopsis"></div>
                     </div>
                     <div class="jbtn s_jbtn">报名</div>
                 </div>
             </div>
         </div>
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="5">
+            <div class="text">点击右上角分享到朋友圈</div>
+        </van-overlay>
+
+        <!--icondianjiyoushangjiaofenxiangdaopengyouquan-->
     </div>
 </template>
 
@@ -124,7 +129,9 @@
                 },
                 show: false,
                 index: 0,
-                is_share: 0
+                is_share: 0,
+                showshare: false,
+                togshare: false
             }
         },
         components: {
@@ -139,6 +146,9 @@
                 this.$router.replace('/')
             }
             this.is_share = this.$route.query.is_share;
+            var ua = navigator.userAgent.toLowerCase();
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
+
         },
         methods: {
             // 获取详情
@@ -225,12 +235,15 @@
                 .iconfont {
                     width: 28px;
                     height: 28px;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: rgba(0, 0, 0, .3);
                     border-radius: 50%;
                     text-align: center;
                     font-weight: bold;
                     line-height: 28px;
-                    display: inline-block;
                     font-size: 14px;
                     margin-right: 10px;
                     /*px*/
@@ -464,9 +477,9 @@
                 }
 
                 .jitem {
-                    margin: 0 17px 17px 17px;
+                    margin: 0 17px 0 17px;
                     /*display: flex;*/
-                    padding: 0 0 15px 0;
+                    padding: 15px 0;
                     border-bottom: 1px solid #eee;
                     /*no*/
                     position: relative;
@@ -505,15 +518,16 @@
 
                     .jright {
                         flex: 1;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
+                        /*display: flex;*/
+                        /*flex-direction: column;*/
+                        /*justify-content: space-between;*/
 
                         .jname {
                             font-size: 14px;
                             /* px */
                             font-weight: bold;
                             max-width: 200px;
+                            line-height: 20px;
                         }
 
                         .jinfo {
@@ -531,6 +545,7 @@
                             font-size: 12px;
                             /*px*/
                             max-width: 192px;
+                            line-height: 25px;
 
                             .icontime-circle {
                                 font-size: 12px;
@@ -574,6 +589,16 @@
             }
         }
 
+        /deep/ .van-overlay {
+            text-align: right;
+
+            .text {
+                font-size: 20px;
+                color: #fff;
+                font-weight: bold;
+                padding: 30px 20px;
+            }
+        }
     }
 
 </style>

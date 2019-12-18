@@ -38,7 +38,7 @@
                 <div class="taocannum">
                     <div class="taocandes">{{goodinfo.content}}</div>
                     <div class="numbox">
-                        <span :class="['iconfont iconminus-circle' ,num<=0? 'disicon':'']" @click="nminus"></span>
+                        <span :class="['iconfont iconminus-circle' ,num<=1? 'disicon':'']" @click="nminus"></span>
                         <input type="number" v-model="num">
                         <span class="iconfont iconplus-circle" @click="plus"></span>
                     </div>
@@ -54,7 +54,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="taocan_btn" @click="goapp">￥{{goodinfo.price*num}} 立即抢购</div>
+            <div class="taocan_btn" @click="goapp" v-if="goodinfo.price">￥{{goodinfo.price*num}} 立即抢购</div>
         </div>
     </div>
 </template>
@@ -71,7 +71,7 @@
                 },
                 cid: '',
                 goods_id: '',
-                num: 0,
+                num: 1,
                 is_share: 0
             }
         },
@@ -124,7 +124,7 @@
             },
             // 减法
             nminus() {
-                if (this.num > 0) {
+                if (this.num > 1) {
                     this.num -= 1;
                 }
             },

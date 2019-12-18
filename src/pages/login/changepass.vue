@@ -1,31 +1,69 @@
 <template>
     <div class="changgebox">
         <div class="hr"></div>
-        <van-cell-group>
-            <van-field
-                    v-model="password"
-                    type="password"
-                    label="登录密码"
-                    placeholder="请输入登录密码"
-            />
-            <van-field
-                    v-model="password"
-                    type="password"
-                    label="确认密码"
-                    placeholder="请再次输入密码"
-            />
-        </van-cell-group>
-        <div class="btn">修改并保存</div>
+        <form action="">
+            <van-cell-group>
+                <van-field
+                        v-model="password"
+                        type="password"
+                        label="登录密码"
+                        autocomplete
+                        maxlength="12"
+                        placeholder="请输入登录密码"
+                />
+                <van-field
+                        v-model="repassword"
+                        type="password"
+                        label="确认密码"
+                        maxlength="12"
+                        autocomplete
+                        placeholder="请再次输入密码"
+                />
+            </van-cell-group>
+            <div class="btn" @click="gonext">修改并保存</div>
+        </form>
     </div>
 </template>
 
 <script>
     export default {
-        name: "changephone"
+        name: "changepass"
         ,
         data() {
             return {
                 password: '',
+                repassword: ''
+            }
+        },
+        methods: {
+            // 修改密码
+            gonext() {
+                if (this.password == '') {
+                    this.$com.showtoast('请输入密码')
+                } else if (this.password.length > 12 || this.password.length < 6) {
+                    this.$com.showtoast('密码长度为6 - 12个字符')
+                } else if (this.repassword == '') {
+                    this.$com.showtoast('请输入重复密码')
+                } else if (this.repassword.length > 12 || this.repassword.length < 6) {
+                    this.$com.showtoast('密码长度为6 - 12个字符')
+                } else if (this.password !== this.repassword) {
+                    this.$com.showtoast('密码与重复密码不一致')
+                } else {
+                    this.$api.UserResetPassword(this.password, this.repassword).then((res) => {
+                        // console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast('修改成功');
+                            // this.$router.go(-1)
+                            localStorage.removeItem('user_twap');
+                            this.$router.replace('/login');
+                        } else {
+                            this.$com.showtoast(res.msg || '稍后再试')
+                        }
+                    })
+                }
+            },
+            accountinput() {
+                this.mobile = this.mobile.replace(/[^\d]/g, '');
             }
         }
     }

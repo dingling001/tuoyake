@@ -19,7 +19,8 @@
             return {
                 club_id: '',
                 club_detail: {},
-                offsettop: 0
+                offsettop: 0,
+                is_app:0
             }
         },
         created() {
@@ -29,7 +30,7 @@
             } else {
                 this.$router.replace('/')
             }
-
+            this.is_app = this.$route.query.is_app;
         },
         methods: {
             // 获取俱乐部详情
@@ -43,7 +44,11 @@
             },
             // 返回列表
             backlist() {
-                this.$router.push('/club')
+                if(this.is_app==1){
+                    this.$router.push('/club')
+                }else{
+                    this.$router.go(-1);
+                }
             }
         }
     }
