@@ -23,7 +23,8 @@ export default [
         meta: {
             title: "注册",
             showF: false,
-            showH: false
+            showH: false,
+            needLogin:false
         }
     },
     {
@@ -43,6 +44,7 @@ export default [
             title: "验证手机",
             showF: false,
             showH: false,
+            needLogin:false
         }
     },
     {
@@ -52,7 +54,7 @@ export default [
             title: "重置密码",
             showF: false,
             showH: false,
-            needLogin:true
+            needLogin:false
         }
     },
     {

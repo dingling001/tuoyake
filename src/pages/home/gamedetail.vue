@@ -1,7 +1,14 @@
 <template>
     <div class="gdbox">
         <div class="swiperbox">
-            <img :src="matchinfo.image" alt="">
+            <!--<img :src="matchinfo.image" alt="">-->
+            <van-image
+                    width="100%"
+                    height="213px"
+                    fit="cover"
+                    :src="matchinfo.image"
+            />
+
             <!--            <swiper :options="swiperOption" ref="mySwiper" v-if="matchinfo.album_images.length">-->
             <!--                <swiper-slide v-for="(item,index) in matchinfo.album_images" :key="index"><img :src="item" alt="">-->
             <!--                </swiper-slide>-->
@@ -298,6 +305,7 @@
                 /*px*/
                 color: #333;
                 font-weight: bold;
+                line-height: 25px;
                 padding: 34px 18px 16px 18px;
             }
 

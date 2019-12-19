@@ -1,6 +1,6 @@
 <template>
     <div class="mlink">
-        <van-tabs type="card" color="#2C6BEA" title-active-color="#fff" title-inactive-color="#6285CC" sticky
+        <van-tabs title-inactive-color="#666" title-active-color="#333" sticky  color="#333"  line-width="27px" sticky
                   :offset-top="44" v-model="nav_active" @click="changgeNav">
             <van-tab title="精选赛事"></van-tab>
             <van-tab title="进行赛事"></van-tab>

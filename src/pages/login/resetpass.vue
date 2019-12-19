@@ -5,8 +5,10 @@
         </div>
         <div class="login_title">重置密码</div>
         <form class="loginform">
-            <van-field label="新密码" v-model="newpassword" placeholder="新密码" type="password" clearable autocomplete/>
-            <van-field label="确认新密码" v-model="repassword" placeholder="确认新密码" type="password" clearable autocomplete/>
+            <van-field label="新密码" v-model="newpassword" placeholder="新密码" maxlength="12" type="password" clearable
+                       autocomplete/>
+            <van-field label="确认新密码" v-model="repassword" placeholder="确认新密码" maxlength="12" type="password" clearable
+                       autocomplete/>
             <div class="login_btn" @click="gologin">前往登录</div>
         </form>
     </div>
@@ -19,8 +21,8 @@
             return {
                 mobile: '',
                 captcha: '',
-                password:'',
-                repassword:''
+                repassword: '',
+                newpassword: ''
             }
         },
         created() {
@@ -33,7 +35,7 @@
             },
             // 修改密码
             gonext() {
-                if (this.password == '') {
+                if (this.newpassword == '') {
                     this.$com.showtoast('请输入密码')
                 } else if (this.newpassword.length > 12 || this.newpassword.length < 6) {
                     this.$com.showtoast('密码长度为6 - 12个字符')
@@ -44,7 +46,7 @@
                 } else if (this.newpassword !== this.repassword) {
                     this.$com.showtoast('密码与重复密码不一致')
                 } else {
-                    this.$api.UserResetPwd(this.mobile,this.newpassword, this.repassword,this.captcha).then((res) => {
+                    this.$api.UserResetPwd(this.mobile, this.newpassword, this.repassword, this.captcha).then((res) => {
                         // console.log(res)
                         if (res.code == 1) {
                             this.$com.showtoast('修改成功');

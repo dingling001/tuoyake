@@ -33,7 +33,14 @@
         <div class="swiperbox" v-if="showhome">
             <div class="sbg"></div>
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
-                <swiper-slide v-for="(item,index) in swiperlist" :key="index"><img :src="item.image_m" alt="">
+                <swiper-slide v-for="(item,index) in swiperlist" :key="index">
+                    <van-image
+                            width="345ox"
+                            height="160px"
+                            fit="cover"
+                            :src="item.image_m"
+                    />
+                    <!--<img :src="item.image_m" alt="">-->
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination" v-if="swiperlist.length>1"></div>
             </swiper>

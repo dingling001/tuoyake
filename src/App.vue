@@ -19,7 +19,8 @@
     import VHeader from "./components/vheader.vue";
     import VFooter from "./components/foot.vue";
     import NetError from './components/NetError'
-import backTop from './components/backTop'
+    import backTop from './components/backTop'
+
     export default {
         name: "App",
         data() {
@@ -79,7 +80,11 @@ import backTop from './components/backTop'
             };
         },
 
-        methods: {}
+        methods: {
+            setTitle(title) {
+                this.headtext = title
+            }
+        }
     };
 </script>
 <style lang="scss" scoped>

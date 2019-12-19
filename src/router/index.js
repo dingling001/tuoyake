@@ -38,7 +38,7 @@ router.beforeEach(function (to, from, next) {
             });
 
         } else {
-            console.log(global.location.pathname)
+            // console.log(global.location.pathname)
             // if (to.path !== global.location.pathname) {
             //     location.assign(to.fullPath)
             //     this.$router.push(to.fullPath)

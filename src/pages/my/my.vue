@@ -71,14 +71,14 @@
 <!--            </div>-->
             <div class="mad" @click="openad" v-if="adinfo.image"><img :src="adinfo.image" alt=""></div>
             <div class="mlink">
-                <van-cell is-link :border='false' to="myCoupon">
-                    <!-- 使用 title 插槽来自定义标题 -->
-                    <template slot="title">
-                        <span class="iconfont iconyouhuiquan"></span>
-                        <span class="custom-title">我的优惠券</span>
-                        <van-tag type="danger" v-if="cnum>0">{{cnum}}</van-tag>
-                    </template>
-                </van-cell>
+                <!--<van-cell is-link :border='false' to="myCoupon">-->
+                    <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
+                    <!--<template slot="title">-->
+                        <!--<span class="iconfont iconyouhuiquan"></span>-->
+                        <!--<span class="custom-title">我的优惠券</span>-->
+                        <!--<van-tag type="danger" v-if="cnum>0">{{cnum}}</van-tag>-->
+                    <!--</template>-->
+                <!--</van-cell>-->
                 <van-cell is-link :border='false' to="myFeedback">
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">

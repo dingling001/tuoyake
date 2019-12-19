@@ -1,7 +1,13 @@
 <template>
     <div class="combox">
         <div class="swiperbox">
-            <img :src="comdata.info.album_images[0]" alt="">
+            <!--<img :src="comdata.info.album_images[0]" alt="">-->
+            <van-image
+                    height="238px"
+                    fit="cover"
+                    :src="comdata.info.album_images[0]"
+            />
+
             <!--            <swiper :options="swiperOption" ref="mySwiper" v-if="comdata.info.album_images.length">-->
             <!--                <swiper-slide v-for="(item,index) in comdata.info.album_images" :key="index"><img :src="item" alt="">-->
             <!--                </swiper-slide>-->
@@ -17,22 +23,10 @@
                     </div>
                 </div>
             </van-sticky>
-            <div class="album" @click="show=true" v-if="comdata.info.album_images.length>0">
+            <div class="album" @click="goimg" v-if="comdata.info.album_images.length>0">
                 <span class="iconfont iconimage"></span>
                 <span>{{comdata.info.album_images.length}}</span>
             </div>
-            <van-image-preview
-                    v-model="show"
-                    :images="comdata.info.album_images"
-                    @change="onChange"
-                    v-if="comdata.info.album_images.length"
-            >
-                <template v-slot:index>
-                    <div class="preview" @click="show=false" v-if="comdata.info.album_images.length"><span
-                            class="iconfont iconfanhui"></span><span>相册（{{comdata.info.album_images.length}}）</span><span>{{index+1}}/{{comdata.info.album_images.length}}</span>
-                    </div>
-                </template>
-            </van-image-preview>
         </div>
         <div class="comitem">
             <div class="comnanme">{{comdata.info.name}}</div>
@@ -85,9 +79,7 @@
                         <div class="jname van-ellipsis">{{item.league_name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>
-                            {{item.start_time}} ~ {{item.end_time}}
-                        </div>
+                        <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}} ~ {{item.end_time}} </div>
                         <div class="jaddress van-ellipsis" v-html="item.synopsis"></div>
                     </div>
                     <div class="jbtn s_jbtn">报名</div>
@@ -160,6 +152,10 @@
                     }
                 })
             },
+            goimg(){
+                this.$router.push({path: '/imgPre', query: {id: this.id}})
+
+            },
             // 去套餐详情
             gotaocandetail(id) {
                 this.$router.push({path: '/taocan', query: {goods_id: id, cid: this.id}})
@@ -203,7 +199,6 @@
 
 <style scoped lang="scss">
     @import "../../style/reset";
-
     .combox {
         .swiperbox {
             height: 238px;
@@ -439,7 +434,7 @@
 
             .comlist {
                 .taocan {
-                    padding: 15px 18px;
+                    padding: 15px 18px 0 15px;
                     font-weight: bold;
                     font-size: 16px;
                     /*px*/

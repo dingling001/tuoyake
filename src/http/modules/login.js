@@ -79,11 +79,23 @@ export const Register = (mobile, captcha, password, repassword) =>
 // 忘记密码 /api/user/resetpwd
 export const UserResetPwd = (mobile, newpassword, repassword, captcha) =>
     axios(
-        "/api/er/resetpwd", {
+        "/api/user/resetpwd", {
             mobile,
             newpassword,
             repassword,
             captcha
+        },
+        "POST",
+        true
+    );
+// 检测验证码 /api/user/check
+export const SmsCheck = (mobile, event, captcha, type=1) =>
+    axios(
+        "/api/sms/check", {
+            mobile,
+            event,
+            captcha,
+            type
         },
         "POST",
         true

@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">登录托亚克</div>
         <form class="loginform">
-            <van-field v-model="account" maxlength="11" type="number" placeholder="请输入您的账号" clearable @input="accountinput"/>
-            <van-field v-model="password" placeholder="请输入您的密码" type="password" clearable autocomplete/>
+            <van-field v-model="account" maxlength="11" type="text" placeholder="请输入您的账号" clearable @input="accountinput"/>
+            <van-field v-model="password" placeholder="请输入您的密码" type="password" maxlength="12" clearable autocomplete/>
             <div class="btns van-row--flex van-row--justify-space-between">
                 <span @click="gocode">验证码登录</span>
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>

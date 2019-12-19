@@ -210,6 +210,7 @@
                         /* px */
                         font-weight: bold;
                         max-width: 240px;
+                        line-height: 25px;
                     }
 
                     .jinfo {

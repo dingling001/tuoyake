@@ -5,17 +5,20 @@
         </div>
         <div class="login_title">账号注册</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="手机号" maxlength="11" type="number" clearable
+            <van-field v-model="account"
+                       placeholder="请输入手机号"
+                       error-message="手机号格式错误" maxlength="11" type="number" clearable
                        @input="accountinput"/>
-            <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
-                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
+            <van-field v-model="captcha" placeholder="短信验证码" type="number"  :error-message="codeerrormsg" maxlength="6" center clearable>
+                <div slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
-                </van-button>
+                </div>
                 <!--                <van-count-down :time="time" v-else />-->
                 <span class="" slot="button" v-else><span>重新获取</span>
                 <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
                                 @finish="endtime"/> <span>S</span></span>
             </van-field>
+
             <div class="login_btn" @click="gonext">下一步</div>
         </form>
     </div>
@@ -32,24 +35,26 @@
                 time: 60000,
                 showbtn: true,
                 redirect: '',
-                atuostart: true
+                atuostart: true,
+                codeerrormsg:''
             }
         },
         created() {
         },
         methods: {
             // 获取验证码
-            _SmsSend() {
+            _SmsSend(){
+                this.codeerrormsg='';
                 if (!this.$com.checkPhone(this.account)) {
                     this.$com.showtoast('请输入正确的手机号')
-                } else {
+                }else{
                     this.$api.SmsSend(this.account, 'register').then((res) => {
                         this.showbtn = false;
-                        console.log(res)
                         if (res.code == 1) {
                             this.$com.showtoast(res.msg)
                             this.captcha = res.data
                         } else {
+                            this.codeerrormsg=res.msg
                             this.$com.showtoast(res.msg)
                         }
                     })
@@ -59,8 +64,8 @@
                 this.showbtn = true;
             },
             gonext() {
-                if (this.account == '') {
-                    this.$com.showtoast('请输入手机号')
+                if (!this.$com.checkPhone(this.account)) {
+                    this.$com.showtoast('请输入正确的手机号')
                 } else if (this.captcha == '') {
                     this.$com.showtoast('请输入验证码')
                 } else {
@@ -106,7 +111,8 @@
             margin: 0 auto;
 
             /deep/ .van-cell {
-                padding: .266667rem 0;
+                padding: 15px 0;
+                height: 50px;
 
                 &:after {
                     left: 0;
@@ -139,6 +145,7 @@
                         background: none;
                     }
                 }
+
                 .van-field__button {
                     span {
                         display: flex;

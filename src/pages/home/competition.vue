@@ -11,7 +11,7 @@
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
                     <van-dropdown-item :title="selectName" ref="item" :disabled="districtlist.length==1"
-                                       v-model="selectName" overlay >
+                                       v-model="selectName" overlay>
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
@@ -37,7 +37,13 @@
                 <!-- 加载的内容-->
                 <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
                     <div class="cimg">
-                        <img :src="item.image" alt="">
+                        <!--<img  alt="">-->
+                        <van-image
+                                width="90ox"
+                                height="90px"
+                                fit="cover"
+                                :src="item.image"
+                        />
                         <span v-if="item.recommend==1">推荐</span>
                     </div>
                     <div class="cright">
@@ -302,6 +308,10 @@
             /deep/ .labelbox {
                 .van-dropdown-menu__item {
                     &:first-child {
+                        .van-dropdown-menu__title::after {
+                            color: $baseRed;
+                        }
+
                         .van-ellipsis {
                             color: $baseRed;
                         }
@@ -310,9 +320,15 @@
             }
 
             /deep/ .cccc {
-                &:nth-child(2) {
-                    .van-ellipsis {
-                        color: $baseRed;
+                .van-dropdown-menu__item {
+                    &:nth-child(2) {
+                        .van-dropdown-menu__title::after {
+                            color: $baseRed;
+                        }
+
+                        .van-ellipsis {
+                            color: $baseRed;
+                        }
                     }
                 }
             }
@@ -423,6 +439,7 @@
 
                     img {
                         width: 100%;
+                        /*height: 100%;*/
                     }
 
                     span {

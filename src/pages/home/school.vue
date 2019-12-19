@@ -3,7 +3,7 @@
         <van-sticky :offset-top="offsettop" class=" swiperbox sticky" ref="sticky">
             <!--            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span-->
             <!--                    class="iconfont iconjiantouarrow486"></span></div>-->
-            <van-dropdown-menu active-color="#f2313b">
+            <van-dropdown-menu active-color="#f2313b" :class="[title=='全部地区'?'':'cccc']">
                 <van-dropdown-item :title="title" ref="item" overlay :disabled="districtlist.length<=1">
                     <div class="citybox">
                         <div class="citems dleft" >
@@ -259,7 +259,16 @@
         margin-top: -10px;
         border-radius: 10px 10px 0 0;
         padding: 60px 0;
-
+        /deep/ .cccc {
+            &:first-child {
+                .van-dropdown-menu__title::after{
+                    color: $baseRed;
+                }
+                .van-ellipsis {
+                    color: $baseRed;
+                }
+            }
+        }
         .swiperbox {
             display: flex;
             align-items: center;
@@ -452,6 +461,7 @@
                     justify-content: space-between;
 
                     .jname {
+                        line-height: 25px;
                         font-size: 14px;
                         /* px */
                         font-weight: bold;

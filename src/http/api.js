@@ -43,8 +43,8 @@ instance.interceptors.response.use(
             });
             localStorage.removeItem("user_twap");
             // 暂时缓存地址，授权成功后回跳这个地址
-            localStorage.url = window.location.href;
-            window.location.href = window.location.origin + "#/login";
+            // localStorage.url = window.location.href;
+            // window.location.href = window.location.origin + "#/login";
         } else {
             //     console.log(response)
             return response.data;
@@ -167,7 +167,7 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
                 console.log(err, '++++++err')
                 if (!err.status) {
                     localStorage.showneterror = true;
-                    window.location.reload();
+                    // window.location.reload();
                     return
                 }
                 // localStorage.removeItem('showneterror');
@@ -179,8 +179,8 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
                 if (err.code === 401) {
                     localStorage.removeItem("user_twap");
                     // 暂时缓存地址，授权成功后回跳这个地址
-                    localStorage.url = window.location.href;
-                    window.location.href = window.location.origin + "#/login";
+                    // localStorage.url = window.location.href;
+                    // window.location.href = window.location.origin + "#/login";
                 }
                 // console.log(err.code);
             });

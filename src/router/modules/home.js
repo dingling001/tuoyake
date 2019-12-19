@@ -61,6 +61,18 @@ export default [
         component: resolve => require(["../../pages/home/competitiondetail"], resolve)
     },
     {
+        path: '/imgPre',
+        name: 'imgPre',
+        meta: {
+            title: "相册",
+            index: 1,
+            showF: false,
+            showH: false
+        },
+        component: resolve => require(["../../pages/home/imgPre"], resolve)
+    },
+
+    {
         path: '/clubdetail',
         name: 'clubdetail',
         meta: {
