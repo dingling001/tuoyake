@@ -11,7 +11,7 @@
                 <span @click="gocode">验证码登录</span>
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
             </div>
-            <div class="login_btn" @click="loginpass">登录</div>
+            <div type="info" class="login_btn" @click="loginpass">登录</div>
             <div class="tips">
                 <span>还没有账号，</span>
                 <router-link class="reg" to="/reg" tag="span">去注册</router-link>
@@ -45,6 +45,7 @@
                     this.$com.showtoast('请输入密码')
                 }
                 else {
+                    this.$com.showtoast('登录中...')
                     this.$api.Login(this.account, this.password).then((res) => {
                         // console.log(res)
                         if (res.code == 1) {
@@ -52,13 +53,12 @@
                             localStorage.user_twap=res.data.userinfo.token;
                             setTimeout(() => {
                                 // this.$router.go(-1)
-                                let redirect = decodeURIComponent(this.$route.query.redirect);
+                                let redirect = decodeURIComponent(this.$route.query.redirect||'/');
                                 console.log(redirect)
                                 this.$router.push(redirect);
                             }, 2000)
                         } else {
                             this.$com.showtoast(res.msg)
-
                         }
                     })
                 }
@@ -68,7 +68,7 @@
             },
             // 验证码登录
             gocode(){
-                this.$router.push({path:'/logincode',query:{redirect:this.$route.query.redirect||'/my'}})
+                this.$router.push({path:'/logincode',query:{redirect:this.$route.query.redirect||'/'}})
             }
         }
     }

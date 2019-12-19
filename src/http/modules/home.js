@@ -143,8 +143,9 @@ export const GetBarInfo = (id, lat = JSON.parse(sessionStorage.pos)[0], lng = JS
         true
     );
 /**
- * 获取俱乐部列表详情
+ * 收藏
  */
+// 类型:1=网吧,2=赛事,3=视频,4=套餐
 export const SetCollection = (type = 1, object_id) =>
     axios(
         "/api/collection/setCollection", {
@@ -238,3 +239,17 @@ export const CommonGetConfig = () =>
         "POST",
         true
     );
+/**
+ * 赛事列表
+ */
+    // integer	是	状态:1=精选赛事,2=进行赛事,3=过往赛事
+
+export const GetMatchList = (bar_id,status=1) =>
+        axios(
+            "/api/index/getMatchList", {
+                bar_id,
+                status
+            },
+            "POST",
+            true
+        );

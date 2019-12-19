@@ -5,11 +5,13 @@
                 <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
                     <span>推荐电竞馆</span>
                 </div>
-                <van-dropdown-menu active-color="#f2313b">
-                    <van-dropdown-item v-model="label" :options="labellist"  @change="changelabel" overlay>
+                <van-dropdown-menu active-color="#f2313b"
+                                   :class="[label==''?'':'labelbox',selectName=='全部地区'?'':'cccc']">
+                    <van-dropdown-item v-model="label" :options="labellist" @change="changelabel" overlay>
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="selectName" ref="item" :disabled ="districtlist.length==1" v-model="selectName"  overlay>
+                    <van-dropdown-item :title="selectName" ref="item" :disabled="districtlist.length==1"
+                                       v-model="selectName" overlay >
                         <div class="citybox">
                             <div class="citems dleft">
                                 <div v-for="(item ,index) in districtlist" :key="index"
@@ -104,7 +106,7 @@
                     {
                         id: '',
                         childlist: [],
-                        name: " 全部地区",
+                        name: "全部地区",
                         pid: '',
                         spacer: ""
                     }
@@ -144,6 +146,7 @@
                             })
                         }
                         this.label = this.labellist[0].value;
+                        console.log(this.label)
                         // console.log(this.labellist)
                     }
                 })
@@ -221,6 +224,7 @@
                     this.districtlist = this.districtlist.concat(res.data);
                     // console.log(this.districtlist)
                     this.selectName = this.districtlist[0].name;
+                    console.log(this.selectName)
                 })
             },
             // 切换成推荐模式
@@ -263,6 +267,7 @@
             },
             // 切换服务标签
             changelabel() {
+                console.log(this.label)
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
@@ -286,7 +291,7 @@
         }
 
         .cselect {
-            padding: 0 39px;
+            padding: 0 5px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -294,6 +299,24 @@
             background-color: #fff;
             font-size: 12px;
             /* px */
+            /deep/ .labelbox {
+                .van-dropdown-menu__item {
+                    &:first-child {
+                        .van-ellipsis {
+                            color: $baseRed;
+                        }
+                    }
+                }
+            }
+
+            /deep/ .cccc {
+                &:nth-child(2) {
+                    .van-ellipsis {
+                        color: $baseRed;
+                    }
+                }
+            }
+
             .cselectitem {
                 display: flex;
                 align-items: center;

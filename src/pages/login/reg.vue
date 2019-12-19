@@ -5,9 +5,16 @@
         </div>
         <div class="login_title">账号注册</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="手机号" type="number" clearable/>
-            <van-field v-model="password" placeholder="短信验证码" type="text" center clearable>
-                <van-button slot="button" type="default" class="code" size="small">获取验证码</van-button>
+            <van-field v-model="account" placeholder="手机号" maxlength="11" type="number" clearable
+                       @input="accountinput"/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
+                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
+                    获取验证码
+                </van-button>
+                <!--                <van-count-down :time="time" v-else />-->
+                <span class="" slot="button" v-else><span>重新获取</span>
+                <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
+                                @finish="endtime"/> <span>S</span></span>
             </van-field>
             <div class="login_btn" @click="gonext">下一步</div>
         </form>
@@ -20,15 +27,49 @@
         data() {
             return {
                 account: '',
-                password: '',
+                captcha: '',
+                show: false,
+                time: 60000,
+                showbtn: true,
+                redirect: '',
+                atuostart: true
             }
         },
         created() {
         },
         methods: {
-            // 下一步
+            // 获取验证码
+            _SmsSend() {
+                if (!this.$com.checkPhone(this.account)) {
+                    this.$com.showtoast('请输入正确的手机号')
+                } else {
+                    this.$api.SmsSend(this.account, 'register').then((res) => {
+                        this.showbtn = false;
+                        console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast(res.msg)
+                            this.captcha = res.data
+                        } else {
+                            this.$com.showtoast(res.msg)
+                        }
+                    })
+                }
+            },
+            endtime() {
+                this.showbtn = true;
+            },
             gonext() {
-                this.$router.push({path: '/regnext', query: {}})
+                if (this.account == '') {
+                    this.$com.showtoast('请输入手机号')
+                } else if (this.captcha == '') {
+                    this.$com.showtoast('请输入验证码')
+                } else {
+                    this.$router.push({path: '/regnext', query: {account: this.account, captcha: this.captcha}})
+                }
+                // this.$router.push({path: '/regnext', query: {}})
+            },
+            accountinput() {
+                this.account = this.account.replace(/[^\d]/g, '');
             }
         }
     }
@@ -96,6 +137,12 @@
 
                     &:before {
                         background: none;
+                    }
+                }
+                .van-field__button {
+                    span {
+                        display: flex;
+                        align-items: center;
                     }
                 }
             }

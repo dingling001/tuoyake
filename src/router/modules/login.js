@@ -33,7 +33,7 @@ export default [
             title: "设置密码",
             showF: false,
             showH: false,
-            needLogin:true
+            needLogin:false
         }
     },
     {

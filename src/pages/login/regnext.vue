@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">设置密码</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="登录密码（6~12位）" type="password" clearable/>
-            <van-field v-model="password" placeholder="请再次输入登录密码" type="password" clearable>
+            <van-field label="登录密码" v-model="password" placeholder="登录密码" type="password" clearable/>
+            <van-field label='确认密码' v-model="repassword" placeholder="确认密码" type="password" clearable>
             </van-field>
             <div class="login_btn" @click="gologin">前往登录</div>
         </form>
@@ -19,14 +19,37 @@
         data() {
             return {
                 account: '',
+                captcha: '',
                 password: '',
+                repassword: '',
             }
         },
         created() {
+            this.account = this.$route.query.account;
+            this.captcha = this.$route.query.captcha;
         },
         methods: {
             gologin() {
-                this.$router.push({path: '/login', query: {}})
+                if (this.password == '') {
+                    this.$com.showtoast('请输入密码')
+                } else if (this.repassword == '') {
+                    this.$com.showtoast('请输入重复密码')
+                } else if (this.password.length < 6 || this.password.length > 12) {
+                    this.$com.showtoast('密码长度介于6～12位之间')
+                } else if (this.password != this.repassword) {
+                    this.$com.showtoast('两次密码不一致')
+                } else {
+                    this.$api.Register(this.account, this.captcha, this.password, this.repassword).then((res) => {
+                        // console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast('注册成功');
+                            this.$router.replace({path: '/login'})
+                        } else {
+                            this.$com.showtoast(res.msg || '稍后再试')
+                        }
+                    })
+
+                }
             }
         }
     }
@@ -64,6 +87,7 @@
 
             /deep/ .van-cell {
                 padding: .266667rem 0;
+                font-size: 15px;
 
                 &:after {
                     left: 0;

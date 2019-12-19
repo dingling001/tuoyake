@@ -39,10 +39,9 @@
                 @confirm="changename"
                 image-fit="contain"
         >
-            <input type="text" v-model="user_info.nickname">
+            <input type="text" v-model="user_info.nickname" maxlength="12">
         </van-dialog>
         <div class="mbnt" v-if="user_twap" @click="loginout">退出登录</div>
-
     </van-cell-group>
     <!--</div>-->
 
@@ -121,13 +120,15 @@
             changename() {
                 if (this.user_info.nickname == '') {
                     this.$com.showtoast('昵称不能为空')
+                } else if (this.user_info.nickname.length > 12) {
+                    this.$com.showtoast('昵称不能超过12个字符')
                 } else {
                     this._Profile()
                 }
             },
             // 退出登录
             loginout() {
-                localStorage.removeItem('user_twap')
+                localStorage.removeItem('user_twap');
                 this.$router.replace('/')
             }
         }
@@ -219,7 +220,7 @@
                 outline: none;
                 border: none;
                 /*width: 100%;*/
-                margin:0 10px;
+                margin: 0 10px;
             }
         }
 

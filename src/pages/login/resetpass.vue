@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">重置密码</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="新密码（6~12位）" type="password" clearable autocomplete/>
-            <van-field v-model="password" placeholder="请再次输入新密码" type="password" clearable autocomplete/>
+            <van-field label="新密码" v-model="newpassword" placeholder="新密码" type="password" clearable autocomplete/>
+            <van-field label="确认新密码" v-model="repassword" placeholder="确认新密码" type="password" clearable autocomplete/>
             <div class="login_btn" @click="gologin">前往登录</div>
         </form>
     </div>
@@ -17,16 +17,45 @@
         name: "reg",
         data() {
             return {
-                account: '',
-                password: '',
+                mobile: '',
+                captcha: '',
+                password:'',
+                repassword:''
             }
         },
         created() {
+            this.mobile = this.$route.query.mobile;
+            this.captcha = this.$route.query.captcha;
         },
         methods: {
             gologin() {
                 this.$router.push({path: '/login', query: {}})
-            }
+            },
+            // 修改密码
+            gonext() {
+                if (this.password == '') {
+                    this.$com.showtoast('请输入密码')
+                } else if (this.newpassword.length > 12 || this.newpassword.length < 6) {
+                    this.$com.showtoast('密码长度为6 - 12个字符')
+                } else if (this.repassword == '') {
+                    this.$com.showtoast('请输入重复密码')
+                } else if (this.repassword.length > 12 || this.repassword.length < 6) {
+                    this.$com.showtoast('密码长度为6 - 12个字符')
+                } else if (this.newpassword !== this.repassword) {
+                    this.$com.showtoast('密码与重复密码不一致')
+                } else {
+                    this.$api.UserResetPwd(this.mobile,this.newpassword, this.repassword,this.captcha).then((res) => {
+                        // console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast('修改成功');
+                            localStorage.removeItem('user_twap');
+                            this.$router.replace('/login');
+                        } else {
+                            this.$com.showtoast(res.msg || '稍后再试')
+                        }
+                    })
+                }
+            },
         }
     }
 </script>

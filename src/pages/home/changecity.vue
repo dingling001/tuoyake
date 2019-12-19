@@ -120,10 +120,6 @@
                         id: 3
                     },
                     {
-                        city: '武汉',
-                        id: 4
-                    },
-                    {
                         city: '西安',
                         id: 5
                     },
@@ -223,6 +219,7 @@
         },
 
         mounted() {
+            console.log(this.hotaddr)
             this.loccity = localStorage.loccity;
             this.screenHeight = 100 + 'vh'; //设置#topdiv的高度
             if (sessionStorage.changecity && localStorage.loccity) {

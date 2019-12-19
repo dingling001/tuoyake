@@ -12,6 +12,10 @@
                 <div class="navbox">
                     <span class="iconfont iconfanhui" @click="backlist"></span>
                     <div class="comnanme van-ellipsis">{{videoinfo.name}}</div>
+                    <div class="nright"><span @click="clllection"
+                                              :class="['iconfont', videoinfo.is_collection==0? 'iconstar':'iconstar-fill']"></span>
+                        <span class="iconfont iconfenxiang" @click="togshare=true" v-if="showshare"></span>
+                    </div>
                 </div>
             </van-sticky>
         </div>
@@ -24,6 +28,9 @@
             <div class="hr"></div>
             <div class="machdes" v-html="videoinfo.synopsis"></div>
         </div>
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="5">
+            <div class="text">点击右上角分享到朋友圈</div>
+        </van-overlay>
     </div>
 </template>
 
@@ -56,7 +63,9 @@
                         remainingTimeDisplay: true,
                         fullscreenToggle: true //全屏按钮
                     }
-                }
+                },
+                togshare: false,
+                showshare: false
             }
         },
         created() {
@@ -66,6 +75,9 @@
             } else {
                 this.$router.replace('/')
             }
+            var ua = navigator.userAgent.toLowerCase();
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
+
         },
         methods: {
             _GetVideoInfo() {
@@ -73,7 +85,23 @@
                     if (res.code == 1) {
                         this.videoinfo = res.data;
                         this.playerOptions.sources[0].src = res.data.file;
+                        this.playerOptions.poster = res.data.image
                     }
+                })
+            },
+            // 收藏
+            clllection() {
+                this.$api.SetCollection(3, this.video_id).then(res => {
+                    if (res.code == 1) {
+                        if (res.data.is_collection == 1) {
+                            this.$com.showtoast('收藏成功')
+                            this.videoinfo.is_collection = 1;
+                        } else {
+                            this.$com.showtoast('取消收藏')
+                            this.videoinfo.is_collection = 0;
+                        }
+                    }
+                    // this._GetBarInfo()
                 })
             },
             backlist() {
@@ -146,12 +174,15 @@
                 .iconfont {
                     width: 28px;
                     height: 28px;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: rgba(0, 0, 0, .3);
                     border-radius: 50%;
                     text-align: center;
                     font-weight: bold;
                     line-height: 28px;
-                    display: inline-block;
                     font-size: 14px;
                     margin-right: 10px;
                     /*px*/
@@ -167,6 +198,10 @@
                     }
                 }
 
+                .nright {
+                    display: flex;
+                    align-items: center;
+                }
             }
 
             /deep/ .van-sticky--fixed {

@@ -165,8 +165,9 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
             })
             .catch(function (err) {
                 console.log(err, '++++++err')
-                if (!err) {
+                if (!err.status) {
                     localStorage.showneterror = true;
+                    window.location.reload();
                     return
                 }
                 // localStorage.removeItem('showneterror');

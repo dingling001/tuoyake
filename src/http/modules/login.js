@@ -64,3 +64,27 @@ export const UserResetPassword = (password, repassword) =>
         "POST",
         true
     );
+// 注册
+export const Register = (mobile, captcha, password, repassword) =>
+    axios(
+        "/api/common/register", {
+            mobile,
+            captcha,
+            password,
+            repassword
+        },
+        "POST",
+        true
+    );
+// 忘记密码 /api/user/resetpwd
+export const UserResetPwd = (mobile, newpassword, repassword, captcha) =>
+    axios(
+        "/api/er/resetpwd", {
+            mobile,
+            newpassword,
+            repassword,
+            captcha
+        },
+        "POST",
+        true
+    );

@@ -5,9 +5,18 @@
         </div>
         <div class="login_title">验证手机</div>
         <form class="loginform">
-            <van-field v-model="account" placeholder="手机号" type="text" maxlength="11" clearable @input="accountinput"/>
-            <van-field v-model="password" placeholder="短信验证码" type="text" center clearable>
-                <van-button slot="button" type="default" class="code" size="small">获取验证码</van-button>
+            <van-field v-model="mobile" placeholder="手机号" type="text" maxlength="11" clearable @input="accountinput"/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
+                <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
+                    获取验证码
+                </van-button>
+                <!--                <van-count-down :time="time" v-else />-->
+                <span class="" slot="button" v-else>
+                    <span>重新获取</span>
+                <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
+                                @finish="endtime"/>
+                    <span>S</span>
+                </span>
             </van-field>
             <div class="login_btn" @click="gonext">继续</div>
         </form>
@@ -19,16 +28,42 @@
         name: "reg",
         data() {
             return {
-                account: '',
-                password: '',
+                mobile: '',
+                captcha: '',
+                show: false,
+                time: 60000,
+                showbtn: true,
+                redirect: '',
+                atuostart: true
             }
         },
         created() {
         },
         methods: {
+
+            endtime() {
+                this.showbtn = true;
+            },
+            // 获取验证码
+            _SmsSend() {
+                if (this.mobile == '') {
+                    this.$com.showtoast('请输入手机号')
+                } else {
+                    this.$api.SmsSend(this.mobile, 'resetpwd').then((res) => {
+                        this.showbtn = false;
+                        console.log(res)
+                        if (res.code == 1) {
+                            this.$com.showtoast(res.msg)
+                            this.captcha = res.data
+                        }else{
+                            this.$com.showtoast(res.msg)
+                        }
+                    })
+                }
+            },
             // 下一步
             gonext() {
-                this.$router.push({path: '/resetpass', query: {}})
+                this.$router.push({path: '/resetpass', query: {mobile:this.mobile,captcha:this.captcha}})
             },
             accountinput() {
                 this.mobile = this.mobile.replace(/[^\d]/g, '');

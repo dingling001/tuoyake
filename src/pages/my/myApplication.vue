@@ -48,7 +48,7 @@
                     </van-list>
                 </van-pull-refresh>
                 <div class="comlist" v-if="show&&singList.length==0">
-                    <NoData :img="img" :text="''" :top="100"></NoData>
+                    <NoData :img="img" :text="''" :top="30"></NoData>
                 </div>
             </van-tabs>
         </div>

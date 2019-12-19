@@ -5,7 +5,7 @@
         </div>
         <div class="login_title">验证码登录</div>
         <div class="loginform">
-            <van-field v-model="mobile" placeholder="手机号" maxlength="11" type="number" clearable/>
+            <van-field v-model="mobile" placeholder="手机号" @input="accountinput" maxlength="11" type="number" clearable/>
             <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
                 <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
@@ -91,6 +91,9 @@
                     })
                 }
                 // this.$router.push({path: '/regnext', query: {}})
+            },
+            accountinput() {
+                this.mobile = this.mobile.replace(/[^\d]/g, '');
             },
             backlogin() {
                 this.$router.go(-1)

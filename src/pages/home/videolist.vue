@@ -4,10 +4,17 @@
             <div class="videoitem" v-if="vlist.length" v-for="(item,index) in vlist" :key="item.id"
                  @click="govdetail(item.id)">
                 <div class="vimg">
-                    <img src="" alt="">
+                    <img :src="item.image" alt="">
                 </div>
                 <div class="vname van-ellipsis">{{item.name}}</div>
-                <div class="vtime"><span class="iconfont icontime-circle"></span><span>{{item.create_time}}</span></div>
+                <div class="vtime">
+                    <div class="vitem">
+                        <span class="iconfont icontime-circle"></span><span>{{item.create_time}}</span>
+                    </div>
+                    <div class="vitem">
+                        <span>{{item.view_num}}人观看</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -90,12 +97,19 @@
                     font-size: 10px;
                     /*px*/
                     color: #666666;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
 
-                    .iconfont {
-                        color: #AAAAAA;
-                        font-size: 14px;
-                        /*px*/
-                        margin-right: 5px;
+                    .vitem {
+                        .iconfont {
+                            color: #AAAAAA;
+                            font-size: 14px;
+                            /*px*/
+                            margin-right: 5px;
+                        }
+                        display: flex;
+                        align-items: center;
                     }
                 }
             }

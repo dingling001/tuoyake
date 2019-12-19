@@ -97,7 +97,7 @@
                     <!-- 使用 title 插槽来自定义标题 -->
                     <template slot="title">
                         <span class="iconfont iconguanyuwomen"></span>
-                        <span class="custom-title">关于平台</span>
+                        <span class="custom-title">关于我们</span>
                     </template>
                 </van-cell>
             </div>
@@ -336,6 +336,10 @@
                         /*px*/
                         margin-right: 10px;
                     }
+                    .van-tag{
+                        border-radius: 50%;
+                        flex-shrink: 0;
+                    }
                 }
 
                 .iconfont {
@@ -381,6 +385,9 @@
                         color: #666666;
                         font-size: 12px;
                         /*    px*/
+                    }
+                    .van-info{
+                        right: 10px;
                     }
                 }
             }

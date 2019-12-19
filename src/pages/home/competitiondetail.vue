@@ -73,7 +73,8 @@
             <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">赛</span><span>赛事</span></div>
-                    <div class="all" v-if="comdata.match.length>1">全部 <span class="iconfont iconjiantou"></span></div>
+                    <div class="all"  @click="goallgame">全部 <span
+                            class="iconfont iconjiantou"></span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
                      @click="gossdetail(item.id)">
@@ -166,6 +167,9 @@
             gossdetail(id) {
                 this.$router.push({path: '/gamedetail', query: {match_id: id, cid: this.id}})
             },
+            goallgame() {
+                this.$router.push({path: '/allgame', query: {bar_id: this.id}})
+            },
             // 回到列表
             backlist() {
                 if (this.is_share == 1) {
@@ -205,7 +209,6 @@
             height: 238px;
             border-radius: 16px;
             position: relative;
-
             .navbox {
                 position: absolute;
                 top: 0;

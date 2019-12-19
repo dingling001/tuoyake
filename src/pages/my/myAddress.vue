@@ -1,7 +1,6 @@
 <template>
     <div class="myadd">
         <van-address-list
-                v-if="list.length"
                 v-model="chosenAddressId"
                 :list="list"
                 @add="onAdd"
@@ -123,13 +122,12 @@
                 position: absolute;
                 top: 75px;
                 right: 40px;
-                border-radius: 16px;
                 color: #fff;
-                background-color: $baseRed;
+                border-radius: 3px;
+                background-color: $baseBlue;
                 font-size: 12px;
                 /*px*/
-                padding: 2px 5px;
-
+                padding: 4px 6px;
             }
         }
     }

@@ -49,7 +49,7 @@
                         <div class="jimg">
                             <img :src="item.image" alt="">
                             <!--<video :src="item.file" preload="auto" controls></video>-->
-                            <span>12:30</span>
+<!--                            <span>12:30</span>-->
                         </div>
                         <div class="jright">
                             <div class="jname van-ellipsis">{{item.name}}</div>

@@ -4,9 +4,9 @@
             <!--            <div class="all" :class="{activespan:ind==-1}" @click="activeList(-1,'')"><span>全部地区</span><span-->
             <!--                    class="iconfont iconjiantouarrow486"></span></div>-->
             <van-dropdown-menu active-color="#f2313b">
-                <van-dropdown-item :title="district" ref="item" overlay>
+                <van-dropdown-item :title="title" ref="item" overlay :disabled="districtlist.length<=1">
                     <div class="citybox">
-                        <div class="citems dleft">
+                        <div class="citems dleft" >
                             <div v-for="(item ,index) in districtlist" :key="index"
                                  :class="{activecity:index==lindex}"
                                  @click="selcetcity(index)">{{item.name}}
@@ -79,7 +79,7 @@
                 },
                 navlist: [
                     {
-                        name: '全部',
+                        name: '全部学院',
                         id: ''
                     }
                 ],
@@ -110,7 +110,8 @@
                 lindex: 0,
                 rindex: -1,
                 schoolshow: false,
-                offsettop: parseInt(localStorage.offsettop)
+                offsettop: parseInt(localStorage.offsettop),
+                title: '全部地区'
             }
         },
         components: {
@@ -162,6 +163,7 @@
                     this.district = '';
                     this.page = 0;
                     this.circle = '';
+                    this.title='全部地区'
                     this.clublist = [];
                     this._CollegeIndex();
                 }
@@ -173,6 +175,7 @@
                 this.$refs.item.toggle();
                 // this.district = name;
                 this.circle = name;
+                this.title = this.circle;
                 this.page = 0;
                 this.clublist = [];
                 this._CollegeIndex();
@@ -260,7 +263,7 @@
         .swiperbox {
             display: flex;
             align-items: center;
-            padding: 0 39px;
+            padding: 0 10px;
             justify-content: space-between;
             color: #333333;
             background-color: #fff;
@@ -296,7 +299,7 @@
             }
 
             /deep/ .van-dropdown-menu {
-                flex: 2;
+                /*flex: 2;*/
 
                 .van-ellipsis {
                     font-size: 12px;

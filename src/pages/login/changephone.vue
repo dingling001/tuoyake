@@ -73,11 +73,10 @@
             },
 // 修改手机号
             gonext() {
-                if (this.mobile == '') {
-                    this.$com.showtoast('请输入新手机号')
-                } else if (this.captcha == '') {
+                if (!this.$com.checkPhone(this.account)) {
+                    this.$com.showtoast('请输入正确的新手机号')
+                }  else if (this.captcha == '') {
                     this.$com.showtoast('请输入验证码')
-
                 } else {
                     this.$api.ChangeMobile(this.mobile, this.captcha).then((res) => {
                         // console.log(res)
@@ -90,7 +89,6 @@
                     })
                 }
             },
-
             accountinput() {
                 this.mobile = this.mobile.replace(/[^\d]/g, '');
             }
