@@ -4,7 +4,7 @@
         <van-cell-group>
             <van-field label="原手机号" readonly :value="user_info.mobile"
             />
-            <van-field label="新手机号" v-model="mobile" placeholder="新手机号" type="text" @input="accountinput" maxlength="11"
+            <van-field label="新手机号" v-model="mobile" placeholder="新手机号" readonly clickable  clearable  type="text"   @touchstart.native.stop="showkeybord = true" @input="accountinput" maxlength="11"
                        clearable/>
             <van-field label="验证码" v-model="captcha" placeholder="短信验证码" type="text" center clearable>
                 <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
@@ -19,6 +19,12 @@
                 </span>
             </van-field>
         </van-cell-group>
+        <van-number-keyboard
+                v-model="mobile"
+                :show="showkeybord"
+                :maxlength="11"
+                @blur="showkeybord = false"
+        />
         <div class="btn" @click="gonext">修改并保存</div>
     </div>
 </template>
@@ -35,7 +41,8 @@
                 showbtn: true,
                 redirect: '',
                 atuostart: true,
-                user_info: {}
+                user_info: {},
+                showkeybord:false
             }
         },
         created() {
@@ -57,7 +64,7 @@
             },
             // 获取验证码
             _SmsSend() {
-                if (this.mobile == '') {
+                if (!this.$com.checkPhone(this.mobile)) {
                     this.$com.showtoast('请输入手机号')
                 } else {
                     this.$api.SmsSend(this.mobile, 'changemobile').then((res) => {
@@ -71,9 +78,9 @@
                     })
                 }
             },
-// 修改手机号
+                // 修改手机号
             gonext() {
-                if (!this.$com.checkPhone(this.account)) {
+                if (!this.$com.checkPhone(this.mobile)) {
                     this.$com.showtoast('请输入正确的新手机号')
                 }  else if (this.captcha == '') {
                     this.$com.showtoast('请输入验证码')

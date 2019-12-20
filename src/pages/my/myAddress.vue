@@ -1,20 +1,20 @@
 <template>
     <div class="myadd">
+        <div class="loading" v-if="!listshow"><van-loading type="spinner" /></div>
         <van-address-list
                 v-model="chosenAddressId"
                 :list="list"
                 @add="onAdd"
-                @select="setdefault"
                 @edit="onEdit"
                 add-button-text="+ 新建收货地址"
         >
-            <div slot="default" class="nodata" v-if="list.length==0">
+            <div slot="default" class="nodata" v-if="listshow&&list.length==0">
                 <NoData :text="'暂无地址'"></NoData>
             </div>
-            <div class="default_a">默认</div>
+            <div class="default_a" v-if="listshow&&list.length">默认</div>
         </van-address-list>
     </div>
-
+<!--    @select="setdefault"-->
 </template>
 
 <script>
@@ -24,6 +24,7 @@
             return {
                 chosenAddressId: '',
                 list: [],
+                listshow:false,
                 choose: 0
             }
         },
@@ -34,6 +35,7 @@
         methods: {
             _AddressIndex() {
                 this.$api.AddressIndex().then(res => {
+                    this.listshow=true;
                     if (res.code == 1) {
                         var list = res.data;
                         for (let i in list) {
@@ -93,6 +95,10 @@
     @import "../../style/reset";
 
     .myadd {
+        .loading{
+            text-align: center;
+            padding: 10px 0;
+        }
         /deep/ .van-address-list {
             .van-address-list__add {
                 background-color: $baseBlue;
@@ -111,6 +117,13 @@
 
             .van-radio__icon {
                 font-size: 16px !important;
+display: none!important;
+                &.van-radio__icon--checked {
+                    .van-icon {
+                        background-color: $baseBlue;
+                        border-color: $baseBlue;
+                    }
+                }
             }
 
             .van-icon {

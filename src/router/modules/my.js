@@ -222,6 +222,28 @@ export default [
         },
     },
     {
+        path: '/reward_d_app',
+        name: 'reward_d_app',
+        component: resolve => require(["../../pages/my/reward_d_app"], resolve),
+        meta: {
+            title: "领取详情",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
+        path: '/reward_d',
+        name: 'reward_d',
+        component: resolve => require(["../../pages/my/reward_d"], resolve),
+        meta: {
+            title: "领取详情",
+            showF: false,
+            showH: true,
+            needLogin: true,
+        },
+    },
+    {
         path: '/myAddress',
         name: 'myAddress',
         component: resolve => require(["../../pages/my/myAddress"], resolve),

@@ -14,6 +14,7 @@
                 :area-columns-placeholder='placeholder'
                 @save="onSave"
                 @delete="onDelete"
+                delete-button-text="刪除地址"
         >
         </van-address-edit>
     </div>
@@ -123,9 +124,10 @@
 </script>
 
 <style scoped lang="scss">
+    @import "../../style/reset";
+
     .ebox {
         padding-top: 60px;
-
         .nav {
             height: 56px;
             text-align: center;
@@ -161,6 +163,24 @@
                 font-size: 13px;
                 /*px*/
                 color: #333333;
+            }
+        }
+        /deep/ .van-address-edit {
+            .van-address-edit__buttons {
+                margin: 200px 0 0 0 ;
+                .van-button--danger {
+                    background-color: $baseBlue;
+                    border-color: $baseBlue;
+                    border-radius: 20px;
+                }
+                .van-button--default{
+                    position: fixed;
+                    right: 0;
+                    top: 0;
+                    width: 100px;
+                    z-index: 100;
+                    border: 0;
+                }
             }
         }
     }

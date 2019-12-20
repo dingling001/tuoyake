@@ -3,6 +3,7 @@
         <div class="swiperbox">
             <!--<img :src="comdata.info.album_images[0]" alt="">-->
             <van-image
+                    v-if="comdata.info.album_images[0]"
                     height="238px"
                     fit="cover"
                     :src="comdata.info.album_images[0]"
@@ -17,8 +18,8 @@
                 <div class="navbox">
                     <span class="iconfont iconfanhui" @click="backlist"></span>
                     <div class="comnanme van-ellipsis">{{comdata.info.name}}</div>
-                    <div class="nright"><span @click="clllection"
-                                              :class="['iconfont', comdata.info.is_collection==0? 'iconstar':'iconstar-fill']"></span>
+                    <div class="nright"><i @click="clllection"
+                                           :class="['iconfont', comdata.info.is_collection==0? 'iconstar':'iconstar-fill']"></i>
                         <span class="iconfont iconfenxiang" @click="togshare=true" v-if="showshare"></span>
                     </div>
                 </div>
@@ -36,7 +37,7 @@
                      v-for="item in 5-Number(comdata.info.star)"></div>
             </div>
             <div class="comaddress">
-                <div class="adressitem">
+                <div class="adressitem" @click="gomap(comdata.info)">
                     <span class="iconfont icondingweiweizhi"></span>
                     <div class="address">{{comdata.info.address}}
                         <div class="juli">距您 {{comdata.info.distance}}</div>
@@ -67,7 +68,7 @@
             <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">赛</span><span>赛事</span></div>
-                    <div class="all"  @click="goallgame">全部 <span
+                    <div class="all" @click="goallgame">全部 <span
                             class="iconfont iconjiantou"></span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
@@ -79,7 +80,9 @@
                         <div class="jname van-ellipsis">{{item.league_name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}} ~ {{item.end_time}} </div>
+                        <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}}
+                            ~ {{item.end_time}}
+                        </div>
                         <div class="jaddress van-ellipsis" v-html="item.synopsis"></div>
                     </div>
                     <div class="jbtn s_jbtn">报名</div>
@@ -152,9 +155,8 @@
                     }
                 })
             },
-            goimg(){
+            goimg() {
                 this.$router.push({path: '/imgPre', query: {id: this.id}})
-
             },
             // 去套餐详情
             gotaocandetail(id) {
@@ -192,6 +194,9 @@
                     }
                     // this._GetBarInfo()
                 })
+            },
+            gomap(info) {
+                this.$router.push({path: '/amap', query: {bar_id: this.id}})
             }
         }
     }
@@ -199,11 +204,13 @@
 
 <style scoped lang="scss">
     @import "../../style/reset";
+
     .combox {
         .swiperbox {
             height: 238px;
             border-radius: 16px;
             position: relative;
+
             .navbox {
                 position: absolute;
                 top: 0;

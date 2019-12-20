@@ -7,8 +7,7 @@
                     <van-icon name="search"/>
                     <van-field type="serch" :placeholder="placeholder" v-model="keyword" @keyup.enter="seachAnswer"/>
                 </form>
-                <van-button size="mini" v-if="keyword" type="info" color="linear-gradient(90deg,#2F61D2,#D0313E)"
-                            @click="seachAnswer">搜索
+                <van-button size="mini" v-if="keyword" type="default" color="transparent" @click="seachAnswer">搜索
                 </van-button>
                 <van-button size="mini" v-else color="transparent" type="default" @click="backindex">取消</van-button>
             </div>
@@ -446,8 +445,7 @@
                     font-size: 20px;
                 }
 
-                /deep/
-                .van-cell {
+                /deep/ .van-cell {
                     background: none;
                     padding: 0;
 
@@ -465,6 +463,9 @@
                     }
                 }
 
+            }
+            /deep/ .van-button{
+                color: rgba(255,255,255,.72)!important;
             }
         }
 

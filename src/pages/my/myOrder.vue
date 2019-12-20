@@ -1,6 +1,6 @@
 <template>
     <div class="colbox">
-        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky :offset-top="110"
+        <van-tabs v-model="active" title-inactive-color="#666" title-active-color="#333" sticky :offset-top="47"
                   color="#2C6BEA"
                   line-width="30px" @click="changetype">
             <van-tab title="全部"></van-tab>
@@ -144,7 +144,7 @@
 
         /deep/ .van-tabs {
             .van-pull-refresh {
-                min-height: 100vh;
+                /*min-height: 100vh;*/
             }
         }
 

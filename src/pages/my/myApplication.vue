@@ -11,7 +11,7 @@
             <div class="score_item">
                 <div class="item">
                     <div class="scroe">{{total}}</div>
-                    <div class="mys">获奖次数</div>
+                    <div class="mys">报名次数</div>
                 </div>
                 <div class="item">
                     <div class="scroe">{{win}}</div>
@@ -30,8 +30,8 @@
                     <van-list
                             v-model="isUpLoading" :finished="finished" @load="onLoad" class="comlist" :offset="offset"
                             finished-text="到底了">
-                        <div class="jitem van-row--flex" v-for="(item,index) in singList" :key="item.id"
-                             @click="gossdetail(item.id)">
+                        <div class="jitem van-row--flex" v-for="(item,index) in singList" :key="item.match_id"
+                             @click="gossdetail(item.match_id)">
                             <div class="jimg"><img :src="item.image" alt="">
                                 <!--<span v-if="item.recommend==1">精选</span>-->
                             </div>
@@ -338,6 +338,7 @@
                             font-size: 14px;
                             /* px */
                             font-weight: bold;
+                            line-height: 25px;
                         }
 
                         .jinfo {

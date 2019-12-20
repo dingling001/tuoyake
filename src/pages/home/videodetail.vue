@@ -8,22 +8,27 @@
                           id="foo"
                           v-if="playerOptions.sources[0].src"
             ></video-player>
-            <van-sticky :offset="0">
+            <van-sticky :offset="0" v-if="Object.keys(videoinfo).length">
                 <div class="navbox">
-                    <span class="iconfont iconfanhui" @click="backlist"></span>
+                    <span class="iconfont iconfanhui" @click.stop="backlist"></span>
                     <div class="comnanme van-ellipsis">{{videoinfo.name}}</div>
-                    <div class="nright"><span @click="clllection"
+                    <div class="nright"><span @click.stop="clllection"
                                               :class="['iconfont', videoinfo.is_collection==0? 'iconstar':'iconstar-fill']"></span>
                         <span class="iconfont iconfenxiang" @click="togshare=true" v-if="showshare"></span>
                     </div>
                 </div>
             </van-sticky>
         </div>
-        <div class="comitem">
+        <div class="comitem" v-if="Object.keys(videoinfo).length">
             <div class="comnanme">{{videoinfo.name}}</div>
             <div class="comaddress">
-                <span class="iconfont icontime-circle"></span>
-                <span>{{videoinfo.create_time}}</span>
+                <div class="comaitem">
+                    <span class="iconfont icontime-circle"></span>
+                    <span>{{videoinfo.create_time}}</span>
+                </div>
+                <div class="comaitem">
+                    <span>{{videoinfo.view_num}}人观看</span>
+                </div>
             </div>
             <div class="hr"></div>
             <div class="machdes" v-html="videoinfo.synopsis"></div>
@@ -77,7 +82,6 @@
             }
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
-
         },
         methods: {
             _GetVideoInfo() {
@@ -285,9 +289,14 @@
                 padding: 18px;
                 display: flex;
                 align-items: center;
+                justify-content: space-between;
                 color: #666666;
                 font-size: 12px;
                 /*px*/
+                .comaitem{
+                    display: flex;
+                    align-items: center;
+                }
                 .iconfont {
                     color: #AAAAAA;
                     font-size: 14px;
@@ -299,6 +308,7 @@
 
             .machdes {
                 padding: 30px 18px;
+                line-height: 25px;
             }
 
             .hr {

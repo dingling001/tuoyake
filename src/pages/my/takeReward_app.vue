@@ -1,6 +1,6 @@
 <template>
     <div class="rbox">
-        <div class="aitem" @click="goaddress" v-if="showadd&&Object.keys(addinfo).length">
+        <div class="aitem" @click="goaddress" v-if="showadd&&addinfo.id!=0">
             <div class="left">
                 <div class="address">{{addinfo.province}}{{addinfo.city}}{{addinfo.district}}{{addinfo.address}}</div>
                 <div>{{addinfo.name}} {{addinfo.mobile}}</div>
@@ -8,14 +8,14 @@
             </div>
             <div class="iconfont iconjiantou"></div>
         </div>
-        <div class="aitem noadd" @click="addardess" v-if="showadd&&Object.keys(addinfo).length==0 ">
+        <div class="aitem noadd" @click="addardess" v-if="showadd&&addinfo.id==0 ">
             <i class="iconfont iconplus-circle"></i><span>添加地址</span>
         </div>
         <div class="ritem">
             <div class="rname">奖品信息</div>
             <div class="rinfo">
                 <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
-                <van-image fit="contain" width="1.6rem" height="1.6rem" :src="item.image"/>
+                <van-image  width="60px" height="60px" fit="cover" :src="item.image"/>
                 <div class="rcontent">
                     <div class="rgname">{{item.goods_name}}</div>
                     <div class="rdes">X1</div>
@@ -152,7 +152,7 @@
                     padding: 3px 5px;
                     border-radius: 5px;
                     color: #fff;
-                    background-color: $baseRed;
+                    background-color: $baseBlue;
                 }
             }
 

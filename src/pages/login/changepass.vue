@@ -62,9 +62,6 @@
                     })
                 }
             },
-            accountinput() {
-                this.mobile = this.mobile.replace(/[^\d]/g, '');
-            }
         }
     }
 </script>

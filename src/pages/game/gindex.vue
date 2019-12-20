@@ -428,7 +428,7 @@
             padding: 60px 0 0 0;
 
             .cselect {
-                padding: 0 39px;
+                /*padding: 0 39px;*/
                 display: flex;
                 align-items: center;
                 justify-content: space-between;

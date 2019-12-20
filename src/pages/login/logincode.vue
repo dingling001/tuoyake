@@ -5,8 +5,8 @@
         </div>
         <div class="login_title">验证码登录</div>
         <div class="loginform">
-            <van-field v-model="mobile" placeholder="手机号" @input="accountinput" maxlength="11" type="number" clearable/>
-            <van-field v-model="captcha" placeholder="短信验证码" type="number" maxlength="6" center clearable>
+            <van-field v-model="mobile" placeholder="手机号" @input="mobileinput" maxlength="11" readonly clickable  clearable  type="text"   @touchstart.native.stop="showkeybord = true" clearable/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="text" maxlength="6" center clearable>
                 <van-button slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
                 </van-button>
@@ -20,6 +20,12 @@
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
             <div @click="backlogin" class="login_pass">密码登录</div>
+            <van-number-keyboard
+                    v-model="mobile"
+                    :show="showkeybord"
+                    :maxlength="11"
+                    @blur="showkeybord = false"
+            />
         </div>
     </div>
 </template>
@@ -35,7 +41,8 @@
                 time: 60000,
                 showbtn: true,
                 redirect: '',
-                atuostart: true
+                atuostart: true,
+                showkeybord:false
             }
         },
         created() {
@@ -43,7 +50,6 @@
                 this.$router.replace('/')
             }
             this.redirect = this.$route.query.redirect
-
         },
         methods: {
             endtime() {
@@ -51,8 +57,8 @@
             },
             // 获取验证码
             _SmsSend() {
-                if (this.mobile == '') {
-                    this.$com.showtoast('请输入手机号')
+                if (!this.$com.checkPhone(this.mobile)) {
+                    this.$com.showtoast('请输入正确的手机号')
                 } else {
                     this.$api.SmsSend(this.mobile, 'login').then((res) => {
                         this.showbtn = false;
@@ -68,11 +74,10 @@
             },
 
             gonext() {
-                if (this.mobile == '') {
-                    this.$com.showtoast('请输入手机号')
+                if (!this.$com.checkPhone(this.mobile)) {
+                    this.$com.showtoast('请输入正确的手机号')
                 } else if (this.captcha == '') {
                     this.$com.showtoast('请输入验证码')
-
                 } else {
                     this.$api.MobileLogin(this.mobile, this.captcha).then((res) => {
                         // console.log(res)
@@ -92,7 +97,7 @@
                 }
                 // this.$router.push({path: '/regnext', query: {}})
             },
-            accountinput() {
+            mobileinput() {
                 this.mobile = this.mobile.replace(/[^\d]/g, '');
             },
             backlogin() {

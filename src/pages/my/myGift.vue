@@ -1,7 +1,10 @@
 <template>
     <div class="rbox">
-        <div class="rlist" v-if="mylist.length">
-            <div class="ritem" v-for="(item,index) in mylist" :key="item.id" >
+        <div v-if="!mashow" class="loading">
+            <van-loading type="spinner"/>
+        </div>
+        <div class="rlist" v-if="mashow&&mylist.length">
+            <div class="ritem" v-for="(item,index) in mylist" :key="item.id" @click="goreward_d(item.id)">
                 <div class="rname">领取时间：{{item.create_time}}</div>
                 <div class="rinfo">
                     <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
@@ -10,11 +13,11 @@
                         <div class="rgname">{{item.goods_name}}</div>
                         <div class="rdes">X1</div>
                     </div>
-                    <!--<div class="iconfont iconjiantou"></div>-->
+                    <div class="iconfont iconjiantou"></div>
                 </div>
             </div>
         </div>
-        <NoData v-else :img="noorder"></NoData>
+        <NoData v-if="mashow&&mylist.length==0" :img="noorder"></NoData>
     </div>
 </template>
 <script>
@@ -24,22 +27,30 @@
         data() {
             return {
                 mylist: [],
-                noorder:require('../../assets/img/nodata.png')
+                mashow: false,
+                noorder: require('../../assets/img/nodata.png')
             }
         },
         created() {
 
             this._ScoreMyReceived()
         },
-        components:{
+        components: {
             // NoData
         },
         methods: {
             _ScoreMyReceived() {
                 this.$api.ScoreMyReceived().then(res => {
+                    this.mashow = true;
                     if (res.code == 1) {
                         this.mylist = res.data;
                     }
+                })
+            },
+            goreward_d(id) {
+                this.$router.push({
+                    path: '/reward_d',
+                    query: {goods_id: id}
                 })
             }
         }
@@ -52,6 +63,11 @@
     .rbox {
         min-height: 100vh;
         background-color: #F8F8F8;
+
+        .loading {
+            text-align: center;
+            padding: 10px 0;
+        }
 
         .rlist {
             margin: 13px;

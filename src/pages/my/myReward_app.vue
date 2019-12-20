@@ -5,11 +5,13 @@
                 <div class="rname">累计获奖 {{item.times}} 次可领取：</div>
                 <div class="rinfo">
                     <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
-                    <van-image fit="contain" width="1.6rem" height="1.6rem" :src="item.image"/>
+                    <van-image fit="cover" width="60px" height="60px" :src="item.image"/>
                     <div class="rcontent">
                         <div class="rgname">{{item.goods_name}}</div>
-                        <div class="rdes">X1</div>
-                        <div>{{item.content}}</div>
+                        <div class="rdes">
+                            <span v-if="item.status>=1">已达成</span>
+                            <span v-else>未达成</span>
+                        </div>
                     </div>
                     <van-button type="default" :disabled="item.status!=1">
                         <span v-if="item.status==1">去领取</span>
@@ -87,20 +89,18 @@
                     .rcontent {
                         flex: 1;
                         margin: 0 13px;
-                        font-size: 12px;
+                        font-size: 14px;
                         /*px*/
                         color: #333;
                     }
 
                     .rgname {
-                        font-weight: bold;
-                        font-size: 14px;
-                        /*px*/
+
                     }
 
                     .rdes {
                         color: #666666;
-                        font-size: 12px;
+                        font-size: 14px;
                         /*px*/
                         padding: 12px 0
                     }
@@ -109,9 +109,14 @@
                         background-color: $baseBlue;
                         border-color: $baseBlue;
                         width: 55px;
+                        padding: 0;
                         height: 28px;
                         line-height: 28px;
                         color: #fff;
+
+                        .van-button__text {
+                            display: inline-block;
+                        }
 
                         &.van-button--disabled {
                             background-color: #DDDDDD;

@@ -42,7 +42,13 @@
                 <div class="jitem van-row--flex" v-for="(item,index) in matchinfo.video" :key="item.id"
                      @click="govdetail(item.id)">
                     <div class="jimg">
-                        <img :src="item.poster" alt="">
+                        <!--                        <img :src="item.poster" alt="">-->
+                        <van-image
+                                width="110px"
+                                height="68px"
+                                fit="cover"
+                                :src="item.poster"
+                        />
                         <!--<video :src="item.file" preload="auto" controls></video>-->
                         <span>{{s_to_hs(item.duration)}}</span>
                     </div>
@@ -57,7 +63,9 @@
                     </div>
                 </div>
             </div>
-            <div class="game_btn" @click="goapp">立即报名</div>
+            <div class="btnbox">
+                <div class="game_btn" @click="goapp">立即报名</div>
+            </div>
         </div>
     </div>
 </template>
@@ -328,7 +336,9 @@
 
             .machdes {
                 padding: 30px 18px;
-                /deep/ img{
+                line-height: 25px;
+
+                /deep/ img {
                     width: 100%;
                 }
             }
@@ -384,7 +394,7 @@
                     position: relative;
 
                     .jimg {
-                        width: 62px;
+                        width: 110px;
                         height: 62px;
                         display: flex;
                         align-items: center;
@@ -402,8 +412,8 @@
 
                         span {
                             position: absolute;
-                            right: 0;
-                            bottom: 0;
+                            right: 5px;
+                            bottom: 5px;
                             border-radius: 3px;
                             background-color: rgba(0, 0, 0, .7);
                             color: #fff;
@@ -426,6 +436,7 @@
                             /* px */
                             font-weight: bold;
                             max-width: 200px;
+                            line-height: 25px;
                         }
 
                         .jinfo {
@@ -475,16 +486,23 @@
 
         }
 
-        .game_btn {
-            width: 340px;
-            margin: 30px auto;
-            text-align: center;
-            color: #fff;
-            line-height: 44px;
-            background: rgba(44, 107, 234, 1);
-            border-radius: 22px;
-            font-size: 17px;
-            /*px*/
+        .btnbox {
+            position: fixed;
+            z-index: 10;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            .game_btn {
+                width: 340px;
+                text-align: center;
+                color: #fff;
+                line-height: 40px;
+                background: rgba(44, 107, 234, 1);
+                border-radius: 22px;
+                font-size: 17px;
+                /*px*/
+                margin:10px auto ;
+            }
         }
     }
 </style>

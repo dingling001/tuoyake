@@ -160,14 +160,36 @@ export const ScoreGoods = () =>
  * 奖品详情
  */
 export const GoodsDetail = (goods_id) =>
+        axios(
+            "/api/sign/goodsDetail", {
+                token: localStorage.user_twap,
+                goods_id
+            },
+            "POST",
+            true
+        );
+/**
+ * 奖品详情
+ */
+export const SignReceivedDetail = (id) =>
     axios(
-        "/api/sign/goodsDetail", {
+        "/api/sign/receivedDetail", {
             token: localStorage.user_twap,
-            goods_id
+            id
         },
         "POST",
         true
     );
+export const ScoreReceivedDetail = (id) =>
+    axios(
+        "/api/score/receivedDetail", {
+            token: localStorage.user_twap,
+            id
+        },
+        "POST",
+        true
+    );
+
 /**
  * 奖品积分详情
  */

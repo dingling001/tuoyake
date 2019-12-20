@@ -171,4 +171,15 @@ export default [
         },
         component: resolve => require(["../../pages/home/search"], resolve)
     },
+    {
+        path: '/amap',
+        name: 'amap',
+        meta: {
+            title: "网吧位置",
+            index: 1,
+            showF: false,
+            showH: true
+        },
+        component: resolve => require(["../../components/amap"], resolve)
+    },
 ]

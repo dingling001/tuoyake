@@ -124,7 +124,7 @@
                 showoverlay: false,
                 flag: false,
                 position: [],
-                selectName: ''
+                selectName: '全部地区'
             }
         },
 
@@ -229,8 +229,8 @@
                 this.$api.GetAreaListTree(this.citypid).then(res => {
                     this.districtlist = this.districtlist.concat(res.data);
                     // console.log(this.districtlist)
-                    this.selectName = this.districtlist[0].name;
-                    console.log(this.selectName)
+                    // this.selectName = this.districtlist[0].name;
+                    // console.log(this.selectName)
                 })
             },
             // 切换成推荐模式
@@ -240,6 +240,7 @@
                 } else {
                     this.recommend = 1
                 }
+                this.flag=false;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
@@ -250,6 +251,7 @@
                 this.rindex = 0;
                 console.log(index)
                 if (index == 0) {
+                    this.flag=false;
                     this.$refs.item.toggle();
                     this.district = '';
                     this.selectName = '全部地区';
@@ -268,6 +270,7 @@
                 this.selectName = name;
                 this.circle = name;
                 this.page = 0;
+                this.flag=false;
                 this.netlist = [];
                 this._GetBarList();
             },
@@ -276,6 +279,7 @@
                 console.log(this.label)
                 this.page = 0;
                 this.netlist = [];
+                this.flag=false;
                 this._GetBarList();
             },
             // 去详情

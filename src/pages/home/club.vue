@@ -2,7 +2,7 @@
     <div class="jbox">
         <div class="jnav">
             <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
-                  @click="activeList(index,item.id)" style="flex: 1">{{item.name}}</span>
+                  @click="activeList(index,item.id)" >{{item.name}}</span>
         </div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="cshow&&clublist.length">
             <van-list
@@ -41,7 +41,7 @@
             return {
                 clist: [
                     {
-                        name: '全部',
+                        name: '全部俱乐部',
                         id: ''
                     }
                 ],
@@ -157,7 +157,7 @@
             display: flex;
             align-items: center;
             /*justify-content: space-between;*/
-            padding:20px;
+            padding:20px 0;
             /*border-bottom: 1px solid #f5f5f5;*/
             span {
                 font-size: 12px;
@@ -169,6 +169,7 @@
             .activespan {
                 color: #333;
                 font-weight: bold;
+                width: 100px;
             }
 
         }

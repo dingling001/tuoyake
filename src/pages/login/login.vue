@@ -5,7 +5,7 @@
         </div>
         <div class="login_title">登录托亚克</div>
         <form class="loginform">
-            <van-field v-model="account" maxlength="11" type="text" placeholder="请输入您的账号" clearable @input="accountinput"/>
+            <van-field v-model.trim="account" maxlength="11"   placeholder="请输入您的账号"  @input="accountinput" readonly clickable  clearable  type="text"      @touchstart.native.stop="showkeybord = true"/>
             <van-field v-model="password" placeholder="请输入您的密码" type="password" maxlength="12" clearable autocomplete/>
             <div class="btns van-row--flex van-row--justify-space-between">
                 <span @click="gocode">验证码登录</span>
@@ -18,6 +18,12 @@
                 <span class="iconfont iconjiantou"></span>
             </div>
         </form>
+        <van-number-keyboard
+        v-model="account"
+        :show="showkeybord"
+        :maxlength="11"
+        @blur="showkeybord = false"
+        />
     </div>
 </template>
 
@@ -28,6 +34,7 @@
             return {
                 account: '',
                 password: '',
+                showkeybord:false
             }
         },
         created() {
@@ -43,17 +50,16 @@
                     this.$com.showtoast('请输入正确的手机号')
                 } else if (this.password == '') {
                     this.$com.showtoast('请输入密码')
-                }
-                else {
+                } else {
                     this.$com.showtoast('登录中...')
                     this.$api.Login(this.account, this.password).then((res) => {
                         // console.log(res)
                         if (res.code == 1) {
                             this.$com.showtoast('登录成功');
-                            localStorage.user_twap=res.data.userinfo.token;
+                            localStorage.user_twap = res.data.userinfo.token;
                             setTimeout(() => {
                                 // this.$router.go(-1)
-                                let redirect = decodeURIComponent(this.$route.query.redirect||'/');
+                                let redirect = decodeURIComponent(this.$route.query.redirect || '/');
                                 console.log(redirect)
                                 this.$router.push(redirect);
                             }, 2000)
@@ -64,11 +70,11 @@
                 }
             },
             accountinput() {
-                this.account = this.account.replace(/[^\d]/g, '');
+                this.account = this.account.replace(/^\d+\.\d$/g, '');
             },
             // 验证码登录
-            gocode(){
-                this.$router.push({path:'/logincode',query:{redirect:this.$route.query.redirect||'/'}})
+            gocode() {
+                this.$router.push({path: '/logincode', query: {redirect: this.$route.query.redirect || '/'}})
             }
         }
     }
@@ -97,7 +103,7 @@
             color: #333;
             padding: 0 40px;
             font-weight: bold;
-            margin: 100px 0 65px 0;
+            margin: 70px 0 65px 0;
         }
 
         .loginform {

@@ -11,7 +11,7 @@
         <div class="aitem noadd" @click="addardess" v-if="showadd&&Object.keys(addinfo).length==0 ">
             <i class="iconfont iconplus-circle"></i><span>添加地址</span>
         </div>
-        <div class="ritem">
+        <div class="ritem" v-if="Object.keys(item).length">
             <div class="rname">奖品信息</div>
             <div class="rinfo">
                 <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
@@ -29,7 +29,8 @@
                 <div v-html="winning_receive_explain"></div>
             </div>
         </div>
-        <div class="btn" @click="_SignReceive">确认领取</div>
+        <van-button class="btn" @click="_SignReceive" :disabled ="Object.keys(item).length==0" :loading="loading" type="info" :loading-text="loadingtext">确认领取
+        </van-button>
     </div>
 </template>
 
@@ -44,7 +45,9 @@
                 goods_id: '',
                 addinfo: {},
                 winning_receive_explain: '',
-                showadd: false
+                showadd: false,
+                loadingtext: '',
+                loading: false
             }
         },
         created() {
@@ -72,6 +75,7 @@
                 this.$router.push({path: '/myAddress', query: {choose: 1}})
             },
             _ScoreMyReceived() {
+
                 this.$api.ScoreDetail(this.goods_id).then(res => {
                     if (res.code == 1) {
                         this.item = res.data;
@@ -84,7 +88,10 @@
                 })
             },
             _SignReceive() {
+                this.loading = true
+                this.loadingtext = '领取中...'
                 this.$api.ScoreReceive(this.item.id, this.addinfo.id).then(res => {
+                    this.loading = false;
                     if (res.code == 1) {
                         this.$com.showtoast('领取成功，等待工作人员处理...');
                         this.$router.go(-1)
@@ -152,7 +159,7 @@
                     padding: 3px 5px;
                     border-radius: 5px;
                     color: #fff;
-                    background-color: $baseRed;
+                    background-color: $baseBlue;
                 }
             }
 

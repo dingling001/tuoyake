@@ -5,11 +5,8 @@
         </div>
         <div class="login_title">账号注册</div>
         <form class="loginform">
-            <van-field v-model="account"
-                       placeholder="请输入手机号"
-                       error-message="手机号格式错误" maxlength="11" type="number" clearable
-                       @input="accountinput"/>
-            <van-field v-model="captcha" placeholder="短信验证码" type="number"  :error-message="codeerrormsg" maxlength="6" center clearable>
+            <van-field v-model="account" placeholder="请输入手机号" maxlength="11" readonly clickable  clearable  type="text"   @touchstart.native.stop="showkeybord = true" clearable @input="accountinput"/>
+            <van-field v-model="captcha" placeholder="短信验证码" type="text"   maxlength="6" center clearable>
                 <div slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
                     获取验证码
                 </div>
@@ -18,7 +15,12 @@
                 <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
                                 @finish="endtime"/> <span>S</span></span>
             </van-field>
-
+            <van-number-keyboard
+                    v-model="account"
+                    :show="showkeybord"
+                    :maxlength="11"
+                    @blur="showkeybord = false"
+            />
             <div class="login_btn" @click="gonext">下一步</div>
         </form>
     </div>
@@ -36,7 +38,8 @@
                 showbtn: true,
                 redirect: '',
                 atuostart: true,
-                codeerrormsg:''
+                codeerrormsg:'',
+                showkeybord:''
             }
         },
         created() {

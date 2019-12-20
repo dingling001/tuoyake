@@ -1,7 +1,7 @@
 <template>
     <div class="rbox">
-        <div class="rlist" v-if="mylist.length">
-            <div class="ritem" v-for="(item,index) in mylist" :key="item.id">
+        <div class="rlist" v-if="myshow&&mylist.length">
+            <div class="ritem" v-for="(item,index) in mylist" :key="item.id" @click="goreward_d_app(item.id)">
                 <div class="rname">领取时间：{{item.create_time}}</div>
                 <div class="rinfo">
                     <!--<div class="rimg"><img :src="item.image" alt=""></div>-->
@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <NoData v-else :img="noorder"></NoData>
+        <NoData  v-if="myshow&&mylist.length==0" :text="'暂无领取数据'"></NoData>
     </div>
 </template>
 
@@ -25,20 +25,26 @@
         data() {
             return {
                 mylist: [],
-                noorder: require('../../assets/img/nodata.png')
+                myshow:false
             }
         },
         created() {
-
             this._ScoreMyReceived()
         },
 
         methods: {
             _ScoreMyReceived() {
                 this.$api.SignMyReceived().then(res => {
+                    this.myshow=true;
                     if (res.code == 1) {
                         this.mylist = res.data;
                     }
+                })
+            },
+            goreward_d_app(id){
+                this.$router.push({
+                    path: '/reward_d_app',
+                    query: {goods_id: id}
                 })
             }
         }

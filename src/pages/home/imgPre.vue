@@ -8,15 +8,16 @@
             <van-image
                     v-for="(item ,index) in comdata.info.album_images"
                     :key="index"
-                    width="165px"
+                    width="45%"
                     height="165px"
                     :src="item"
-                    @click="show=true"
+                    fit="cover"
+                    @click="showimgs(index)"
             />
         </div>
         <van-image-preview
                 v-model="show"
-                :images="comdata.info.album_images"
+                :images="[comdata.info.album_images[ind]]"
                 @change="onChange"
                 v-if="comdata.info.album_images.length"
         >
@@ -40,7 +41,9 @@
                     }
                 },
                 show: false,
-                id: '', index: 0
+                ind: 0,
+                id: '',
+                index: 0
             }
         },
         inject: ['app'],
@@ -54,7 +57,6 @@
             this.id = this.$route.query.id
             this._GetBarInfo();
             console.log(this.$route)
-
         },
 
         methods: {
@@ -71,6 +73,10 @@
             },
             goback() {
                 this.$router.go(-1);
+            },
+            showimgs(index) {
+                this.ind = index;
+                this.show = true;
             }
         }
     }

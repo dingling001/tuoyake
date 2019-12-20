@@ -2,7 +2,8 @@
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
             <div class="mimg" @click="goset">
-                <van-image :src="user_info.avatar" alt="" v-if="user_info.avatar"/>
+                <van-image :src="user_info.avatar" alt=""     width="61px"
+                           height="61px" fit="cover" v-if="user_info.avatar"/>
             </div>
             <div class="namebox">
                 <van-sticky>
@@ -270,10 +271,12 @@
         }
 
         .mbody {
-            margin: -10px 0 0 0;
+            margin: -15px 0 0 0;
             background-color: #fff;
-            border-radius: 15px 15px 0px 0px;
+            border-radius: 15px;
             padding: 0 0 20px 0;
+            position: relative;
+            z-index: 10;
 
             .mnav {
                 display: flex;
@@ -368,14 +371,13 @@
 
             /deep/ .van-tabbar {
                 height: auto;
-                padding: 0 35px;
-
+                /*padding: 0 35px;*/
+                border-radius: 15px;
                 .van-tabbar-item {
                     width: auto;
                     padding: 30px 0 15px 0;
                     .van-tabbar-item__icon {
                         height: 56px;
-
                         img {
                             height: 100%;
                         }
