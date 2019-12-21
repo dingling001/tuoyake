@@ -124,24 +124,42 @@ axios.defaults.retryDelay = 1000;
 instance.interceptors.response.use(
     function (response) {
         console.log(response)
-        if (!response) return
-        if (response.data.status == 401) {
-            Toast({
-                message: "登录已过期，请重新登录！",
-                position: "center",
-                duration: 3000
-            });
-            localStorage.removeItem("user_twap");
-            // 暂时缓存地址，授权成功后回跳这个地址
-            // localStorage.url = window.location.href;
-            // window.location.href = window.location.origin + "#/login";
+        if (!response) {
+            return false
         } else {
             //     console.log(response)
             return response.data;
         }
     }, function axiosRetryInterceptor(err) {
+        // console.log(JSON.stringify(err.response.data.code))
+        var errcode = err.code || err.response.data.code;
+        // console.log(errcode)
+        switch (errcode) {
+            case 401:
+                localStorage.removeItem("user_twap");
+                // 暂时缓存地址，授权成功后回跳这个地址
+                localStorage.url = window.location.href;
+                window.location.href = window.location.origin + "#/login";
+                return Promise.reject(err.response.data);
+            case 'ECONNABORTED':
+                localStorage.setItem('showneterror', true);
+                return Promise.reject(errcode);
+            case 404:
+                Toast({
+                    message: '网络错误',
+                    position: "center",
+                    duration: 3000
+                });
+                return Promise.reject(err);
+            default:
+                Toast({
+                    message: '网络错误',
+                    position: "center",
+                    duration: 3000
+                });
+                break;
+        }
         var config = err.config;
-        console.log(config)
         // If config does not exist or the retry option is not set, reject
         if (!config || !config.retry) return Promise.reject(err);
         // Set the variable for keeping track of the retry count
@@ -195,7 +213,6 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
             });
         } else if (type === 'FORMDATA') {
             const formData = new FormData();
-
             Object.entries(data).forEach((item) => {
                 formData.append(item[0], item[1]);
             });
@@ -218,31 +235,44 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
                 return false;
             })
             .catch(function (err) {
-                console.log(err, '++++++err')
-                if (JSON.stringify(err).indexOf('timeout') > -1) {
-                    Toast({
-                        message: '网络小短腿跑不动了',
-                        position: "center",
-                        duration: 3000
-                    });
+                console.log(err)
+                if (err == 'ECONNABORTED') {
                     localStorage.setItem('showneterror', true);
-                   setTimeout(function () {
-                       window.location.reload();
-                   },1000);
-                    return
+                    if (localStorage.count == 0) {
+                        window.location.reload();
+                        localStorage.setItem('count', 1);
+                    }
+                    // window.location.href=window.location.origin + "#/NetError";
                 }
-                Toast({
-                    message: err.message,
-                    position: "center",
-                    duration: 3000
-                });
-                if (err.code === 401) {
-                    localStorage.removeItem("user_twap");
-                    // 暂时缓存地址，授权成功后回跳这个地址
-                    localStorage.url = window.location.href;
-                    window.location.href = window.location.origin + "#/login";
-                }
-                // console.log(err.code);
+                // // console.log(JSON.stringify(err.response.data))
+                // switch (errcode) {
+                //     case 401:
+                //         localStorage.removeItem("user_twap");
+                //         // 暂时缓存地址，授权成功后回跳这个地址
+                //         localStorage.url = window.location.href;
+                //         window.location.href = window.location.origin + "#/login";
+                //         break;
+                //
+                //     case 500:
+                //
+                //     default:
+                //         Toast({
+                //             message: '网络小短腿跑不动了',
+                //             position: "center",
+                //             duration: 3000
+                //         });
+                //         localStorage.setItem('showneterror', true);
+                //         setTimeout(function () {
+                //             window.location.reload();
+                //         },1000);
+                // }
+                // Toast({
+                //     message: err.message,
+                //     position: "center",
+                //     duration: 3000
+                // });
+                // console.log(JSON.stringify(err))
+                // console.log(err.response.data.code, '++++++err')
             });
     });
 };

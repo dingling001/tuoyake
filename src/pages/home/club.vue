@@ -4,6 +4,7 @@
             <span :class="{activespan:ind==index}" :key="item.id" v-for="(item,index) in clist"
                   @click="activeList(index,item.id)" >{{item.name}}</span>
         </div>
+        <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!cshow"><van-loading type="spinner"/></div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="cshow&&clublist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
@@ -77,7 +78,6 @@
             // 获取俱乐部列表
             _ClubIndex() {
                 let pageNumber = this.page + 1;
-                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.ClubIndex(
                     pageNumber,
                     this.category_id,
@@ -93,7 +93,7 @@
                                     this.isUpLoading = false  //关闭上拉加载中
                                 })
                                 if (res.data.data.length < 10) {//没有更多数据
-                                    this.finished = true   //上拉加载完毕
+                                    this.finished = true;   //上拉加载完毕
                                     this.finishedtext = '到底了'
                                 }
                             }

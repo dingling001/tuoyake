@@ -7,9 +7,7 @@
         <form class="loginform">
             <van-field v-model="account" placeholder="请输入手机号" maxlength="11" readonly clickable  clearable  type="text"   @touchstart.native.stop="showkeybord = true" clearable @input="accountinput"/>
             <van-field v-model="captcha" placeholder="短信验证码" type="text"   maxlength="6" center clearable>
-                <div slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">
-                    获取验证码
-                </div>
+                <div slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">获取验证码</div>
                 <!--                <van-count-down :time="time" v-else />-->
                 <span class="" slot="button" v-else><span>重新获取</span>
                 <van-count-down :time="time" format="ss" ref="countDown" :auto-start="atuostart"
@@ -39,7 +37,7 @@
                 redirect: '',
                 atuostart: true,
                 codeerrormsg:'',
-                showkeybord:''
+                showkeybord:false
             }
         },
         created() {

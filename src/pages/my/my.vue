@@ -2,16 +2,14 @@
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
             <div class="mimg" @click="goset">
-                <van-image :src="user_info.avatar" alt=""     width="61px"
+                <van-image :src="user_info.avatar" alt="" width="61px"
                            height="61px" fit="cover" v-if="user_info.avatar"/>
             </div>
             <div class="namebox">
-                <van-sticky>
-                    <div class="nickname">
-                        <span class="name">{{user_info.nickname}}</span>
-                        <div class="iconfont iconshezhi1" @click="goset"></div>
-                    </div>
-                </van-sticky>
+                <div class="nickname">
+                    <span class="name">{{user_info.nickname}}</span>
+                    <div class="iconfont iconshezhi1" @click="goset"></div>
+                </div>
                 <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span>
                 </div>
             </div>
@@ -44,41 +42,41 @@
                     <img slot="icon" src="../../assets/img/m4.jpg" alt>
                 </van-tabbar-item>
             </van-tabbar>
-<!--            <div class="mnav">-->
-<!--                <router-link class="mitem" to="/myApplication" tag="div">-->
-<!--                    <div class="navimg"><img src="../../assets/img/m1.jpg" alt="">-->
-<!--                        <div class="navshadow"></div>-->
-<!--                    </div>-->
-<!--                    <div class="navtext">我的报名</div>-->
-<!--                </router-link>-->
-<!--                <router-link class="mitem" to="/myCollect" tag="div">-->
-<!--                    <div class="navimg"><img src="../../assets/img/m2.jpg" alt="">-->
-<!--                        <div class="navshadow"></div>-->
-<!--                    </div>-->
-<!--                    <div class="navtext">我的收藏</div>-->
-<!--                </router-link>-->
-<!--                <router-link class="mitem" to="/myOrder" tag="div">-->
-<!--                    <div class="navimg"><img src="../../assets/img/m3.jpg" alt="">-->
-<!--                        <div class="navshadow"></div>-->
-<!--                    </div>-->
-<!--                    <div class="navtext">我的订单</div>-->
-<!--                </router-link>-->
-<!--                <router-link class="mitem" to="/myPoints" tag="div">-->
-<!--                    <div class="navimg"><img src="../../assets/img/m4.jpg" alt="">-->
-<!--                        <div class="navshadow"></div>-->
-<!--                    </div>-->
-<!--                    <div class="navtext">我的积分</div>-->
-<!--                </router-link>-->
-<!--            </div>-->
+            <!--            <div class="mnav">-->
+            <!--                <router-link class="mitem" to="/myApplication" tag="div">-->
+            <!--                    <div class="navimg"><img src="../../assets/img/m1.jpg" alt="">-->
+            <!--                        <div class="navshadow"></div>-->
+            <!--                    </div>-->
+            <!--                    <div class="navtext">我的报名</div>-->
+            <!--                </router-link>-->
+            <!--                <router-link class="mitem" to="/myCollect" tag="div">-->
+            <!--                    <div class="navimg"><img src="../../assets/img/m2.jpg" alt="">-->
+            <!--                        <div class="navshadow"></div>-->
+            <!--                    </div>-->
+            <!--                    <div class="navtext">我的收藏</div>-->
+            <!--                </router-link>-->
+            <!--                <router-link class="mitem" to="/myOrder" tag="div">-->
+            <!--                    <div class="navimg"><img src="../../assets/img/m3.jpg" alt="">-->
+            <!--                        <div class="navshadow"></div>-->
+            <!--                    </div>-->
+            <!--                    <div class="navtext">我的订单</div>-->
+            <!--                </router-link>-->
+            <!--                <router-link class="mitem" to="/myPoints" tag="div">-->
+            <!--                    <div class="navimg"><img src="../../assets/img/m4.jpg" alt="">-->
+            <!--                        <div class="navshadow"></div>-->
+            <!--                    </div>-->
+            <!--                    <div class="navtext">我的积分</div>-->
+            <!--                </router-link>-->
+            <!--            </div>-->
             <div class="mad" @click="openad" v-if="adinfo.image"><img :src="adinfo.image" alt=""></div>
             <div class="mlink">
                 <!--<van-cell is-link :border='false' to="myCoupon">-->
-                    <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
-                    <!--<template slot="title">-->
-                        <!--<span class="iconfont iconyouhuiquan"></span>-->
-                        <!--<span class="custom-title">我的优惠券</span>-->
-                        <!--<van-tag type="danger" v-if="cnum>0">{{cnum}}</van-tag>-->
-                    <!--</template>-->
+                <!--&lt;!&ndash; 使用 title 插槽来自定义标题 &ndash;&gt;-->
+                <!--<template slot="title">-->
+                <!--<span class="iconfont iconyouhuiquan"></span>-->
+                <!--<span class="custom-title">我的优惠券</span>-->
+                <!--<van-tag type="danger" v-if="cnum>0">{{cnum}}</van-tag>-->
+                <!--</template>-->
                 <!--</van-cell>-->
                 <van-cell is-link :border='false' to="myFeedback">
                     <!-- 使用 title 插槽来自定义标题 -->
@@ -120,8 +118,8 @@
                     active: 'https://img.yzcdn.cn/vant/user-active.png',
                     inactive: 'https://img.yzcdn.cn/vant/user-inactive.png'
                 },
-                onum:0,
-                cnum:0
+                onum: 0,
+                cnum: 0
             }
         },
         created() {
@@ -332,14 +330,15 @@
                     display: flex;
                     align-items: center;
 
-                    .custom-title{
+                    .custom-title {
                         color: #333;
                         font-weight: bold;
                         font-size: 15px;
                         /*px*/
                         margin-right: 10px;
                     }
-                    .van-tag{
+
+                    .van-tag {
                         border-radius: 50%;
                         flex-shrink: 0;
                     }
@@ -373,11 +372,14 @@
                 height: auto;
                 /*padding: 0 35px;*/
                 border-radius: 15px;
+
                 .van-tabbar-item {
                     width: auto;
                     padding: 30px 0 15px 0;
+
                     .van-tabbar-item__icon {
                         height: 56px;
+
                         img {
                             height: 100%;
                         }
@@ -388,7 +390,8 @@
                         font-size: 12px;
                         /*    px*/
                     }
-                    .van-info{
+
+                    .van-info {
                         right: 10px;
                     }
                 }

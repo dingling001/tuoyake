@@ -38,7 +38,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     new UglifyJsPlugin({
       uglifyOptions: {
         compress: {
-          warnings: false
+          warnings: false,
+          drop_console: true,//console
+          pure_funcs: ['console.log']//移除console
         }
       },
       sourceMap: config.build.productionSourceMap,
@@ -147,7 +149,7 @@ if (config.build.productionGzip) {
         "\\.(" + config.build.productionGzipExtensions.join("|") + ")$"
       ),
       threshold: 10240,
-      minRatio: 0.8
+      minRatio: 0.8,
     })
   );
 }

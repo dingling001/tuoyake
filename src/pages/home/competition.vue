@@ -30,6 +30,7 @@
                 </van-dropdown-menu>
             </div>
         </van-sticky>
+        <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!flag"><van-loading type="spinner"/></div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
@@ -38,12 +39,7 @@
                 <div class="citem" v-for="(item,index) in netlist" :key="index" @click="godetail(item.id)">
                     <div class="cimg">
                         <!--<img  alt="">-->
-                        <van-image
-                                width="90ox"
-                                height="90px"
-                                fit="cover"
-                                :src="item.image"
-                        />
+                        <van-image width="24vw" height="24vw" fit="cover" :src="item.image"/>
                         <span v-if="item.recommend==1">推荐</span>
                     </div>
                     <div class="cright">
@@ -171,7 +167,7 @@
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
-                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                // this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
@@ -240,7 +236,7 @@
                 } else {
                     this.recommend = 1
                 }
-                this.flag=false;
+                this.flag = false;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
@@ -251,7 +247,7 @@
                 this.rindex = 0;
                 console.log(index)
                 if (index == 0) {
-                    this.flag=false;
+                    this.flag = false;
                     this.$refs.item.toggle();
                     this.district = '';
                     this.selectName = '全部地区';
@@ -270,7 +266,7 @@
                 this.selectName = name;
                 this.circle = name;
                 this.page = 0;
-                this.flag=false;
+                this.flag = false;
                 this.netlist = [];
                 this._GetBarList();
             },
@@ -279,7 +275,7 @@
                 console.log(this.label)
                 this.page = 0;
                 this.netlist = [];
-                this.flag=false;
+                this.flag = false;
                 this._GetBarList();
             },
             // 去详情
@@ -440,11 +436,6 @@
                     position: relative;
                     border-radius: 8px;
                     overflow: hidden;
-
-                    img {
-                        width: 100%;
-                        /*height: 100%;*/
-                    }
 
                     span {
                         position: absolute;

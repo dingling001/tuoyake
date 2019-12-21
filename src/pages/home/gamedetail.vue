@@ -8,24 +8,21 @@
                     fit="cover"
                     :src="matchinfo.image"
             />
-
-            <!--            <swiper :options="swiperOption" ref="mySwiper" v-if="matchinfo.album_images.length">-->
-            <!--                <swiper-slide v-for="(item,index) in matchinfo.album_images" :key="index"><img :src="item" alt="">-->
-            <!--                </swiper-slide>-->
-            <!--                <div class="swiper-pagination" slot="pagination"></div>-->
-            <!--            </swiper>-->
             <van-sticky :offset="0">
                 <div class="navbox">
                     <span class="iconfont iconfanhui" @click="backlist"></span>
                     <div class="comnanme van-ellipsis">{{matchinfo.name}}</div>
                     <div class="nright"><span @click="clllection"
                                               :class="['iconfont', matchinfo.is_collection==1? 'iconstar-fill':'iconstar']"></span>
-                        <span class="iconfont iconfenxiang"></span>
+                        <span class="iconfont iconfenxiang"  @click="togshare=true" v-if="showshare"></span>
                     </div>
                 </div>
             </van-sticky>
         </div>
-        <div class="comitem">
+        <div class="comitem van-row--flex van-cell--center van-row--justify-center" v-if="!showmatch">
+            <van-loading type="spinner"/>
+        </div>
+        <div class="comitem" v-if="showmatch&&Object.keys(matchinfo).length">
             <div class="comnanme">{{matchinfo.name}}</div>
             <div class="comaddress">
                 <span class="iconfont icontime-circle"></span>
@@ -64,9 +61,13 @@
                 </div>
             </div>
             <div class="btnbox">
-                <div class="game_btn" @click="goapp">立即报名</div>
+                <van-button class="game_btn" type="info" @click="goapp" v-if="matchinfo.is_sign==0">立即报名</van-button>
+                <van-button class="game_btn" type="info" disabled v-if="matchinfo.is_sign==1">已报名</van-button>
             </div>
         </div>
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
+            <div class="text">点击右上角分享到朋友圈</div>
+        </van-overlay>
     </div>
 </template>
 
@@ -80,6 +81,9 @@
                 },
                 match_id: '',
                 is_share: 0,
+                showmatch: false,
+                showshare: false,
+                togshare: false,
             }
         },
         created() {
@@ -91,11 +95,14 @@
                 this.$router.replace('/')
             }
             this.is_share = this.$route.query.is_share;
+            var ua = navigator.userAgent.toLowerCase();
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
         },
         methods: {
             // 获取套餐详情
             _GetMatchInfo() {
                 this.$api.GetMatchInfo(this.match_id).then(res => {
+                    this.showmatch=true;
                     if (res.code == 1) {
                         this.matchinfo = res.data;
                     } else {
@@ -109,6 +116,7 @@
             // 收藏
             clllection() {
                 this.$api.SetCollection(3, this.match_id).then(res => {
+                    console.log(res)
                     if (res.code == 1) {
                         if (res.data.is_collection == 1) {
                             this.$com.showtoast('收藏成功')
@@ -307,6 +315,7 @@
             z-index: 1;
             background-color: #fff;
             border-radius: 10px;
+            min-height: 300px;
 
             .comnanme {
                 font-size: 18px;
@@ -492,16 +501,28 @@
             bottom: 0;
             width: 100%;
             background-color: #fff;
+
             .game_btn {
                 width: 340px;
                 text-align: center;
-                color: #fff;
+                /*color: #fff;*/
                 line-height: 40px;
-                background: rgba(44, 107, 234, 1);
+                /*background: rgba(44, 107, 234, 1);*/
                 border-radius: 22px;
                 font-size: 17px;
                 /*px*/
-                margin:10px auto ;
+                margin: 10px auto;
+                display: block;
+            }
+        }
+        /deep/ .van-overlay {
+            text-align: right;
+
+            .text {
+                font-size: 20px;
+                color: #fff;
+                font-weight: bold;
+                padding: 30px 20px;
             }
         }
     }

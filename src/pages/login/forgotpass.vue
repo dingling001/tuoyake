@@ -5,7 +5,7 @@
         </div>
         <div class="login_title">验证手机</div>
         <form class="loginform">
-            <van-field v-model="mobile" placeholder="手机号" type="number"  @touchstart.native.stop="showkeybord = true" maxlength="11" clearable @input="accountinput"/>
+            <van-field v-model="mobile" placeholder="手机号" readonly clickable  clearable type="number"  @touchstart.native.stop="showkeybord = true" maxlength="11"  @input="accountinput"/>
             <van-field v-model="captcha" placeholder="短信验证码" type="text" maxlength="6" center clearable>
                 <div slot="button" type="default" class="code" size="small" @click="_SmsSend" v-if="showbtn">获取验证码</div>
                 <!--                <van-count-down :time="time" v-else />-->

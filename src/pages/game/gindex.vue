@@ -18,16 +18,20 @@
         <!--</div>-->
         <homeTop @cityinfo="getcityinfo" :showhome="false" :showtop="false" ref="htop"></homeTop>
         <div class="cbox">
+            <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!flag">
+                <van-loading type="spinner"/>
+            </div>
             <van-sticky :offset-top="offsettop">
                 <div class="cselect">
                     <div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">
                         <span>推荐电竞馆</span>
                     </div>
-                    <van-dropdown-menu active-color="#f2313b">
+                    <van-dropdown-menu active-color="#f2313b"
+                                       :class="[label==''?'':'labelbox',selectName=='全部地区'?'':'cccc']">
                         <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
                             <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                         </van-dropdown-item>
-                        <van-dropdown-item :title="district" ref="item" @open="opendistrict">
+                        <van-dropdown-item :title="selectName" ref="item" @open="opendistrict">
                             <div class="citybox">
                                 <div class="citems dleft">
                                     <div v-for="(item ,index) in districtlist" :key="index"
@@ -43,7 +47,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!--<span>全部地区</span><span class="iconfont iconjiantouarrow486"></span>-->
                         </van-dropdown-item>
                         <!--<div :class="['cselectitem',recommend==1?'cselectitemactive':'']" @click="recommendlist">-->
@@ -52,6 +55,9 @@
                     </van-dropdown-menu>
                 </div>
             </van-sticky>
+            <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!flag">
+                <van-loading type="spinner"/>
+            </div>
             <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
@@ -130,7 +136,32 @@
                 rindex: 0,
                 totop: false,
                 flag: false,
-
+                selectName: '全部地区',
+                res: {
+                    "config": {
+                        "transformRequest": {},
+                        "transformResponse": {},
+                        "timeout": 5,
+                        "xsrfCookieName": "XSRF-TOKEN",
+                        "xsrfHeaderName": "X-XSRF-TOKEN",
+                        "maxContentLength": -1,
+                        "headers": {
+                            "Accept": "application/json",
+                            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
+                            "Access-Control-Allow-Origin": "*",
+                            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+                        },
+                        "retry": 4,
+                        "retryDelay": 1000,
+                        "method": "post",
+                        "baseURL": "",
+                        "responseType": "json",
+                        "url": "/api/college/index",
+                        "cancelToken": {"promise": {}},
+                        "data": "page=1&category_id=&city=%E5%8C%97%E4%BA%AC&district=&circle=&keyword="
+                    },
+                    "code": "ECONNABORTED", "request": {}
+                }
             }
         },
         components: {
@@ -174,8 +205,7 @@
             // 获取列表
             _GetBarList() {
                 let pageNumber = this.page + 1;
-
-                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                // this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.GetBarList(
                     pageNumber,
                     this.keyword,
@@ -240,7 +270,6 @@
                 }
                 this.flag = false;
                 this.netlist = [];
-
                 this._GetBarList();
             },
             // 下拉刷新
@@ -272,6 +301,7 @@
                 if (index == 0) {
                     this.$refs.item.toggle();
                     this.district = this.districtlist[index].name;
+                    this.selectName = '全部地区';
                     this.page = 0;
                     this.netlist = [];
                     this._GetBarList();
@@ -282,6 +312,7 @@
                 this.rindex = index;
                 this.$refs.item.toggle();
                 this.district = name;
+                this.selectName = this.district;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
@@ -437,6 +468,34 @@
                 font-size: 12px;
                 /* px */
                 /*border-bottom: 1px solid #f5f5f5;*/
+                /deep/ .labelbox {
+                    .van-dropdown-menu__item {
+                        &:first-child {
+                            .van-dropdown-menu__title::after {
+                                color: $baseRed;
+                            }
+
+                            .van-ellipsis {
+                                color: $baseRed;
+                            }
+                        }
+                    }
+                }
+
+                /deep/ .cccc {
+                    .van-dropdown-menu__item {
+                        &:nth-child(2) {
+                            .van-dropdown-menu__title::after {
+                                color: $baseRed;
+                            }
+
+                            .van-ellipsis {
+                                color: $baseRed;
+                            }
+                        }
+                    }
+                }
+
                 .cselectitem {
                     display: flex;
                     align-items: center;
@@ -469,7 +528,6 @@
                         font-size: 12px;
                         /*px*/
                     }
-
 
                     &:after {
                         border: 0;

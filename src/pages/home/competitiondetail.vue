@@ -47,13 +47,17 @@
                         class="iconfont iconphone-fill"></span></a>
             </div>
             <div class="hr"></div>
+            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods"><van-loading type="spinner"/></div>
             <div class="comlist" v-if="comdata.goods.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">惠</span> <span>套餐</span></div>
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.goods" :key="item.id"
                      @click="gotaocandetail(item.id)">
-                    <div class="jimg"><img :src="item.image" alt=""></div>
+                    <div class="jimg">
+<!--                        <img :src="item.image" alt="">-->
+                        <van-image height="16.533vw"  width="16.533vw" fit="cover":src="item.image" />
+                    </div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
@@ -65,6 +69,7 @@
                 </div>
             </div>
             <div class="hr"></div>
+            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods"><van-loading type="spinner"/></div>
             <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">赛</span><span>赛事</span></div>
@@ -73,7 +78,9 @@
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
                      @click="gossdetail(item.id)">
-                    <div class="jimg"><img :src="item.image" alt="">
+                    <div class="jimg">
+<!--                        <img :src="item.image" alt="">-->
+                        <van-image height="16.533vw"  width="16.533vw" fit="cover":src="item.image" />
                         <span v-if="item.recommend==1">精选</span>
                     </div>
                     <div class="jright">
@@ -88,12 +95,11 @@
                     <div class="jbtn s_jbtn">报名</div>
                 </div>
             </div>
+
         </div>
-        <van-overlay :show="togshare" @click="togshare = false" :z-index="5">
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
         </van-overlay>
-
-        <!--icondianjiyoushangjiaofenxiangdaopengyouquan-->
     </div>
 </template>
 
@@ -127,7 +133,8 @@
                 index: 0,
                 is_share: 0,
                 showshare: false,
-                togshare: false
+                togshare: false,
+                flaggoods:false,
             }
         },
         components: {
@@ -144,12 +151,12 @@
             this.is_share = this.$route.query.is_share;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
-
         },
         methods: {
             // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {
+                    this.flaggoods=true;
                     if (res.code == 1) {
                         this.comdata = res.data;
                     }
@@ -196,7 +203,8 @@
                 })
             },
             gomap(info) {
-                this.$router.push({path: '/amap', query: {bar_id: this.id}})
+                window.location.href = `//uri.amap.com/marker?position=${this.comdata.info.lng},${this.comdata.info.lat}&name=${this.comdata.info.name}&src=${this.comdata.info.address}&coordinate=gaode&callnative=1`
+                // this.$router.push({path: '/amap', query: {bar_id: this.id}})
             }
         }
     }
@@ -440,6 +448,7 @@
             }
 
             .comlist {
+                min-height: 50px;
                 .taocan {
                     padding: 15px 18px 0 15px;
                     font-weight: bold;
@@ -497,14 +506,11 @@
                         justify-content: center;
                         /*border: 1px solid #eee;*/
                         /*no*/
+                        border-radius: 5px 5px 0 0;
                         margin-right: 17px;
                         flex-shrink: 0;
                         overflow: hidden;
                         position: relative;
-
-                        img {
-                            height: 100%;
-                        }
 
                         span {
                             position: absolute;
@@ -515,7 +521,6 @@
                             background-color: #F7A421;
                             color: #fff;
                             font-size: 10px;
-                            /*px*/
                             text-align: center;
                             line-height: 16px;
                         }

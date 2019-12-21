@@ -31,6 +31,7 @@
             </div>
         </van-sticky>
         <div class="swiperbox" v-if="showhome">
+            <van-loading type="spinner" v-if="!flag"/>
             <div class="sbg"></div>
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index">
@@ -47,6 +48,7 @@
             <NoData class="nodata" v-if="flag&&swiperlist.length==0" :top="0" :text="'商家还没有传图'"></NoData>
         </div>
         <div class="swiperbox" v-else @click="goad">
+            <van-loading type="spinner" v-if="!adimginfo.image"/>
             <div class="sbg"></div>
             <div class="adimg">
                 <img :src="adimginfo.image" alt="">
@@ -313,7 +315,6 @@
                                 }
                             })
                         }
-
                     })
                 })
             },

@@ -8,7 +8,7 @@
                           id="foo"
                           v-if="playerOptions.sources[0].src"
             ></video-player>
-            <van-sticky :offset="0" v-if="Object.keys(videoinfo).length">
+            <van-sticky  v-if="Object.keys(videoinfo).length">
                 <div class="navbox">
                     <span class="iconfont iconfanhui" @click.stop="backlist"></span>
                     <div class="comnanme van-ellipsis">{{videoinfo.name}}</div>
@@ -33,7 +33,7 @@
             <div class="hr"></div>
             <div class="machdes" v-html="videoinfo.synopsis"></div>
         </div>
-        <van-overlay :show="togshare" @click="togshare = false" :z-index="5">
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
         </van-overlay>
     </div>
@@ -314,6 +314,16 @@
             .hr {
                 height: 10px;
                 background-color: #F8F8F8;
+            }
+        }
+        /deep/ .van-overlay {
+            text-align: right;
+
+            .text {
+                font-size: 20px;
+                color: #fff;
+                font-weight: bold;
+                padding: 30px 20px;
             }
         }
     }

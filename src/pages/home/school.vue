@@ -27,6 +27,7 @@
                 </swiper-slide>
             </swiper>
         </van-sticky>
+        <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!schoolshow"><van-loading type="spinner"/></div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="schoolshow&&clublist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="jlist" :offset="offset"
@@ -183,7 +184,6 @@
             // 获取学院列表
             _CollegeIndex() {
                 let pageNumber = this.page + 1;
-                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.CollegeIndex(
                     pageNumber,
                     this.category_id,

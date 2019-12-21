@@ -12,10 +12,15 @@
 <script>
     export default {
         name: "NetError",
+        created(){
+            this.$com.showtoast('网络小短腿跑不动了')
+        },
         methods: {
             refresh() {
-                window.location.reload();
                 localStorage.removeItem('showneterror');
+                localStorage.setItem('count',0);
+                // localStorage.removeItem('url');
+                window.location.reload();
             }
         }
     }
@@ -53,7 +58,8 @@
                 /*px*/
                 color: #ccc;
             }
-            img{
+
+            img {
                 width: 60%;
             }
         }

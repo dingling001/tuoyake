@@ -1,10 +1,12 @@
 <template>
     <div class="amap">
-        <iframe
-                :src="src"
-                frameborder="0">
-
-        </iframe>
+        <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!mapflag">
+            <van-loading type="spinner"/>
+        </div>
+<!--        <iframe-->
+<!--                :src="src"-->
+<!--                frameborder="0">-->
+<!--        </iframe>-->
     </div>
 </template>
 
@@ -16,12 +18,13 @@
                 id: '',
                 info: {},
                 pos: '',
-                src:''
+                src: '',
+                mapflag: false
             }
         },
         created() {
             this.id = this.$route.query.bar_id;
-            this.pos = JSON.parse(sessionStorage.pos)[1]+','+JSON.parse(sessionStorage.pos)[0]
+            this.pos = JSON.parse(sessionStorage.pos)[1] + ',' + JSON.parse(sessionStorage.pos)[0]
             console.log(this.pos)
             this._GetBarInfo();
         },
@@ -29,9 +32,10 @@
             // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {
+                    this.mapflag = true;
                     if (res.code == 1) {
                         this.info = res.data.info;
-                        this.src = 'http://uri.amap.com/navigation?from=' + this.pos + ',startpoint&to=' + res.data.info.lng + ',' + res.data.info.lat + ',midwaypoint&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0'
+                       window.location.href = `//uri.amap.com/marker?position=${res.data.info.lng},${res.data.info.lat}&name=${res.data.info.name}&src=${res.data.info.address}&coordinate=gaode&callnative=1`
                     }
                 })
             },

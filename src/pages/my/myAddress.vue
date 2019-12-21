@@ -11,7 +11,7 @@
             <div slot="default" class="nodata" v-if="listshow&&list.length==0">
                 <NoData :text="'暂无地址'"></NoData>
             </div>
-            <div class="default_a" v-if="listshow&&list.length">默认</div>
+            <div class="default_a" v-if="listshow&&list.length&&list[0].isDefault==1">默认</div>
         </van-address-list>
     </div>
 <!--    @select="setdefault"-->

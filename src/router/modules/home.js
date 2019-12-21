@@ -134,7 +134,8 @@ export default [
             title: "全部视频",
             index: 1,
             showF: false,
-            showH: true
+            showH: true,
+            needLogin:true
         },
         component: resolve => require(["../../pages/home/videolist"], resolve)
     },
@@ -178,7 +179,7 @@ export default [
             title: "网吧位置",
             index: 1,
             showF: false,
-            showH: true
+            showH: false
         },
         component: resolve => require(["../../components/amap"], resolve)
     },

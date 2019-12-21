@@ -1,19 +1,20 @@
 <template>
     <div class="tcbox">
         <div class="swiperbox">
-            <img :src="goodinfo.image" alt="">
+<!--            <img :src="goodinfo.image" alt="">-->
+            <van-image  width="100%" height="75.2vw" fit="cover" :src="goodinfo.image"  />
             <!--            <swiper :options="swiperOption" ref="mySwiper" v-if="goodinfo.album_images.length">-->
             <!--                <swiper-slide v-for="(item,index) in goodinfo.album_images" :key="index"><img :src="item" alt="">-->
             <!--                </swiper-slide>-->
             <!--                <div class="swiper-pagination" slot="pagination"></div>-->
             <!--            </swiper>-->
-            <van-sticky :offset="0">
+            <van-sticky :offset-top="0">
                 <div class="navbox">
                     <span class="iconfont iconfanhui" @click="backlist"></span>
                     <div class="comnanme van-ellipsis">{{goodinfo.name}}</div>
                     <div class="nright"><span @click="clllection"
                                               :class="['iconfont', goodinfo.is_collection==0? 'iconstar':'iconstar-fill']"></span>
-                        <span class="iconfont iconfenxiang"></span>
+                        <span class="iconfont iconfenxiang" v-if="showshare" @click="togshare=true"></span>
                     </div>
                 </div>
             </van-sticky>
@@ -39,7 +40,7 @@
                     <div class="taocandes">{{goodinfo.content}}</div>
                     <div class="numbox">
                         <span :class="['iconfont iconminus-circle' ,num<=1? 'disicon':'']" @click="nminus"></span>
-                        <input type="number" v-model="num">
+                        <input type="number" v-model.number="num">
                         <span class="iconfont iconplus-circle" @click="plus"></span>
                     </div>
                 </div>
@@ -54,8 +55,13 @@
                     </li>
                 </ul>
             </div>
-            <div class="taocan_btn" @click="goapp" v-if="goodinfo.price">￥{{goodinfo.price*num}} 立即抢购</div>
+            <div class="btnbox">
+                <div class="taocan_btn" @click="goapp" v-if="goodinfo.price">￥{{goodinfo.price*num}} 立即抢购</div>
+            </div>
         </div>
+        <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
+            <div class="text">点击右上角分享到朋友圈</div>
+        </van-overlay>
     </div>
 </template>
 
@@ -67,12 +73,14 @@
                 goodinfo: {
                     star: 0,
                     rules: [],
-                    is_collection:0
+                    is_collection: 0
                 },
                 cid: '',
                 goods_id: '',
                 num: 1,
-                is_share: 0
+                is_share: 0,
+                togshare: false,
+                showshare: false
             }
         },
         created() {
@@ -84,6 +92,8 @@
                 this.$router.replace('/')
             }
             this.is_share = this.$route.query.is_share;
+            var ua = navigator.userAgent.toLowerCase();
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
         },
         methods: {
             // 获取套餐详情
@@ -140,13 +150,13 @@
 
     .tcbox {
         .swiperbox {
-            height: 282px;
+            /*height: 282px;*/
             /*border-radius: 16px;*/
             position: relative;
-            overflow: hidden;
+            /*overflow: hidden;*/
 
             img {
-                width: 100%;
+                /*width: 100%;*/
             }
 
             .navbox {
@@ -178,12 +188,15 @@
                 .iconfont {
                     width: 28px;
                     height: 28px;
+                    flex-shrink: 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
                     background: rgba(0, 0, 0, .3);
                     border-radius: 50%;
                     text-align: center;
                     font-weight: bold;
                     line-height: 28px;
-                    display: inline-block;
                     font-size: 14px;
                     margin-right: 10px;
                     /*px*/
@@ -203,8 +216,6 @@
                     display: flex;
                     align-items: center;
                 }
-
-
             }
 
             /deep/ .van-sticky--fixed {
@@ -283,7 +294,7 @@
                 /*px*/
                 color: #333;
                 font-weight: bold;
-                padding: 36px 18px 23px 18px;
+                padding:  23px 18px 0 18px;
             }
 
 
@@ -317,7 +328,6 @@
                         .iconstar-fill {
                             color: #E4E4E4;
                             font-size: 13px;
-                            /*px*/
                             &.star {
                                 color: $baseRed;
                             }
@@ -345,8 +355,8 @@
                         padding: 10px 0;
                         line-height: 20px;
                         color: #333333;
+                        text-align: justify;
                         font-size: 13px;
-                        /*px*/
                     }
 
                     .numbox {
@@ -390,7 +400,7 @@
 
                     li {
                         color: #333;
-                        line-height: 20px;
+                        line-height: 25px;
                         font-size: 13px;
                         /*px*/
                         .ruletitle {
@@ -398,6 +408,7 @@
                             max-width: 100px;
                             /*width: 50px;*/
                             text-align: justify;
+                            text-align-last: justify;
                             margin-right: 25px;
                             font-weight: bold;
                             display: inline-block;
@@ -411,16 +422,35 @@
                 background-color: #F8F8F8;
             }
 
-            .taocan_btn {
-                width: 334px;
-                text-align: center;
-                line-height: 44px;
+            .btnbox {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: 0 auto;
+                z-index: 1;
+                background-color: #fff;
+                .taocan_btn {
+                    width: 334px;
+                    text-align: center;
+                    line-height: 44px;
+                    color: #fff;
+                    background-color: $baseRed;
+                    border-radius: 22px;
+                    margin: 10px auto 30px auto;
+                    font-size: 17px;
+                    /*px*/
+                }
+            }
+        }
+        /deep/ .van-overlay {
+            text-align: right;
+
+            .text {
+                font-size: 20px;
                 color: #fff;
-                background-color: $baseRed;
-                border-radius: 22px;
-                margin: 50px auto;
-                font-size: 17px;
-                /*px*/
+                font-weight: bold;
+                padding: 30px 20px;
             }
         }
     }
