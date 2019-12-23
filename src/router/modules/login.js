@@ -77,4 +77,24 @@ export default [
             needLogin:true
         }
     },
+    {
+        path: '/agreement',
+        component: resolve => require(["../../pages/login/agreement"], resolve),
+        meta: {
+            title: "用户协议",
+            showF: false,
+            showH: true,
+            needLogin:false
+        }
+    },
+    {
+        path: '/privacy',
+        component: resolve => require(["../../pages/login/privacy"], resolve),
+        meta: {
+            title: "隐私政策",
+            showF: false,
+            showH: true,
+            needLogin:false
+        }
+    },
 ]

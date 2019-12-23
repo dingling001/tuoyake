@@ -45,6 +45,8 @@
             window.addEventListener('online', function () {
                 _.showneterror = false
             })
+            localStorage.removeItem('loccity');
+            localStorage.removeItem('count');
         },
         components: {
             'top': VHeader,

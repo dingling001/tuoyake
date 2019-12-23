@@ -7,40 +7,79 @@
             <van-tab title="赛事"></van-tab>
             <van-tab title="视频"></van-tab>
             <van-tab title="套餐"></van-tab>
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==0"
-                              :offset="offset">
+            <div class="list van-row--flex van-cell--center van-row--justify-center" v-if="!showlist">
+                <van-loading type="spinner"/>
+            </div>
+<!--            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="showlist&&list.length&&active==0"-->
+<!--                              :offset="offset">-->
+<!--                <van-list-->
+<!--                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist"-->
+<!--                        finished-text="">-->
+<!--                    &lt;!&ndash; 加载的内容&ndash;&gt;-->
+<!--                    <div class="citem" v-for="(item,index) in list" :key="index" @click="godetail(item.id)">-->
+<!--                        <div class="cimg">-->
+<!--                            <img :src="item.image" alt="">-->
+<!--                        </div>-->
+<!--                        <div class="cright">-->
+<!--                            <div class="cname">-->
+<!--                                <div class="namebox">-->
+<!--                                    <div class="name single-line-text">{{item.name}}</div>-->
+<!--                                    <div class="startbox">-->
+<!--                                        <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <span class="juli">{{item.distance}}</span>-->
+<!--                            </div>-->
+<!--                            <div class="ctype"><span v-for="(l,lindex) in item.label_ids" v-if="lindex<2">{{l}}</span>-->
+<!--                            </div>-->
+<!--                            <div class="caddress">-->
+<!--                                <span class="iconfont icondingweiweizhi"></span>-->
+<!--                                <span class="single-line-text">{{item.address}}</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </van-list>-->
+<!--            </van-pull-refresh>-->
+<!--            <div class="clist" v-if="showlist&&list.length==0&&active==0">-->
+<!--                <NoData :img="img1" :text="''"></NoData>-->
+<!--            </div>-->
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="showlist&&list.length&&active==0">
                 <van-list
-                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist"
+                        v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
                         finished-text="">
                     <!-- 加载的内容-->
                     <div class="citem" v-for="(item,index) in list" :key="index" @click="godetail(item.id)">
                         <div class="cimg">
-                            <img :src="item.image" alt="">
+                            <!--<img  alt="">-->
+                            <van-image width="24vw" height="24vw" fit="cover" :src="item.image"/>
+                            <span v-if="item.recommend==1">推荐</span>
                         </div>
                         <div class="cright">
+                            <div class="name single-line-text">{{item.name}}</div>
                             <div class="cname">
                                 <div class="namebox">
-                                    <div class="name single-line-text">{{item.name}}</div>
                                     <div class="startbox">
                                         <span class="iconfont iconstar-fill" v-for="s in parseInt(item.star)"></span>
                                     </div>
                                 </div>
-                                <span class="juli">{{item.distance}}</span>
+                                <div class="juli">{{item.distance}}</div>
                             </div>
-                            <div class="ctype"><span v-for="(l,lindex) in item.label_ids" v-if="lindex<2">{{l}}</span>
+                            <div class="ctype"><span v-for="l in item.label_ids" class="single-line-text"
+                                                     :style="{maxWidth:(1/item.label_ids.length)*100+'%'}">{{l}}</span>
                             </div>
-                            <div class="caddress">
-                                <span class="iconfont icondingweiweizhi"></span>
+                            <div class="caddress ">
+                                <!--                            <span class="iconfont van-icon-location"></span>-->
+                                <van-icon name="location-o"/>
                                 <span class="single-line-text">{{item.address}}</span>
                             </div>
                         </div>
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="clist" v-if="list.length==0&&active==0">
-                <NoData :img="img1" :text="''"></NoData>
+            <div class="clist" v-if="showlist&&list.length&&active==0">
+                <NoData class="nodata" :top="0" :text="'暂无匹配的商家'"></NoData>
             </div>
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==1"
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="showlist&&list.length&&active==1"
                               :offset="offset">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="comlist"
@@ -64,10 +103,10 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="clist" v-if="list.length==0&&active==1">
+            <div class="clist" v-if="showlist&&list.length==0&&active==1">
                 <NoData :img="img1" :text="''"></NoData>
             </div>
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==2"
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="showlist&&list.length&&active==2"
                               :offset="offset">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="vlist"
@@ -83,10 +122,10 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="clist" v-if="list.length==0&&active==2">
+            <div class="clist" v-if="showlist&&list.length==0&&active==2">
                 <NoData :img="img1" :text="''"></NoData>
             </div>
-            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="list.length&&active==3"
+            <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="showlist&&list.length&&active==3"
                               :offset="offset">
                 <van-list
                         v-model="isUpLoading" :finished="finished" @load="onLoad" class="comlist"
@@ -105,7 +144,7 @@
                     </div>
                 </van-list>
             </van-pull-refresh>
-            <div class="clist" v-if="list.length==0&&active==3">
+            <div class="clist" v-if="showlist&&list.length==0&&active==3">
                 <NoData :img="img1" :text="''"></NoData>
             </div>
         </van-tabs>
@@ -137,10 +176,14 @@
                 isUpLoading3: false,
                 finished3: false,
                 page3: 0,
-                img1: require('../../assets/img/nocollect.png')
+                img1: require('../../assets/img/nocollect.png'),
+                showlist: false
             }
         },
         created() {
+            var pos = JSON.parse(sessionStorage.pos)
+            this.lat = pos[0] || 0;
+            this.lng = pos[1] || 0;
             this._CollectionIndex();
         },
         methods: {
@@ -148,13 +191,14 @@
             _CollectionIndex() {
                 let pageNumber = this.page + 1;
 
-                this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
+                // this.$com.showtoast('加载中…', '', '', 1000, '', false, true)
                 this.$api.CollectionIndex(
                     this.type,
                     pageNumber,
                     this.lat,
                     this.lng,
                 ).then(res => {
+                    this.showlist = true;
                     if (res.code == 1) {//请求成功
                         if (this.list.length) {//当请求前有数据时 第n次请求
                             if (this.isUpLoading) {// 上拉加载
@@ -162,7 +206,7 @@
                                 this.$nextTick(() => { //在下次 DOM 更新循环结束之后执行延迟回调
                                     this.isUpLoading = false  //关闭上拉加载中
                                 })
-                                if (res.data.data.length < 10) {//没有更多数据
+                                if (res.data.total < 10) {//没有更多数据
                                     this.finished = true   //上拉加载完毕
                                 }
                             }
@@ -190,26 +234,22 @@
                     this._CollectionIndex();
                 }, 500);
             },
-            // 上拉加载
-            onLoad() {
-                this.page++;
-                this.isUpLoading = true;
-                this._CollectionIndex();
-            },
             // 下拉刷新
             onRefresh1() {
                 setTimeout(() => {
                     this.$com.showtoast('刷新成功');
-                    this.isDownLoading3 = false;
-                    this.page1 = 0;
+                    this.isDownLoading1 = false;
+                    this.page = 0;
                     this._CollectionIndex();
                 }, 500);
             },
-            // 上拉加载
-            onLoad1() {
-                this.page1++;
-                this.isUpLoading1 = true;
-                this._CollectionIndex();
+            onRefresh2() {
+                setTimeout(() => {
+                    this.$com.showtoast('刷新成功');
+                    this.isDownLoading2 = false;
+                    this.page = 0;
+                    this._CollectionIndex();
+                }, 500);
             },
             // 下拉刷新
             onRefresh3() {
@@ -221,19 +261,39 @@
                 }, 500);
             },
             // 上拉加载
+            onLoad() {
+                this.page++;
+                this.isUpLoading = true;
+                this._CollectionIndex();
+            },
+            // 上拉加载
+            onLoad1() {
+                this.page++;
+                this.isUpLoading1 = true;
+                this._CollectionIndex();
+            },
+            // 上拉加载
+            onLoad2() {
+                this.page++;
+                this.isUpLoading2 = true;
+                this._CollectionIndex();
+            },
+
+            // 上拉加载
             onLoad3() {
-                this.page3++;
+                this.page++;
                 this.isUpLoading3 = true;
                 this._CollectionIndex();
             },
             // 改变类型
             changetype() {
                 this.page = 0;
-                this.page1 = 0;
-                this.page2 = 0;
-                this.page3 = 0;
                 this.type = this.active + 1;
                 this.list = [];
+                this.showlist = false;
+                this.isDownLoading = false;
+                this.isUpLoading = false;
+                this.finished = false;
                 this._CollectionIndex()
             },
             // 去网吧详情
@@ -266,23 +326,21 @@
             }
         }
 
+        .list {
+            padding: 10px 0;
+        }
+
         .clist {
-            padding: 23px 0;
-            min-height: 300px;
+            transition: ease-in-out .3s;
             position: relative;
-
-            /deep/ .nodatabox {
-                img {
-                    width: 80%;
-                    height: auto;
-                }
-            }
-
+            min-height: 200px;
+padding: 20px 0;
             .citem {
                 display: flex;
                 justify-content: space-between;
-                padding: 0 15px;
+                padding: 0 0 0 15px;
                 margin: 0 0 30px 0;
+                transition: ease-in-out .3s;
 
                 .cimg {
                     flex-shrink: 0;
@@ -293,39 +351,51 @@
                     justify-content: center;
                     margin-right: 20px;
                     background-color: #f2f2f2;
+                    position: relative;
+                    border-radius: 8px;
+                    overflow: hidden;
 
-                    img {
-                        width: 100%;
+                    span {
+                        position: absolute;
+                        background: linear-gradient(90deg, #ec8215, #f0a532);
+                        top: 0;
+                        left: 0;
+                        border-radius: 8px 0 8px 0;
+                        color: #fff;
+                        text-align: center;
+                        line-height: 17px;
+                        font-size: 11px;
+                        /*    px*/
+                        width: 40px;
                     }
                 }
 
                 .cright {
                     flex: 1;
-                    height: 90px;
-                    display: flex;
-                    flex-direction: column;
+                    /*height: 90px;*/
+                    .name {
+                        color: #333333;
+                        font-weight: bold;
+                        font-size: 14px;
+                        /*px*/
+                        max-width: 235px;
+                        line-height: 25px;
+                    }
 
                     .cname {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        padding: 0 15px 0 0;
+                        margin: 5px 0 0 0;
 
                         .namebox {
                             display: flex;
                             align-items: center;
 
-                            .name {
-                                color: #333333;
-                                font-weight: bold;
-                                font-size: 14px;
-                                /*px*/
-                                max-width: 120px;
-                            }
-
                             .startbox {
                                 display: flex;
                                 align-items: center;
-                                margin: 0 5px;
 
                                 .iconfont {
                                     color: $baseRed;
@@ -334,14 +404,18 @@
                                 }
                             }
                         }
+
+                        .juli {
+                            color: #666666;
+                        }
                     }
 
                     .ctype {
                         display: flex;
                         align-items: center;
-                        margin: 15px 0;
+                        margin: 5px 0 0 0;
                         flex-wrap: wrap;
-                        max-width: 240px;
+                        min-height: 15px;
 
                         span {
                             padding: 3px 5px;
@@ -349,7 +423,7 @@
                             background: rgba(242, 49, 59, .1);
                             color: $baseRed;
                             border-radius: 8px;
-                            margin-right: 5px;
+                            margin: 0 5px 5px 0;
                         }
                     }
 
@@ -359,14 +433,15 @@
                         color: #666666;
                         font-size: 12px;
                         /*px*/
-                        padding: 0 0 15px 0;
+                        padding: 5px 15px 5px 0;
                         border-bottom: 1px solid #E4E4E4;
                         /*no*/
-                        .iconfont {
+                        .van-icon {
                             color: #999999;
-                            font-size: 10px;
+                            font-weight: bold;
+                            font-size: 14px;
                             /*px*/
-                            margin-right: 5px;
+                            margin-right: 2px;
                         }
 
                         .single-line-text {
@@ -477,6 +552,7 @@
                         /* px */
                         font-weight: bold;
                         max-width: 200px;
+                        line-height: 25px;
                     }
 
                     .jinfo {

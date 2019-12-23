@@ -2,7 +2,8 @@
     <div class="score_box">
         <div class="score_top">
             <div class="iconfont iconfanhui" @click="backmy"></div>
-            <div class="scroe">{{score}}</div>
+            <div class="scroe"><countTo :startVal='0' :endVal='parseInt(score)' separator="" :duration='3000'></countTo></div>
+<!--                <Count :startVal='0' :endVal='' :speed='3000' :decimals="0" :isReverse='false' ></Count>-->
             <div class="mys">我的积分</div>
         </div>
         <div class="mlink">
@@ -32,12 +33,16 @@
 </template>
 
 <script>
+    import countTo from 'vue-count-to';
     export default {
         name: "myPoints",
         data() {
             return {
                 score: 0
             }
+        },
+        components:{
+            countTo
         },
         created() {
             this._ScoreIndex()

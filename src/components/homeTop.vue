@@ -19,15 +19,15 @@
                         <span>{{city||'定位中...'}}</span>
                     </div>
                 </div>
-                <router-link :to="'/search?type='+ind"  tag="div" class="searchbox">
+                <router-link :to="'/search?type='+ind" tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
             <div v-else class="htop" ref="gindex_top">
-                <router-link tag="div" to="/search?type=0" class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
+                <router-link tag="div" to="/search?type=0" class="searchinput"><span
+                        class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
                 </router-link>
-                <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span> {{city}}
-                </div>
+                <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span>{{city}}</div>
             </div>
         </van-sticky>
         <div class="swiperbox" v-if="showhome">
@@ -35,12 +35,7 @@
             <div class="sbg"></div>
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index">
-                    <van-image
-                            width="345ox"
-                            height="160px"
-                            fit="cover"
-                            :src="item.image_m"
-                    />
+                    <van-image v-if="item.image_m" width="345ox" height="160px" fit="cover" :src="item.image_m"/>
                     <!--<img :src="item.image_m" alt="">-->
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination" v-if="swiperlist.length>1"></div>
@@ -196,7 +191,6 @@
                 this.initMap();
                 // this.initmap1()
             }
-
         },
         components: {
             swiper,

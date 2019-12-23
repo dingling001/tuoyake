@@ -10,7 +10,7 @@
                     <van-dropdown-item v-model="label" :options="labellist" @change="changelabel" overlay>
                         <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                     </van-dropdown-item>
-                    <van-dropdown-item :title="selectName" ref="item" :disabled="districtlist.length==1"
+                    <van-dropdown-item :title="selectName" ref="item" :disabled="!flag&&districtlist.length==1"
                                        v-model="selectName" overlay>
                         <div class="citybox">
                             <div class="citems dleft">
@@ -30,7 +30,9 @@
                 </van-dropdown-menu>
             </div>
         </van-sticky>
-        <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!flag"><van-loading type="spinner"/></div>
+        <div class="van-row--flex van-cell--center van-row--justify-center" v-if="!flag">
+            <van-loading type="spinner"/>
+        </div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
@@ -227,6 +229,21 @@
                     // console.log(this.districtlist)
                     // this.selectName = this.districtlist[0].name;
                     // console.log(this.selectName)
+                    this.districtlist.map((item, index) => {
+                        // item.childlist.map(i=>{
+                        //     console.log(i)
+                        // })
+                        if (index > 0) {
+                            console.log(item.childlist)
+                            item.childlist.unshift({
+                                childlist: [],
+                                id: '',
+                                name: "全部街道",
+                                pid: '',
+                                spacer: "",
+                            })
+                        }
+                    });
                 })
             },
             // 切换成推荐模式
@@ -255,16 +272,17 @@
                     this.circle = '';
                     this.netlist = [];
                     this._GetBarList();
+                } else {
+                    this.district = this.districtlist[index].name;
                 }
-                // this.district = this.districtlist[index].name;
             },
             // 选择地区
             selcetarea(index, name, cname) {
                 this.rindex = index;
                 this.$refs.item.toggle();
+                this.circle = index == 0 ? '' : name;
                 // this.district = name;
-                this.selectName = name;
-                this.circle = name;
+                this.selectName = index == 0 ? this.district : name;
                 this.page = 0;
                 this.flag = false;
                 this.netlist = [];

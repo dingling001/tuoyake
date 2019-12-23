@@ -12,6 +12,7 @@
                 <router-link tag="span" to="/forgotpass">忘记密码?</router-link>
             </div>
             <div type="info" class="login_btn" @click="loginpass">登录</div>
+            <div class="reg_agree">登录即同意<span @click="goagree">《用户协议》</span>和<span  @click="goprvide">《隐私政策》</span></div>
             <div class="tips">
                 <span>还没有账号，</span>
                 <router-link class="reg" to="/reg" tag="span">去注册</router-link>
@@ -75,6 +76,12 @@
             // 验证码登录
             gocode() {
                 this.$router.push({path: '/logincode', query: {redirect: this.$route.query.redirect || '/'}})
+            },
+            goagree(){
+                this.$router.push({path: '/agreement'})
+            },
+            goprvide(){
+                this.$router.push({path: '/privacy'})
             }
         }
     }
@@ -103,7 +110,7 @@
             color: #333;
             padding: 0 40px;
             font-weight: bold;
-            margin: 70px 0 65px 0;
+            margin:50px 0 40px 0;
         }
 
         .loginform {
@@ -147,7 +154,7 @@
 
             .login_btn {
                 width: 300px;
-                margin: 30px auto;
+                margin: 30px auto 0 auto;
                 text-align: center;
                 background-color: $baseBlue;
                 color: #fff;
@@ -161,18 +168,25 @@
                     opacity: .9;
                 }
             }
-
+            .reg_agree{
+                text-align: center;
+                line-height: 40px;
+                font-size: 16px;
+                span{
+                    color: $baseBlue;
+                }
+            }
             .tips {
                 text-align: center;
                 color: #454951;
-                font-size: 14px;
-                /*px*/
+                font-size: 15px;
+                margin: 20px 0;
                 .reg {
-                    color: #6285CC;
+                    color: $baseBlue;
                 }
 
                 .iconjiantou {
-                    color: #6285CC;
+                    color: $baseBlue;
                     font-size: 14px;
                     /*px*/
                 }
