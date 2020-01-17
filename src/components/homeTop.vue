@@ -274,7 +274,6 @@
                         timeout: 6000,
                     })
                     getlocation.getCurrentPosition(function (status, res) {
-                        console.log(res, 'location')
                         if (status == 'complete' && res.status == 1) {
                             localStorage.loccity = res.addressComponent.city || res.addressComponent.province;
                             _.city = sessionStorage.wapcity || res.addressComponent.city || res.addressComponent.province || '北京';
