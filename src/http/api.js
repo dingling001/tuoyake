@@ -123,7 +123,7 @@ axios.defaults.retry = 4;
 axios.defaults.retryDelay = 1000;
 instance.interceptors.response.use(
     function (response) {
-        console.log(response)
+        // console.log(response)
         if (!response) {
             return false
         } else {
@@ -133,7 +133,7 @@ instance.interceptors.response.use(
     }, function axiosRetryInterceptor(err) {
         // console.log(JSON.stringify(err.response.data.code))
         var errcode = err.code || err.response.data.code;
-        // console.log(errcode)
+        console.log(errcode)
         switch (errcode) {
             case 401:
                 localStorage.removeItem("user_twap");
@@ -143,7 +143,11 @@ instance.interceptors.response.use(
                 return Promise.reject(err.response.data);
             case 'ECONNABORTED':
                 localStorage.setItem('showneterror', true);
-                return Promise.reject(errcode);
+                if (localStorage.count == 0) {
+                    window.location.reload();
+                    localStorage.setItem('count', 1);
+                }
+                break;
             case 404:
                 Toast({
                     message: '网络错误',
@@ -174,7 +178,7 @@ instance.interceptors.response.use(
         // Create new promise to handle exponential backoff
         var backoff = new Promise(function (resolve) {
             setTimeout(function () {
-                console.log(config.__retryCount)
+                // console.log(config.__retryCount)
                 resolve();
             }, config.retryDelay || 1);
         });
@@ -229,7 +233,7 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
         }
         instance(options)
             .then(function (res) {
-                console.log(res);
+                // console.log(res);
                 localStorage.removeItem('showneterror');
                 resolve(res);
                 return false;
@@ -237,11 +241,11 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
             .catch(function (err) {
                 console.log(err)
                 if (err == 'ECONNABORTED') {
-                    localStorage.setItem('showneterror', true);
-                    if (localStorage.count == 0) {
-                        window.location.reload();
-                        localStorage.setItem('count', 1);
-                    }
+                    // localStorage.setItem('showneterror', true);
+                    // if (localStorage.count == 0) {
+                    //     window.location.reload();
+                    //     localStorage.setItem('count', 1);
+                    // }
                     // window.location.href=window.location.origin + "#/NetError";
                 }
                 // // console.log(JSON.stringify(err.response.data))

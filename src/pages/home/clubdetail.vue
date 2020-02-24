@@ -7,7 +7,7 @@
             <div class="clubname">{{club_detail.name}}</div>
             <div class="clubboss"><span>{{club_detail.contact}}</span><span>{{club_detail.contact_number}}</span></div>
             <div class="clubboss nopadding">{{club_detail.address}}</div>
-            <div class="clubcontent">{{club_detail.content}}</div>
+            <div class="clubcontent" v-html="club_detail.content"></div>
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@
                 club_id: '',
                 club_detail: {},
                 offsettop: 0,
-                is_app:0
+                is_app: 0
             }
         },
         created() {
@@ -44,9 +44,9 @@
             },
             // 返回列表
             backlist() {
-                if(this.is_app==1){
+                if (this.is_app == 1) {
                     this.$router.push('/club')
-                }else{
+                } else {
                     this.$router.go(-1);
                 }
             }
@@ -134,6 +134,11 @@
                 /*px*/
                 line-height: 20px;
                 text-align: justify;
+
+                /deep/ img {
+                    width: 100%;
+                    height: auto !important;
+                }
             }
         }
 

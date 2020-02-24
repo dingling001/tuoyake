@@ -115,7 +115,7 @@
             },
             // 收藏
             clllection() {
-                this.$api.SetCollection(3, this.match_id).then(res => {
+                this.$api.SetCollection(2, this.match_id).then(res => {
                     console.log(res)
                     if (res.code == 1) {
                         if (res.data.is_collection == 1) {

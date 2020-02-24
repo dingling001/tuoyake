@@ -6,7 +6,8 @@ export default [
         meta: {
             title: "我的",
             showF: true,
-            showH: false
+            showH: false,
+            needLogin: true
         },
     },
     {
@@ -176,7 +177,7 @@ export default [
         name: 'takeReward',
         component: resolve => require(["../../pages/my/takeReward"], resolve),
         meta: {
-            title: "奖品详情",
+            title: "领取奖品",
             showF: false,
             showH: true,
             needLogin: true,
@@ -190,7 +191,7 @@ export default [
         name: 'takeReward_app',
         component: resolve => require(["../../pages/my/takeReward_app"], resolve),
         meta: {
-            title: "奖品详情",
+            title: "领取奖品",
             showF: false,
             showH: true,
             needLogin: true,

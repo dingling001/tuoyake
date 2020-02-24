@@ -1,5 +1,6 @@
 <template>
     <div class="rbox">
+        <div class="rlist van-row--flex van-cell--center van-row--justify-center" v-if="!show"><van-loading type="spinner"/></div>
         <div class="rlist" v-if="show&&sglist.length">
             <div class="ritem" v-for="(item,index) in sglist" :key="item.id" @click="gotakereward(item.id,item.status)">
                 <div class="rname">累计获奖 {{item.times}} 次可领取：</div>

@@ -2,6 +2,7 @@
     <div class="mbox">
         <div class="mhead" v-if="user_twap">
             <div class="mimg" @click="goset">
+<!--                <div class="van-row&#45;&#45;flex van-cell&#45;&#45;center van-row&#45;&#45;justify-center" v-if="!user_info.avatar"><van-loading type="spinner"/></div>-->
                 <van-image :src="user_info.avatar" alt="" width="61px"
                            height="61px" fit="cover" v-if="user_info.avatar"/>
             </div>
@@ -10,7 +11,7 @@
                     <span class="name">{{user_info.nickname}}</span>
                     <div class="iconfont iconshezhi1" @click="goset"></div>
                 </div>
-                <div class="mscroe"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span>
+                <div class="mscroe" @click="goPoints"><span class="iconfont iconjifen"></span><span class="num">{{user_info.score}}</span>
                 </div>
             </div>
         </div>
@@ -101,7 +102,6 @@
                 </van-cell>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -135,6 +135,9 @@
             // 去设置页面
             goset() {
                 this.$router.push({path: '/myset'})
+            },
+            goPoints() {
+                this.$router.push({path: '/myPoints'})
             },
             // 获取个人信息
             _GetUserInfo() {

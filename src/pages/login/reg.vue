@@ -20,6 +20,7 @@
                     @blur="showkeybord = false"
             />
             <div class="login_btn" @click="gonext">下一步</div>
+            <div class="reg_agree" @click="goagree">我已阅读并同意<span>《用戶协议》</span></div>
         </form>
     </div>
 </template>
@@ -76,7 +77,10 @@
             },
             accountinput() {
                 this.account = this.account.replace(/[^\d]/g, '');
-            }
+            },
+            goagree(){
+                this.$router.push({path: '/agreement'})
+            },
         }
     }
 </script>
@@ -169,6 +173,12 @@
 
                 &:active {
                     opacity: .9;
+                }
+            }
+            .reg_agree{
+                text-align: center;
+                span{
+                    color: $baseBlue;
                 }
             }
         }

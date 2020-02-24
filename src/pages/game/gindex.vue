@@ -28,10 +28,12 @@
                     </div>
                     <van-dropdown-menu active-color="#f2313b"
                                        :class="[label==''?'':'labelbox',selectName=='全部地区'?'':'cccc']">
-                        <van-dropdown-item v-model="label" :options="labellist" @open="openlabel" @change="changelabel">
+                        <van-dropdown-item v-model="label" :options="labellist" :disabled="!flag&&labellist.length==0"
+                                           @open="openlabel" @change="changelabel">
                             <!--<span>全部服务</span><span class="iconfont iconjiantouarrow486"></span>-->
                         </van-dropdown-item>
-                        <van-dropdown-item :title="selectName" ref="item" @open="opendistrict">
+                        <van-dropdown-item :title="selectName" ref="item" @open="opendistrict"
+                                           :disabled="!flag&&districtlist.length==1">
                             <div class="citybox">
                                 <div class="citems dleft">
                                     <div v-for="(item ,index) in districtlist" :key="index"
@@ -137,31 +139,6 @@
                 totop: false,
                 flag: false,
                 selectName: '全部地区',
-                res: {
-                    "config": {
-                        "transformRequest": {},
-                        "transformResponse": {},
-                        "timeout": 5,
-                        "xsrfCookieName": "XSRF-TOKEN",
-                        "xsrfHeaderName": "X-XSRF-TOKEN",
-                        "maxContentLength": -1,
-                        "headers": {
-                            "Accept": "application/json",
-                            "Content-Type": "application/x-www-form-urlencoded; charset=utf-8",
-                            "Access-Control-Allow-Origin": "*",
-                            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-                        },
-                        "retry": 4,
-                        "retryDelay": 1000,
-                        "method": "post",
-                        "baseURL": "",
-                        "responseType": "json",
-                        "url": "/api/college/index",
-                        "cancelToken": {"promise": {}},
-                        "data": "page=1&category_id=&city=%E5%8C%97%E4%BA%AC&district=&circle=&keyword="
-                    },
-                    "code": "ECONNABORTED", "request": {}
-                }
             }
         },
         components: {
@@ -186,7 +163,7 @@
         methods: {
             // 获取当前城市
             getcityinfo(val, val1) {
-                console.log(val1, 'gindex')
+                // console.log(val1, 'gindex')
                 this.city = val;
                 this.lat = val1[0];
                 this.lng = val1[1];
@@ -254,7 +231,6 @@
                                 text: labellist[i]
                             })
                         }
-                        ;
                         this.label = this.labellist[0].value;
                         // console.log(this.labellist)
                     }
@@ -290,12 +266,37 @@
             // 获取当前城市的区
             _GetAreaListTree() {
                 this.$api.GetAreaListTree(this.citypid).then(res => {
+                    // for(var i in res.data){
+                    //     res.data[i].childlist.concat([{
+                    //         childlist: [],
+                    //         id: '',
+                    //         name: "全部街道",
+                    //         pid: '',
+                    //         spacer: "",
+                    //     }])
+                    // }
+                    // console.log(res.data)
                     this.districtlist = this.districtlist.concat(res.data);
+                    this.districtlist.map((item, index) => {
+                        // item.childlist.map(i=>{
+                        //     console.log(i)
+                        // })
+                        if (index > 0) {
+                            console.log(item.childlist)
+                            item.childlist.unshift({
+                                childlist: [],
+                                id: '',
+                                name: "全部街道",
+                                pid: '',
+                                spacer: "",
+                            })
+                        }
+                    });
                     // console.log(this.districtlist)
                     this.district = this.districtlist[0].name;
                 })
             },
-            // 选择城市
+            // 选择地区
             selcetcity(index) {
                 this.lindex = index;
                 if (index == 0) {
@@ -305,14 +306,16 @@
                     this.page = 0;
                     this.netlist = [];
                     this._GetBarList();
+                } else {
+                    this.district = this.districtlist[index].name;
                 }
             },
-            // 选择地区
+            // 选择商圈
             selcetarea(index, name) {
                 this.rindex = index;
                 this.$refs.item.toggle();
-                this.district = name;
-                this.selectName = this.district;
+                this.circle = index == 0 ? '' : name;
+                this.selectName = index == 0 ? this.district : this.circle;
                 this.page = 0;
                 this.netlist = [];
                 this._GetBarList();
@@ -332,7 +335,7 @@
             },
             // 打开全部列表
             opendistrict() {
-                this._GetAreaListTree()
+                // this._GetAreaListTree()
             },
             // 去详情
             godetail(id) {

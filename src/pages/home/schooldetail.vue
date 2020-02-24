@@ -7,7 +7,7 @@
             <div class="clubname">{{club_detail.name}}</div>
             <div class="clubboss"><span>{{club_detail.contact}}</span><span>{{club_detail.contact_number}}</span></div>
             <div class="clubboss nopadding">{{club_detail.address}}</div>
-            <div class="clubcontent">{{club_detail.content}}</div>
+            <div class="clubcontent" v-html="club_detail.content"></div>
         </div>
     </div>
 </template>
@@ -128,6 +128,10 @@
                 /*px*/
                 line-height: 20px;
                 text-align: justify;
+                /deep/ img {
+                    max-width: 100%;
+                    height: auto !important;
+                }
             }
         }
 

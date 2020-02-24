@@ -19,6 +19,7 @@
                 </span>
             </van-field>
             <div class="login_btn" @click="gonext">登录</div>
+            <div class="reg_agree">登录即同意<span @click="goagree">《用户协议》</span>和<span  @click="goprvide">《隐私政策》</span></div>
             <div @click="backlogin" class="login_pass">密码登录</div>
             <van-number-keyboard
                     v-model="mobile"
@@ -100,6 +101,12 @@
             mobileinput() {
                 this.mobile = this.mobile.replace(/[^\d]/g, '');
             },
+            goagree(){
+                this.$router.push({path: '/agreement'})
+            },
+            goprvide(){
+                this.$router.push({path: '/privacy'})
+            },
             backlogin() {
                 this.$router.go(-1)
             },
@@ -130,7 +137,7 @@
             color: #333;
             padding: 0 40px;
             font-weight: bold;
-            margin: 100px 0 65px 0;
+            margin: 50px 0 40px 0;
         }
 
         .loginform {
@@ -196,7 +203,14 @@
                     opacity: .9;
                 }
             }
-
+            .reg_agree{
+                text-align: center;
+                line-height: 40px;
+                font-size: 16px;
+                span{
+                    color: $baseBlue;
+                }
+            }
             .login_pass {
                 text-align: center;
                 font-size: 15px;

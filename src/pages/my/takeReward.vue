@@ -1,6 +1,6 @@
 <template>
     <div class="rbox">
-        <div class="aitem" @click="goaddress" v-if="showadd&&Object.keys(addinfo).length">
+        <div class="aitem" @click="goaddress" v-if="showadd&&addinfo.id!=0">
             <div class="left">
                 <div class="address">{{addinfo.province}}{{addinfo.city}}{{addinfo.district}}{{addinfo.address}}</div>
                 <div>{{addinfo.name}} {{addinfo.mobile}}</div>
@@ -8,7 +8,7 @@
             </div>
             <div class="iconfont iconjiantou"></div>
         </div>
-        <div class="aitem noadd" @click="addardess" v-if="showadd&&Object.keys(addinfo).length==0 ">
+        <div class="aitem noadd" @click="addardess" v-if="showadd&&addinfo.id==0 ">
             <i class="iconfont iconplus-circle"></i><span>添加地址</span>
         </div>
         <div class="ritem" v-if="Object.keys(item).length">
@@ -26,7 +26,7 @@
         <div class="aitem">
             <div class="left">
                 <div class="address">领取说明</div>
-                <div v-html="winning_receive_explain"></div>
+                <div v-html="score_receive_explain"></div>
             </div>
         </div>
         <van-button class="btn" @click="_SignReceive" :disabled ="Object.keys(item).length==0" :loading="loading" type="info" :loading-text="loadingtext">确认领取
@@ -44,7 +44,7 @@
                 noorder: require('../../assets/img/nodata.png'),
                 goods_id: '',
                 addinfo: {},
-                winning_receive_explain: '',
+                score_receive_explain: '',
                 showadd: false,
                 loadingtext: '',
                 loading: false
@@ -75,7 +75,6 @@
                 this.$router.push({path: '/myAddress', query: {choose: 1}})
             },
             _ScoreMyReceived() {
-
                 this.$api.ScoreDetail(this.goods_id).then(res => {
                     if (res.code == 1) {
                         this.item = res.data;
@@ -84,7 +83,7 @@
             },
             _CommonGetConfig() {
                 this.$api.CommonGetConfig().then(res => {
-                    this.winning_receive_explain = res.data.winning_receive_explain
+                    this.score_receive_explain = res.data.score_receive_explain
                 })
             },
             _SignReceive() {
@@ -94,7 +93,9 @@
                     this.loading = false;
                     if (res.code == 1) {
                         this.$com.showtoast('领取成功，等待工作人员处理...');
-                        this.$router.go(-1)
+                       setTimeout(function () {
+                           this.$router.go(-1)
+                       },1500)
                     } else {
                         this.$com.showtoast(res.msg)
                     }
