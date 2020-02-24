@@ -96,7 +96,7 @@
             </van-list>
         </van-pull-refresh>
         <div class="jlist" v-if="schoolshow&&clublist.length==0&&type==2">
-            <NoData class="nodata" :top="0" :text="'暂无相关学院'"></NoData>
+            <NoData class="nodata" :top="0" :text="'暂无相关酒店'"></NoData>
         </div>
     </div>
 </template>
@@ -127,7 +127,7 @@
                 total: 0,
                 slist: [],
                 type: 0,
-                keywords: ['电竞馆名称/地址', '俱乐部名称/地址', '学院名称/地址'],
+                keywords: ['电竞馆名称/地址', '俱乐部名称/地址', '酒店名称/地址'],
 
                 cshow: false,
                 clublist: [],

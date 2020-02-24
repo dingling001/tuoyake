@@ -40,7 +40,7 @@ export default [
                 path: '/school',
                 name: 'school',
                 meta: {
-                    title: "学院",
+                    title: "酒店",
                     index: 2,
                     showF: true,
                     showH: false
@@ -87,7 +87,7 @@ export default [
         path: '/schooldetail',
         name: 'schooldetail',
         meta: {
-            title: "学院详情",
+            title: "酒店详情",
             index: 1,
             showF: false,
             showH: false

@@ -25,10 +25,10 @@
         </div>
         <div class="mbody">
             <van-tabbar route :fixed="false" :border="false">
-                <van-tabbar-item to="/myApplication">
-                    <span>我的报名</span>
-                    <img slot="icon" src="../../assets/img/m1.jpg" alt>
-                </van-tabbar-item>
+                <!--<van-tabbar-item to="/myApplication">-->
+                    <!--<span>我的报名</span>-->
+                    <!--<img slot="icon" src="../../assets/img/m1.jpg" alt>-->
+                <!--</van-tabbar-item>-->
                 <van-tabbar-item to="/myCollect">
                     <span>我的收藏</span>
                     <img slot="icon" src="../../assets/img/m2.jpg" alt>

@@ -53,7 +53,7 @@
                             <div class="juli">{{item.distance}}</div>
                         </div>
                         <div class="ctype"><span v-for="l in item.label_ids" class="single-line-text"
-                                                 :style="{maxWidth:(1/item.label_ids.length)*100+'%'}">{{l}}</span>
+                                                 :style="{maxWidth:(2/item.label_ids.length)*100+'%'}">{{l}}</span>
                         </div>
                         <div class="caddress ">
                             <!--                            <span class="iconfont van-icon-location"></span>-->
@@ -458,7 +458,7 @@
                     .name {
                         color: #333333;
                         font-weight: bold;
-                        font-size: 14px;
+                        font-size: 16px;
                         /*px*/
                         max-width: 235px;
                         line-height: 18px;
@@ -481,7 +481,7 @@
 
                                 .iconfont {
                                     color: $baseRed;
-                                    font-size: 14px;
+                                    font-size: 17px;
                                     /*px*/
                                 }
                             }

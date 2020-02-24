@@ -45,7 +45,7 @@
             </van-list>
         </van-pull-refresh>
         <div class="jlist" v-if="schoolshow&&clublist.length==0">
-            <NoData class="nodata" :top="0" :text="'暂无相关学院'"></NoData>
+            <NoData class="nodata" :top="0" :text="'暂无相关酒店'"></NoData>
         </div>
         <!--        <van-overlay :show="showoverlay" @click="showoverlay = false" :z-index="5"/>-->
     </div>
@@ -80,7 +80,7 @@
                 },
                 navlist: [
                     {
-                        name: '全部学院',
+                        name: '全部酒店',
                         id: ''
                     }
                 ],

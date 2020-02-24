@@ -24,12 +24,12 @@
         </div>
         <div class="comitem" v-if="showmatch&&Object.keys(matchinfo).length">
             <div class="comnanme">{{matchinfo.name}}</div>
-            <div class="comaddress">
-                <span class="iconfont icontime-circle"></span>
-                <span>{{matchinfo.start_time}}</span>
-            </div>
+            <!--<div class="comaddress">-->
+                <!--<span class="iconfont icontime-circle"></span>-->
+                <!--<span>{{matchinfo.start_time}}</span>-->
+            <!--</div>-->
             <div class="machdes" v-html="matchinfo.content"></div>
-            <div class="hr"></div>
+            <!--<div class="hr"></div>-->
             <div class="comlist" v-if="matchinfo.video.length">
                 <div class="taocan">
                     <div class="spanbox"><span>赛事视频</span></div>
@@ -60,10 +60,10 @@
                     </div>
                 </div>
             </div>
-            <div class="btnbox">
-                <van-button class="game_btn" type="info" @click="goapp" v-if="matchinfo.is_sign==0">立即报名</van-button>
-                <van-button class="game_btn" type="info" disabled v-if="matchinfo.is_sign==1">已报名</van-button>
-            </div>
+            <!--<div class="btnbox">-->
+                <!--<van-button class="game_btn" type="info"  @click="goapp" v-if="matchinfo.is_sign==0">立即报名</van-button>-->
+                <!--<van-button class="game_btn" type="info" disabled v-if="matchinfo.is_sign==1">已报名</van-button>-->
+            <!--</div>-->
         </div>
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
@@ -349,6 +349,13 @@
 
                 /deep/ img {
                     width: 100%;
+                }
+                /deep/ ul{
+                    list-style: disc;
+                    padding: 0 18px;
+                    li{
+                        list-style: disc;
+                    }
                 }
             }
 

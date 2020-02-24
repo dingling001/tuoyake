@@ -62,7 +62,7 @@
                         <div class="jname van-ellipsis">{{item.name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis" v-html="item.content"></div>
+                        <!--<div class="jaddress van-ellipsis" v-html="item.content"></div>-->
                         <div class="price">￥{{item.price}}</div>
                     </div>
                     <div class="jbtn">抢购</div>
@@ -72,9 +72,10 @@
             <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods"><van-loading type="spinner"/></div>
             <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
-                    <div class="spanbox"><span class="span">赛</span><span>赛事</span></div>
-                    <div class="all" @click="goallgame">全部 <span
-                            class="iconfont iconjiantou"></span></div>
+                    <div class="spanbox"><span class="span">商</span><span>商家介绍</span></div>
+                    <!--<div class="all" @click="goallgame">-->
+                        <!--全部 <span  class="iconfont iconjiantou"></span>-->
+                    <!--</div>-->
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
                      @click="gossdetail(item.id)">
@@ -87,12 +88,12 @@
                         <div class="jname van-ellipsis">{{item.league_name}}</div>
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
-                        <div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}}
-                            ~ {{item.end_time}}
-                        </div>
+                        <!--<div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}}-->
+                            <!--~ {{item.end_time}}-->
+                        <!--</div>-->
                         <div class="jaddress van-ellipsis" v-html="item.synopsis"></div>
                     </div>
-                    <div class="jbtn s_jbtn">报名</div>
+                    <!--<div class="jbtn s_jbtn">报名</div>-->
                 </div>
             </div>
 
@@ -375,11 +376,11 @@
             border-radius: 10px;
 
             .comnanme {
-                font-size: 18px;
+                font-size: 20px;
                 /*px*/
                 color: #333;
                 font-weight: bold;
-                padding: 36px 18px 23px 18px;
+                padding: 36px 18px 10px 18px;
             }
 
             .starbox {
@@ -389,7 +390,7 @@
 
                 .iconstar-fill {
                     color: #E4E4E4;
-                    font-size: 20px;
+                    font-size: 22px;
                     /*px*/
                     &.star {
                         color: $baseRed;
@@ -528,9 +529,9 @@
 
                     .jright {
                         flex: 1;
-                        /*display: flex;*/
-                        /*flex-direction: column;*/
-                        /*justify-content: space-between;*/
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
 
                         .jname {
                             font-size: 14px;

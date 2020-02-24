@@ -56,7 +56,7 @@
                 </ul>
             </div>
             <div class="btnbox">
-                <div class="taocan_btn" @click="goapp" v-if="goodinfo.price">￥{{goodinfo.price*num}} 立即抢购</div>
+                <div class="taocan_btn" @click="goapp" v-if="goodinfo.price">￥{{parseFloat(goodinfo.price*num).toFixed(2)}} 立即抢购</div>
             </div>
         </div>
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
@@ -327,7 +327,7 @@
 
                         .iconstar-fill {
                             color: #E4E4E4;
-                            font-size: 13px;
+                            font-size: 15px;
                             &.star {
                                 color: $baseRed;
                             }

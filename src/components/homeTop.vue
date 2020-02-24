@@ -10,7 +10,7 @@
                         <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部<span class="border_b "
                                                                                                   v-if="ind==1"></span>
                     </span>
-                        <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">学院<span
+                        <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">酒店<span
                                 class="border_b border_b1 " v-if="ind==2"></span>
                     </span>
                     </div>
@@ -19,20 +19,33 @@
                         <span>{{city||'定位中...'}}</span>
                     </div>
                 </div>
-                <router-link :to="'/search?type='+ind"  tag="div" class="searchbox">
+                <router-link :to="'/search?type='+ind" tag="div" class="searchbox">
                     <div class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span></div>
                 </router-link>
             </div>
             <div v-else class="htop" ref="gindex_top">
-                <router-link tag="div" to="/search?type=0" class="searchinput"><span class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
+                <router-link tag="div" to="/search?type=0" class="searchinput"><span
+                        class="iconfont iconsousuo1"></span><span>{{keyword}}</span>
                 </router-link>
                 <div class="index_address" @click="go_city"><span class="iconfont icondingweiweizhi"></span> {{city}}
                 </div>
             </div>
         </van-sticky>
+        <!--<van-sticky :offset-top="offsettop" class="sticky ">-->
+
+        <div class="downloadbox" @click="goApp">
+            <div class="logobox"><img src="../assets/img/logo.png" alt=""></div>
+            <div class="logocontent">
+                <div class="logo-tit">各种超值套餐和游戏奖励活动</div>
+                <div class="logo-desc">尽在托亚克APP</div>
+            </div>
+            <van-button class="to-app-btn" round color="#F2313B">去APP</van-button>
+        </div>
+        <!--</van-sticky>-->
         <div class="swiperbox" v-if="showhome">
             <van-loading type="spinner" v-if="!flag"/>
-            <div class="sbg"></div>
+            <div class="sbg ">
+            </div>
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index">
                     <van-image
@@ -125,7 +138,9 @@
                 offsettop: 0,
                 flag: false,
                 adimginfo: {},
-                keywords: ['电竞馆名称/地址', '俱乐部名称/地址', '学院名称/地址']
+                keywords: ['电竞馆名称/地址', '俱乐部名称/地址', '酒店名称/地址'],
+                isAndroid: false,
+                isiOS: false
             };
         },
         provide() {
@@ -158,7 +173,7 @@
                     this.keyword = '俱乐部名称/地址'
                 } else {
                     this.ind = 2;
-                    this.keyword = '学院名称/地址'
+                    this.keyword = '酒店名称/地址'
                 }
                 if (this.showtop) {
                     this.offsettop = this.$refs.index_top.offsetHeight;
@@ -196,7 +211,7 @@
                 this.initMap();
                 // this.initmap1()
             }
-
+            this.initApp();
         },
         components: {
             swiper,
@@ -320,6 +335,26 @@
             },
             go_city() {
                 this.$router.push({path: '/changecity'})
+            },
+            initApp() {
+                /*判断当前环境是Android还是iOS*/
+                var u = navigator.userAgent;
+                // 安卓
+                var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+                // IOS
+                var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+                if (isAndroid) {
+                    this.isAndroid = true;
+                } else if (isiOS) {
+                    this.isiOS = true;
+                }
+            },
+            goApp() {
+                if (this.isAndroid) {
+                    location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk'
+                } else if (this.isiOS) {
+                    location.href = ''
+                }
             }
         },
         computed: {
@@ -345,7 +380,7 @@
         /*align-items: center;*/
         /*justify-content: space-between;*/
         /*padding: 22px 15px;*/
-        height: 115px;
+        height: 110px;
         /*background: linear-gradient(90deg, #441219, #29182E);*/
         background-image: url("../assets/img/index_bg.png");
         background-size: 100% auto;
@@ -489,12 +524,55 @@
         }
     }
 
+    .downloadbox {
+        color: #fff;
+        background-color: #D1A626;
+        /*background: linear-gradient(90deg, #441219, #29182E);*/
+        padding: 8px 20px 8px 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .logobox {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        .logocontent {
+            padding-left: 10px;
+            flex: 1;
+
+            .logo-tit {
+                font-size: 13px;
+                padding-top: 3px;
+            }
+
+            .logo-desc {
+                font-size: 12px;
+                font-weight: 300;
+                padding-top: 3px;
+            }
+        }
+
+        .to-app-btn {
+            height: 25px;
+            line-height: 25px;
+            /*padding: 20px 0;*/
+            font-size: 12px;
+            padding: 0 10px;
+        }
+    }
+
     .swiperbox {
         height: 160px;
         /*border-radius: 16px;*/
         position: relative;
         overflow: hidden;
-
+padding: 10px 0 0 0;
         .sbg {
             background: linear-gradient(90deg, #441219, #29182E);
             height: 130px;
@@ -504,6 +582,7 @@
             top: 0;
             z-index: 1;
         }
+
 
         .swiper-container {
             height: 100%;
