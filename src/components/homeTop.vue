@@ -89,7 +89,7 @@
                     observers: true,
                     observeParents: true,
                     spaceBetween: 10,
-                    loop: true,
+                    loop: false,
                     autoplay: 3000,
                     onClick: function (swiper) {
                         let i = swiper.realIndex;

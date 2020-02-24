@@ -54,8 +54,8 @@
                             </div>
                             <div class="juli">{{item.distance}}</div>
                         </div>
-                        <div class="ctype"><span v-for="l in item.label_ids" class="single-line-text"
-                                                 :style="{maxWidth:(2/item.label_ids.length)*100+'%'}">{{l}}</span>
+                        <div class="ctype" v-if="item.label_ids"><span v-for="l in item.label_ids.slice(0,3)" :style="{maxWidth:item.label_ids.length==3?' 33%':''}" class="single-line-text">{{l}}</span>
+                            <!--:style="{maxWidth:(2/item.label_ids.length)*100+'%'}"-->
                         </div>
                         <div class="caddress ">
                             <!--                            <span class="iconfont van-icon-location"></span>-->
@@ -524,6 +524,8 @@
                             color: $baseRed;
                             border-radius: 8px;
                             margin: 0 5px 5px 0;
+                            font-size: 12px;
+                            /*px*/
                         }
                     }
 
