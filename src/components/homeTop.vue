@@ -49,7 +49,7 @@
             <swiper :options="swiperOption" ref="mySwiper" v-if="flag&&swiperlist.length">
                 <swiper-slide v-for="(item,index) in swiperlist" :key="index">
                     <van-image
-                            width="345ox"
+                            width="92vw"
                             height="160px"
                             fit="cover"
                             :src="item.image_m"
@@ -353,7 +353,7 @@
                 if (this.isAndroid) {
                     location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk'
                 } else if (this.isiOS) {
-                    location.href = ''
+                    location.href = 'https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960'
                 }
             }
         },
@@ -532,6 +532,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         .logobox {
             width: 36px;
             height: 36px;
@@ -572,7 +573,8 @@
         /*border-radius: 16px;*/
         position: relative;
         overflow: hidden;
-padding: 10px 0 0 0;
+        padding: 10px 0 0 0;
+
         .sbg {
             background: linear-gradient(90deg, #441219, #29182E);
             height: 130px;

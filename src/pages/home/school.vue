@@ -34,7 +34,15 @@
                     :finished-text="finishedtext">
                 <div class="jitem van-row--flex" v-for="(item,index) in clublist" :key="item.id"
                      @click="godetail(item.id)">
-                    <div class="jimg"><img :src="item.image" alt=""></div>
+                    <div class="jimg">
+                        <!--<img :src="item.image" alt="">-->
+                        <van-image
+                                width="19.733vw"
+                                height="19.733vw"
+                                fit="cover"
+                                :src="item.image"
+                        />
+                    </div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
                         <div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>
@@ -448,9 +456,12 @@
                     /*no*/
                     margin-right: 17px;
                     flex-shrink: 0;
+                    overflow: hidden;
 
-                    img {
+                   /deep/ img {
                         width: 100%;
+                        border-radius: 8px;
+
                     }
                 }
 

@@ -2,8 +2,8 @@
     <div class="download">
         <div class="logobox"><img src="../assets/img/logo.png" alt=""></div>
         <div class="download_tips">请下载官方APP进行下单支付</div>
-        <div class="download_item"><span class="iconfont iconiconfontanzhuo"></span><span>Android下载</span></div>
-        <div class="download_item"><span class="iconfont iconpingguo"></span><span>iPhone下载</span></div>
+        <a class="download_item" href="https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk"><span class="iconfont iconiconfontanzhuo"></span><span>Android下载</span></a>
+        <a class="download_item" href="https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960"><span class="iconfont iconpingguo"></span><span>iPhone下载</span></a>
     </div>
 </template>
 
