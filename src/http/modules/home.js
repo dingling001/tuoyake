@@ -133,11 +133,12 @@ export const CollegeDetail = (college_id) =>
 /**
  * 获取俱乐部列表详情
  */
-export const GetBarInfo = (id, lat = JSON.parse(sessionStorage.pos)[0], lng = JSON.parse(sessionStorage.pos)[1]) =>
+export const GetBarInfo = (id, lat ,lng) =>
     axios(
         "/api/index/getBarInfo", {
             id,
-            lat, lng
+            lat: lat?lat:sessionStorage.pos?JSON.parse(sessionStorage.pos)[0]:0,
+            lng:lng?lng:sessionStorage.pos?JSON.parse(sessionStorage.pos)[1]:0,
         },
         "POST",
         true

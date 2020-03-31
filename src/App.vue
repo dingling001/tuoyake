@@ -1,7 +1,7 @@
 <template>
     <div class="app" v-cloak>
         <top v-if="showH" :title="headtext" :iconfont="iconfont" :rlink="rlink" :showright="showright"
-             :right_text="right_text"></top>
+             :right_text="right_text" :is_app="is_app"></top>
         <keep-alive>
             <router-view v-wechat-title="title" v-if="$route.meta.keepAlive" class="router-view"
                          :class="['router-view',showH?'nonav':'',showF==false&&showH==false?'noall':'']"
@@ -34,7 +34,8 @@
                 rlink: '',
                 showright: false,
                 right_text: '',
-                showneterror: localStorage.showneterror || false
+                showneterror: localStorage.showneterror || false,
+                is_app: 0
             };
         },
         created() {
@@ -64,6 +65,8 @@
                     this.iconfont = val.meta.iconfont || 'iconfanhui';
                     this.showright = val.meta.showright || false;
                     this.right_text = val.meta.right_text;
+                    this.is_app = this.$route.query.is_app ? this.$route.query.is_app : 0;
+                    console.log(this.is_app)
                     this.rlink = val.meta.rlink;
                     if (val.fullPath.indexOf('/gindex') !== -1) {
                         this.f_index = 1

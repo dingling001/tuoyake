@@ -16,7 +16,8 @@
             <!--            </swiper>-->
             <van-sticky :offset="0">
                 <div class="navbox">
-                    <span class="iconfont iconfanhui" @click="backlist"></span>
+                    <span class="iconfont iconfanhui" @click="backlist" v-if="is_app==0"></span>
+                    <router-link to="/" class="iconfont iconshouyex" v-else></router-link>
                     <div class="comnanme van-ellipsis">{{comdata.info.name}}</div>
                     <div class="nright"><i @click="clllection"
                                            :class="['iconfont', comdata.info.is_collection==0? 'iconstar':'iconstar-fill']"></i>
@@ -47,7 +48,9 @@
                         class="iconfont iconphone-fill"></span></a>
             </div>
             <div class="hr"></div>
-            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods"><van-loading type="spinner"/></div>
+            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods">
+                <van-loading type="spinner"/>
+            </div>
             <div class="comlist" v-if="comdata.goods.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">惠</span> <span>套餐</span></div>
@@ -55,8 +58,8 @@
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.goods" :key="item.id"
                      @click="gotaocandetail(item.id)">
                     <div class="jimg">
-<!--                        <img :src="item.image" alt="">-->
-                        <van-image height="16.533vw"  width="16.533vw" fit="cover":src="item.image" />
+                        <!--                        <img :src="item.image" alt="">-->
+                        <van-image height="16.533vw" width="16.533vw" fit="cover" :src="item.image"/>
                     </div>
                     <div class="jright">
                         <div class="jname van-ellipsis">{{item.name}}</div>
@@ -69,19 +72,21 @@
                 </div>
             </div>
             <div class="hr"></div>
-            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods"><van-loading type="spinner"/></div>
+            <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods">
+                <van-loading type="spinner"/>
+            </div>
             <div class="comlist" v-if="comdata.match.length">
                 <div class="taocan">
                     <div class="spanbox"><span class="span">商</span><span>商家介绍</span></div>
                     <!--<div class="all" @click="goallgame">-->
-                        <!--全部 <span  class="iconfont iconjiantou"></span>-->
+                    <!--全部 <span  class="iconfont iconjiantou"></span>-->
                     <!--</div>-->
                 </div>
                 <div class="jitem van-row--flex" v-for="(item,index) in comdata.match" :key="item.id"
                      @click="gossdetail(item.id)">
                     <div class="jimg">
-<!--                        <img :src="item.image" alt="">-->
-                        <van-image height="16.533vw"  width="16.533vw" fit="cover":src="item.image" />
+                        <!--                        <img :src="item.image" alt="">-->
+                        <van-image height="16.533vw" width="16.533vw" fit="cover" :src="item.image"/>
                         <span v-if="item.recommend==1">精选</span>
                     </div>
                     <div class="jright">
@@ -89,7 +94,7 @@
                         <!--<div class="jinfo"><span class="name">{{item.contact}}</span><span class="tel">{{item.contact_number}}</span>-->
                         <!--</div>-->
                         <!--<div class="jaddress van-ellipsis"><span class="iconfont icontime-circle"></span>{{item.start_time}}-->
-                            <!--~ {{item.end_time}}-->
+                        <!--~ {{item.end_time}}-->
                         <!--</div>-->
                         <div class="jaddress van-ellipsis" v-html="item.synopsis"></div>
                     </div>
@@ -132,10 +137,10 @@
                 },
                 show: false,
                 index: 0,
-                is_share: 0,
+                is_app: 0,
                 showshare: false,
                 togshare: false,
-                flaggoods:false,
+                flaggoods: false,
             }
         },
         components: {
@@ -149,7 +154,7 @@
             } else {
                 this.$router.replace('/')
             }
-            this.is_share = this.$route.query.is_share;
+            this.is_app = this.$route.query.is_app ? this.$route.query.is_app : 0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
         },
@@ -157,7 +162,7 @@
             // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {
-                    this.flaggoods=true;
+                    this.flaggoods = true;
                     if (res.code == 1) {
                         this.comdata = res.data;
                     }
@@ -178,11 +183,7 @@
             },
             // 回到列表
             backlist() {
-                if (this.is_share == 1) {
-                    this.$router.push('/competition')
-                } else {
-                    this.$router.go(-1)
-                }
+                this.$router.go(-1)
             },
             // 改变预览下标
             onChange(index) {
@@ -261,6 +262,10 @@
                     font-size: 14px;
                     margin-right: 10px;
                     /*px*/
+                    &.iconshouyex {
+                        color: #fff;
+                    }
+
                     &.iconstar-fill {
                         color: $baseRed;
                         font-size: 20px;
@@ -450,6 +455,7 @@
 
             .comlist {
                 min-height: 50px;
+
                 .taocan {
                     padding: 15px 18px 0 15px;
                     font-weight: bold;

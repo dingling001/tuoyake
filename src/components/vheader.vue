@@ -1,6 +1,7 @@
 <template>
     <div class="nav">
-        <span :class="'iconfont '+iconfont" @click="goback"></span>
+        <span :class="'iconfont '+iconfont" @click="goback" v-if="is_app==0"></span>
+        <router-link to="/index" class="iconfont iconshouyex" v-else></router-link>
         <span>{{title}}</span>
         <router-link v-if="showright" class="navright" tag="span" :to="rlink">{{right_text}}</router-link>
     </div>
@@ -30,9 +31,12 @@
                 type: String,
                 default: ''
             },
-            'rlink':{
+            'rlink': {
                 type: String,
                 default: '/'
+            },
+            'is_app': {
+                default: '0'
             }
         },
         methods: {
@@ -40,7 +44,6 @@
                 this.$router.go(-1);
             }
         }
-
     };
 </script>
 <style scoped lang="scss">

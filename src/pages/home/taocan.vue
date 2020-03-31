@@ -10,7 +10,8 @@
             <!--            </swiper>-->
             <van-sticky :offset-top="0">
                 <div class="navbox">
-                    <span class="iconfont iconfanhui" @click="backlist"></span>
+                    <span class="iconfont iconfanhui" @click="backlist" v-if="is_app==0"></span>
+                    <router-link to="/" class="iconfont iconshouyex" v-else></router-link>
                     <div class="comnanme van-ellipsis">{{goodinfo.name}}</div>
                     <div class="nright"><span @click="clllection"
                                               :class="['iconfont', goodinfo.is_collection==0? 'iconstar':'iconstar-fill']"></span>
@@ -78,7 +79,7 @@
                 cid: '',
                 goods_id: '',
                 num: 1,
-                is_share: 0,
+                is_app: 0,
                 togshare: false,
                 showshare: false
             }
@@ -91,7 +92,7 @@
             } else {
                 this.$router.replace('/')
             }
-            this.is_share = this.$route.query.is_share;
+            this.is_app = this.$route.query.is_app?this.$route.query.is_app:0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
         },
@@ -106,7 +107,7 @@
             },
             // 返回列表
             backlist() {
-                if (this.is_share == 1) {
+                if (this.is_app == 1) {
                     this.$router.push({path: '/competitiondetail', query: {id: this.cid}})
                 } else {
                     this.$router.go(-1);
@@ -200,6 +201,9 @@
                     font-size: 14px;
                     margin-right: 10px;
                     /*px*/
+                    &.iconshouyex{
+                        color: #fff;
+                    }
                     &.iconstar-fill {
                         color: $baseRed;
                         font-size: 20px;
