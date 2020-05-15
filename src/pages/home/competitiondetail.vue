@@ -39,13 +39,15 @@
             </div>
             <div class="comaddress">
                 <div class="adressitem" @click="gomap(comdata.info)">
-                    <span class="iconfont icondingweiweizhi"></span>
+                    <van-icon name="location-o" color="#aaa" size="16px"/>
                     <div class="address">{{comdata.info.address}}
                         <div class="juli">距您 {{comdata.info.distance}}</div>
                     </div>
                 </div>
-                <a class="phonecall" :href="'tel:'+comdata.info.contact_number"><span
-                        class="iconfont iconphone-fill"></span></a>
+                <a class="phonecall" :href="'tel:'+comdata.info.contact_number">
+<!--                    <span class="iconfont iconphone-fill"></span>-->
+                    <van-icon name="phone" :color="basecolor" size="26px"/>
+                </a>
             </div>
             <div class="hr"></div>
             <div class="comlist van-row--flex van-cell--center van-row--justify-center" v-if="!flaggoods">
@@ -112,7 +114,7 @@
 <script>
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
-
+import {$baseRed} from '../../../src/assets/js/utils'
     export default {
         name: "competitiondetail",
         data() {
@@ -141,6 +143,7 @@
                 showshare: false,
                 togshare: false,
                 flaggoods: false,
+                basecolor:$baseRed
             }
         },
         components: {
@@ -414,6 +417,7 @@
                     /*px*/
                     flex: 1;
                     color: #333;
+                    align-items: baseline;
 
                     .iconfont {
                         color: #aaaaaa;
@@ -423,6 +427,7 @@
 
                     .address {
                         line-height: 20px;
+                        margin-left: 8px;
 
                         .juli {
                             font-size: 12px;
@@ -444,6 +449,9 @@
                         font-weight: bold;
                         font-size: 20px;
                         /*px*/
+                    }
+                    .van-icon-phone{
+                        transform: rotate(270deg);
                     }
                 }
             }
@@ -588,7 +596,7 @@
 
                     .jbtn {
                         width: 50px;
-                        background: linear-gradient(0deg, rgba(255, 135, 126, 1), rgba(242, 49, 59, 1));
+                        background: linear-gradient(0deg, $baseRed, $baseRed);
                         border-radius: 16px;
                         position: absolute;
                         right: 16px;
@@ -598,6 +606,7 @@
                         color: #F8F8F8;
                         font-size: 13px;
                         /*px*/
+                        font-weight: bold;
                         &.s_jbtn {
                             background: $baseBlue;
                         }

@@ -34,7 +34,6 @@ import NoData from '@/components/NoData'
 //         'AMap.CircleEditor', 'AMap.Geolocation'],
 //     debug:true
 // });
-
 directives(Vue);
 // Vue.component(VueQrcode.name, VueQrcode);
 Vue.prototype.$moment = moment;

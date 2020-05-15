@@ -3,121 +3,18 @@ import qs from "qs"; // 序列化请求数据，视服务端的要求
 import config from "./config.js"; // 导入入默认配置
 import {Toast} from "vant";
 
-// if(process.env.NODE_ENV === 'development') {
-//     // 开发环境
-//     // config.baseURL = "http://admin.tuoyake.com";
-// } else if(process.env.NODE_ENV === 'production') {
-//     // 生产环境
-//     config.baseURL = "http://admin.tuoyake.com";   //这里是线上api请求地址
-// }
-let cancel,
-    promiseArr = {};
+if(process.env.NODE_ENV === 'development') {
+    // 开发环境
+    config.baseURL = "";
+} else if(process.env.NODE_ENV === 'production') {
+    // 生产环境
+    config.baseURL = "";   //这里是线上api请求地址
+}
+let cancel;
 const CancelToken = axios.CancelToken;
 //配置全局取消数组
 window.__axiosPromiseArr = [];
 const instance = axios.create(config);
-// 去掉请求控制拦截
-// instance.interceptors.request.use(
-//   function(config) {
-//     if (promiseArr[config.url]) {
-//       promiseArr[config.url]("操作取消");
-//       promiseArr[config.url] = cancel;
-//     } else {
-//       promiseArr[config.url] = cancel;
-//     }
-//     return config;
-//   },
-//   function(error) {
-//     return Promise.reject(error);
-//   }
-// );
-// instance.interceptors.response.use(
-//     function (response) {
-//         console.log(response)
-//         if (!response) return
-//         if (response.data.status == 401) {
-//             Toast({
-//                 message: "登录已过期，请重新登录！",
-//                 position: "center",
-//                 duration: 3000
-//             });
-//             localStorage.removeItem("user_twap");
-//             // 暂时缓存地址，授权成功后回跳这个地址
-//             // localStorage.url = window.location.href;
-//             // window.location.href = window.location.origin + "#/login";
-//         } else {
-//             //     console.log(response)
-//             return response.data;
-//         }
-//     },
-//     function (err) {
-//         console.log(err,'~~~~~erro')
-//         // if (!err) {
-//         //     localStorage.showneterror = true;
-//         //     // window.location.reload();
-//         //     return
-//         // }
-//         console.log(typeof err)
-//         if (JSON.stringify(err).indexOf('timeout') > -1) {
-//             console.log('网络超时了')
-//             localStorage.showneterror = true;
-//             localStorage.removeItem('user_twap');
-//             // window.location.reload();
-//             return
-//         }
-//         if (!err.status) {
-//             console.log('网络错误');
-//             localStorage.showneterror = true;
-//             window.location.reload();
-//             return
-//         }
-//         switch (err.response.status) {
-//             case 400:
-//                 err.message = "请求错误";
-//                 break;
-//             case 401:
-//                 err.message = "请登录";
-//                 break;
-//             case 403:
-//                 err.message = "拒绝访问";
-//                 break;
-//             case 404:
-//                 err.message = `请求地址出错: ${err.response.config.url}`;
-//                 break;
-//             case 408:
-//                 err.message = "请求超时";
-//                 break;
-//             case 500:
-//                 err.message = "服务器内部错误";
-//                 break;
-//             case 501:
-//                 err.message = "服务未实现";
-//                 break;
-//             case 502:
-//                 err.message = "网关错误";
-//                 break;
-//             case 503:
-//                 Toast({
-//                     message: "太热情了，请稍后再来吧！",
-//                     position: "center",
-//                     duration: 3000
-//                 });
-//                 err.message = "服务不可用";
-//                 break;
-//             case 504:
-//                 err.message = "网关超时";
-//                 break;
-//             case 505:
-//                 err.message = "HTTP版本不受支持";
-//                 break;
-//             default:
-//                 err.message = '网络错误'
-//         }
-//
-//         err.code = err.response.status;
-//         return Promise.reject(err);
-//     }
-// );
 //在main.js设置全局的请求次数，请求的间隙
 axios.defaults.retry = 4;
 axios.defaults.retryDelay = 1000;
@@ -241,42 +138,8 @@ export default function (url = "", data = {}, type = "GET", isRepeat = true) {
             .catch(function (err) {
                 console.log(err)
                 if (err == 'ECONNABORTED') {
-                    // localStorage.setItem('showneterror', true);
-                    // if (localStorage.count == 0) {
-                    //     window.location.reload();
-                    //     localStorage.setItem('count', 1);
-                    // }
-                    // window.location.href=window.location.origin + "#/NetError";
+
                 }
-                // // console.log(JSON.stringify(err.response.data))
-                // switch (errcode) {
-                //     case 401:
-                //         localStorage.removeItem("user_twap");
-                //         // 暂时缓存地址，授权成功后回跳这个地址
-                //         localStorage.url = window.location.href;
-                //         window.location.href = window.location.origin + "#/login";
-                //         break;
-                //
-                //     case 500:
-                //
-                //     default:
-                //         Toast({
-                //             message: '网络小短腿跑不动了',
-                //             position: "center",
-                //             duration: 3000
-                //         });
-                //         localStorage.setItem('showneterror', true);
-                //         setTimeout(function () {
-                //             window.location.reload();
-                //         },1000);
-                // }
-                // Toast({
-                //     message: err.message,
-                //     position: "center",
-                //     duration: 3000
-                // });
-                // console.log(JSON.stringify(err))
-                // console.log(err.response.data.code, '++++++err')
             });
     });
 };
