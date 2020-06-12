@@ -5,14 +5,15 @@
             <div class="index_top" ref="index_top" v-if="showtop">
                 <div class="htop">
                     <div class="htopleft">
-                        <span @click="tabhome(0,'/competition')" :class="{'activespan':ind==0}">电竞馆<span
-                                class="border_b" v-if="ind==0"></span></span>
-                        <span @click="tabhome(1,'/club')" :class="{'activespan':ind==1}">俱乐部<span class="border_b "
-                                                                                                  v-if="ind==1"></span>
-                    </span>
-                        <span @click="tabhome(2,'/school')" :class="{'activespan':ind==2}">酒店<span
-                                class="border_b border_b1 " v-if="ind==2"></span>
-                    </span>
+                        <div @click="tabhome(0,'/competition')" class="span" :class="{'activespan':ind==0}">电竞馆
+                            <span class="border_b" v-if="ind==0"></span>
+                        </div>
+<!--                        <div @click="tabhome(1,'/club')" class="span" :class="{'activespan':ind==1}">俱乐部-->
+<!--                            <span class="border_b " v-if="ind==1"></span>-->
+<!--                        </div>-->
+<!--                        <div @click="tabhome(2,'/school')"  class="span" :class="{'activespan':ind==2}">酒店-->
+<!--                            <span class="border_b border_b1 " v-if="ind==2"></span>-->
+<!--                        </div>-->
                     </div>
                     <div class="index_address" @click="go_city">
                         <van-icon name="location"/>
@@ -394,7 +395,7 @@
             padding: 22px 15px 0 15px;
 
             .htopleft {
-                span {
+                .span {
                     font-size: 15px;
                     /* px */
                     margin-right: 28px;

@@ -54,13 +54,24 @@
                             </div>
                             <div class="juli">{{item.distance}}</div>
                         </div>
+                        <div class="caddress">
+                            <!--                            <span class="iconfont van-icon-location"></span>-->
+<!--                            <van-icon name="location-o"/>-->
+                            <span class="single-line-text">{{item.address}}</span>
+                        </div>
                         <div class="ctype" v-if="item.label_ids"><span v-for="l in item.label_ids.slice(0,3)" :style="{maxWidth:item.label_ids.length==3?' 33%':''}" class="single-line-text">{{l}}</span>
                             <!--:style="{maxWidth:(2/item.label_ids.length)*100+'%'}"-->
                         </div>
-                        <div class="caddress ">
-                            <!--                            <span class="iconfont van-icon-location"></span>-->
-                            <van-icon name="location-o"/>
-                            <span class="single-line-text">{{item.address}}</span>
+                        <div class="goods">
+                            <div class="gitem" v-for="(h,hindex) in item.goods" v-if="hindex<2">
+                                <span class="h">惠</span>
+                                <span class="price">￥ {{h.price}}</span>
+                                <span class="name">{{h.name}}</span>
+                            </div>
+                        </div>
+                        <div class="prize_pool">
+                            <div class="pool">{{item.prize_pool_price}}</div>
+                            <div>会员<span></span> </div>
                         </div>
                     </div>
                 </div>
@@ -434,14 +445,15 @@
             transition: ease-in-out .3s;
             position: relative;
             min-height: 200px;
+            padding: 0 15px;
 
             .citem {
                 display: flex;
                 justify-content: space-between;
-                padding: 0 0 0 15px;
-                margin: 0 0 30px 0;
                 transition: ease-in-out .3s;
-
+                border-bottom: 1px solid #E4E4E4;
+                /*no*/
+                padding:30px 0;
                 .cimg {
                     flex-shrink: 0;
                     width: 90px;
@@ -509,35 +521,13 @@
                             color: #666666;
                         }
                     }
-
-                    .ctype {
-                        display: flex;
-                        align-items: center;
-                        margin: 5px 0 0 0;
-                        flex-wrap: wrap;
-                        min-height: 15px;
-
-                        span {
-                            padding: 3px 5px;
-                            /*background-color: ;*/
-                            background: rgba(242, 49, 59, .1);
-                            color: $baseRed;
-                            border-radius: 8px;
-                            margin: 0 5px 5px 0;
-                            font-size: 12px;
-                            /*px*/
-                        }
-                    }
-
                     .caddress {
                         display: flex;
                         align-items: center;
                         color: #666666;
                         font-size: 12px;
                         /*px*/
-                        padding: 5px 15px 5px 0;
-                        border-bottom: 1px solid #E4E4E4;
-                        /*no*/
+                        padding: 12px 0;
                         .van-icon {
                             color: #999999;
                             font-weight: bold;
@@ -549,6 +539,54 @@
                         .single-line-text {
                             max-width: 220px;
                         }
+                    }
+                    .ctype {
+                        display: flex;
+                        align-items: center;
+                        margin: 5px 0 0 0;
+                        flex-wrap: wrap;
+                        min-height: 15px;
+
+                        span {
+                            padding: 3px 5px;
+                            /*background-color: ;*/
+                            /*background: rgba(242, 49, 59, .1);*/
+                            border: 1px solid $baseRed;
+                            color: $baseRed;
+                            border-radius: 3px;
+                            margin: 0 5px 5px 0;
+                            font-size: 12px;
+                            /*px*/
+                        }
+                    }
+
+                    .goods{
+                        .gitem{
+                            padding-top:13px;
+                            .h{
+                                padding:1px 2px ;
+                                background:$baseRed;
+                                border-radius:5px;
+                                font-size: 9px;
+                                text-align: center;
+                                line-height: 13px;
+                                color: #fff;
+                            }
+                            .price{
+                                color: $baseRed;
+                                font-size: 12px;
+                            }
+                            .name{
+                                font-size: 11px;
+                                color: #333;
+                            }
+                        }
+                    }
+                    .prize_pool{
+                        height:16px;
+                        background:linear-gradient(90deg,rgba(254,135,68,1) 0%,rgba(254,119,68,1) 100%);
+                        border-radius:2px;
+                        color: #fff;
                     }
                 }
 
