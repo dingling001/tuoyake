@@ -160,11 +160,10 @@
             }
             this.is_app = this.$route.query.is_app ? this.$route.query.is_app : 0;
             var ua = navigator.userAgent.toLowerCase();
-            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
-            // if (this.is_app == 1) {
-            //     initOpenApp();
-            // }
-            initOpenApp();
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger";
+            if (this.is_app == 1) {
+                initOpenApp();
+            }
         },
         methods: {
             // 获取详情

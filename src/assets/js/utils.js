@@ -254,16 +254,31 @@ export const ModalHelper = (() => {
         }
     };
 })()
+import {Dialog} from 'vant'
 
 export const $baseRed = '#FE5722';
 export const initOpenApp = () => {
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-    //这个是安卓操作系统
+    var ua = navigator.userAgent.toLowerCase();
+    var iswx = ua.match(/MicroMessenger/i) == "micromessenger";
+    if (iswx) {
+        Dialog.alert({
+            title: '打开app',
+            message: '请在默认浏览器中打开',
+        }).then(() => {
+
+        })
+        return
+    } else {
+        window.location.href = "com.yt.tyk://";
+
+    }
+    // //这个是安卓操作系统
     if (isAndroid) {
         //安卓app的scheme协议
-        // window.location.href = '';
+        // window.location.href ="scheme://com.yt.tyk";
         setTimeout(function () {
             let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
             if (typeof hidden == "undefined" || hidden == false) {
@@ -274,9 +289,7 @@ export const initOpenApp = () => {
     }
     //这个是ios操作系统
     if (isIOS) {
-        console.log('isios')
         //ios的scheme协议
-        // window.location.href =""
         setTimeout(function () {
             let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
             if (typeof hidden == "undefined" || hidden == false) {
