@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <a class="phonecall" :href="'tel:'+comdata.info.contact_number">
-<!--                    <span class="iconfont iconphone-fill"></span>-->
+                    <!--                    <span class="iconfont iconphone-fill"></span>-->
                     <van-icon name="phone" :color="basecolor" size="26px"/>
                 </a>
             </div>
@@ -114,7 +114,8 @@
 <script>
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
-import {$baseRed} from '../../../src/assets/js/utils'
+    import {$baseRed,initOpenApp} from '../../../src/assets/js/utils'
+
     export default {
         name: "competitiondetail",
         data() {
@@ -143,7 +144,7 @@ import {$baseRed} from '../../../src/assets/js/utils'
                 showshare: false,
                 togshare: false,
                 flaggoods: false,
-                basecolor:$baseRed
+                basecolor: $baseRed
             }
         },
         components: {
@@ -160,6 +161,10 @@ import {$baseRed} from '../../../src/assets/js/utils'
             this.is_app = this.$route.query.is_app ? this.$route.query.is_app : 0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
+            // if (this.is_app == 1) {
+            //     initOpenApp();
+            // }
+            initOpenApp();
         },
         methods: {
             // 获取详情
@@ -450,7 +455,8 @@ import {$baseRed} from '../../../src/assets/js/utils'
                         font-size: 20px;
                         /*px*/
                     }
-                    .van-icon-phone{
+
+                    .van-icon-phone {
                         transform: rotate(270deg);
                     }
                 }
@@ -607,6 +613,7 @@ import {$baseRed} from '../../../src/assets/js/utils'
                         font-size: 13px;
                         /*px*/
                         font-weight: bold;
+
                         &.s_jbtn {
                             background: $baseBlue;
                         }

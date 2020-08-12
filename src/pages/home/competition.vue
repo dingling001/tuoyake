@@ -56,10 +56,12 @@
                         </div>
                         <div class="caddress">
                             <!--                            <span class="iconfont van-icon-location"></span>-->
-<!--                            <van-icon name="location-o"/>-->
-                            <span class="single-line-text">{{item.address}}</span>
+                            <!--                            <van-icon name="location-o"/>-->
+                            <span class="single-line-text">{{item.district}} | 网吧网咖</span>
                         </div>
-                        <div class="ctype" v-if="item.label_ids"><span v-for="l in item.label_ids.slice(0,3)" :style="{maxWidth:item.label_ids.length==3?' 33%':''}" class="single-line-text">{{l}}</span>
+                        <div class="ctype" v-if="item.label_ids"><span v-for="l in item.label_ids.slice(0,3)"
+                                                                       :style="{maxWidth:item.label_ids.length==3?' 33%':''}"
+                                                                       class="single-line-text">{{l}}</span>
                             <!--:style="{maxWidth:(2/item.label_ids.length)*100+'%'}"-->
                         </div>
                         <div class="goods">
@@ -70,8 +72,8 @@
                             </div>
                         </div>
                         <div class="prize_pool">
-                            <div class="pool">{{item.prize_pool_price}}</div>
-                            <div>会员<span></span> </div>
+                            <div class="pool van-ellipsis">{{item.prize_pool_price}}</div>
+                            <div class="vip">会员<span class="price"> ￥{{item.min_price}}/时</span> 起</div>
                         </div>
                     </div>
                 </div>
@@ -133,7 +135,8 @@
                 showoverlay: false,
                 flag: false,
                 position: [],
-                selectName: '全部地区'
+                selectName: '全部地区',
+                order: 2
             }
         },
 
@@ -191,6 +194,7 @@
                     this.label,
                     this.lindex == 0 ? '' : this.district,
                     this.circle,
+                    this.order,
                 ).then(res => {
                     this.flag = true;
                     if (res.code == 1) {//请求成功
@@ -451,9 +455,8 @@
                 display: flex;
                 justify-content: space-between;
                 transition: ease-in-out .3s;
-                border-bottom: 1px solid #E4E4E4;
-                /*no*/
-                padding:30px 0;
+                padding: 30px 0 0 0;
+
                 .cimg {
                     flex-shrink: 0;
                     width: 90px;
@@ -521,6 +524,7 @@
                             color: #666666;
                         }
                     }
+
                     .caddress {
                         display: flex;
                         align-items: center;
@@ -528,6 +532,7 @@
                         font-size: 12px;
                         /*px*/
                         padding: 12px 0;
+
                         .van-icon {
                             color: #999999;
                             font-weight: bold;
@@ -540,6 +545,7 @@
                             max-width: 220px;
                         }
                     }
+
                     .ctype {
                         display: flex;
                         align-items: center;
@@ -555,38 +561,69 @@
                             color: $baseRed;
                             border-radius: 3px;
                             margin: 0 5px 5px 0;
-                            font-size: 12px;
-                            /*px*/
+                            font-size: 10px;
+
+                            &:last-child {
+                                margin-right: 0;
+                            }
                         }
                     }
 
-                    .goods{
-                        .gitem{
-                            padding-top:13px;
-                            .h{
-                                padding:1px 2px ;
-                                background:$baseRed;
-                                border-radius:5px;
+                    .goods {
+                        .gitem {
+                            padding-top: 13px;
+
+                            .h {
+                                padding: 1px 2px;
+                                background: $baseRed;
+                                border-radius: 5px;
                                 font-size: 9px;
                                 text-align: center;
                                 line-height: 13px;
                                 color: #fff;
                             }
-                            .price{
+
+                            .price {
                                 color: $baseRed;
                                 font-size: 12px;
                             }
-                            .name{
+
+                            .name {
                                 font-size: 11px;
                                 color: #333;
                             }
                         }
                     }
-                    .prize_pool{
-                        height:16px;
-                        background:linear-gradient(90deg,rgba(254,135,68,1) 0%,rgba(254,119,68,1) 100%);
-                        border-radius:2px;
+
+                    .prize_pool {
                         color: #fff;
+                        display: flex;
+                        align-items: center;
+                        border-bottom: 1px solid #E4E4E4;
+                        /*no*/
+                        padding: 5px 0 10px;
+
+                        .pool {
+                            background: linear-gradient(90deg, rgba(254, 135, 68, 1) 0%, rgba(254, 119, 68, 1) 100%);
+                            border-radius: 2px;
+                            padding: 5px 3px 5px 10px;
+                            max-width: 150px;
+                            font-size: 11px;
+                            flex-shrink: 0;
+                            margin-right: 10px;
+                        }
+
+                        .vip {
+                            color: #999999;
+                            font-size: 10px;
+                            display: flex;
+                            align-items: center;
+                            flex-shrink: 0;
+                            .price{
+                                color: $baseRed;
+                                padding: 0 3px;
+                            }
+                        }
                     }
                 }
 
