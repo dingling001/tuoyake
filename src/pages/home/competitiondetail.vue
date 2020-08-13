@@ -164,15 +164,6 @@
                 initOpenApp();
             }
         },
-        mounted() {
-            var btn = document.getElementById('launch-btn');
-            btn.addEventListener('launch', function (e) {
-                console.log('success');
-            });
-            btn.addEventListener('error', function (e) {
-                console.log('fail', e.detail);
-            });
-        },
         methods: {
             // 获取详情
             _GetBarInfo() {

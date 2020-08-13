@@ -255,10 +255,76 @@ export const ModalHelper = (() => {
     };
 })()
 import {Dialog} from 'vant'
-import Clipboard from 'clipboard';
+import {launch, tryLaunch, hotLaunch, invoke, download} from './launch'
 
 export const $baseRed = '#FE5722';
+
 export const initOpenApp = () => {
+    var u = navigator.userAgent;
+    var ua = navigator.userAgent.toLowerCase();
+    var iswx = ua.match(/MicroMessenger/i) == "micromessenger";
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (iswx) {
+        // //这个是安卓操作系统
+        if (isAndroid) {
+            //安卓app的scheme协议
+            // window.location.href ="scheme://com.yt.tyk";
+            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+            if (typeof hidden == "undefined" || hidden == false) {
+                //应用宝下载地址
+                window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk";
+            }
+            return
+        }
+        //这个是ios操作系统
+        if (isIOS) {
+            //ios的scheme协议
+            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+            if (typeof hidden == "undefined" || hidden == false) {
+                //App store下载地址
+                window.location.href = "https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960";
+            }
+        }
+    } else {
+        // 下载
+        launch({
+            pkgs: {
+                android: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk',
+                ios: 'https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960',
+                yyb: 'https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk'
+            },
+            deeplink:{
+                scheme: {
+                    android: {
+                        protocol: 'com.yt.tyk',
+                        index: {
+                            path: '/',
+                        },
+                        frs: {
+                            protocol: 'com.yt.tyk',
+                            path: '',
+                            param: {from: 'h5'},
+                            paramMap: {
+                                from: 'h5'
+                            }
+                        }
+                    },
+                    ios: {
+                        protocol: 'com.yt.tyk',
+                        index: {
+                            path: '/',
+                        },
+                        frs: {
+                            path: '/'
+                        }
+                    }
+                },
+            },
+        });
+    }
+};
+export const initOpenApp1 = () => {
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -294,5 +360,25 @@ export const initOpenApp = () => {
         })
     } else {
         window.location.href = "com.yt.tyk://";
+        if (isAndroid) {
+            //安卓app的scheme协议
+            // window.location.href ="scheme://com.yt.tyk";
+            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+            if (typeof hidden == "undefined" || hidden == false) {
+                //应用宝下载地址
+                window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk";
+            }
+            return
+        }
+        //这个是ios操作系统
+        if (isIOS) {
+            //ios的scheme协议
+            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+            if (typeof hidden == "undefined" || hidden == false) {
+                //App store下载地址
+                window.location.href = "https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960";
+            }
+        }
     }
 };
+
