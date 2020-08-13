@@ -107,13 +107,14 @@
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
         </van-overlay>
+        <initapp v-if="is_app==1"></initapp>
     </div>
 </template>
 
 <script>
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
-    import {$baseRed, initOpenApp} from '../../../src/assets/js/utils'
+    import {$baseRed} from '../../../src/assets/js/utils'
 
     export default {
         name: "competitiondetail",
@@ -160,11 +161,9 @@
             this.is_app = this.$route.query.is_app ? this.$route.query.is_app : 0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger";
-            if (this.is_app == 1) {
-                initOpenApp();
-            }
         },
         methods: {
+
             // 获取详情
             _GetBarInfo() {
                 this.$api.GetBarInfo(this.id).then(res => {

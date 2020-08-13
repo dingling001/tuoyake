@@ -25,6 +25,7 @@ import Vant from 'vant'
 import 'vant/lib/index.css';
 import 'animate.css'
 import NoData from '@/components/NoData'
+import initapp from '@/components/initapp'
 // import AMap from 'vue-amap';
 // Vue.use(AMap)
 // AMap.initAMapApiLoader({
@@ -49,6 +50,8 @@ Vue.use(vueCity);
 //然后就可以在项目中引用了,热门城市 hotCityList 参数可以根据自己的需求传或者不传
 // 简单配置
 Vue.component('NoData', NoData)
+Vue.component('initapp', initapp)
+
 import store from './store'//引入store
 // simple history management
 /* eslint-disable no-new */

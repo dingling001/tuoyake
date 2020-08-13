@@ -36,11 +36,11 @@
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
         </van-overlay>
+
     </div>
 </template>
 
 <script>
-    import {initOpenApp} from "../../assets/js/utils";
 
     export default {
         name: "videodetail",
@@ -84,9 +84,7 @@
             }
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger";
-            if (this.is_app == 1) {
-                initOpenApp();
-            }
+
         },
         methods: {
             _GetVideoInfo() {

@@ -63,11 +63,12 @@
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
         </van-overlay>
+        <initapp v-if="is_app==1"></initapp>
+
     </div>
 </template>
 
 <script>
-    import {initOpenApp} from "../../assets/js/utils";
 
     export default {
         name: "taocan",
@@ -97,9 +98,6 @@
             this.is_app = this.$route.query.is_app?this.$route.query.is_app:0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger";
-            if (this.is_app == 1) {
-                initOpenApp();
-            }
         },
         methods: {
             // 获取套餐详情
