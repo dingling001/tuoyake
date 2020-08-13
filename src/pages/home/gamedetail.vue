@@ -74,6 +74,8 @@
 </template>
 
 <script>
+    import {initOpenApp} from "../../assets/js/utils";
+
     export default {
         name: "gamedetail",
         data() {
@@ -99,6 +101,9 @@
             this.is_app = this.$route.query.is_app?this.$route.query.is_app:0;
             var ua = navigator.userAgent.toLowerCase();
             this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
+            if (this.is_app == 1) {
+                initOpenApp();
+            }
         },
         methods: {
             // 获取套餐详情

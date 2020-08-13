@@ -103,7 +103,6 @@
                     <!--<div class="jbtn s_jbtn">报名</div>-->
                 </div>
             </div>
-
         </div>
         <van-overlay :show="togshare" @click="togshare = false" :z-index="500">
             <div class="text">点击右上角分享到朋友圈</div>
@@ -114,7 +113,7 @@
 <script>
     import 'swiper/dist/css/swiper.css'
     import {swiper, swiperSlide} from 'vue-awesome-swiper'
-    import {$baseRed,initOpenApp} from '../../../src/assets/js/utils'
+    import {$baseRed, initOpenApp} from '../../../src/assets/js/utils'
 
     export default {
         name: "competitiondetail",
@@ -164,6 +163,15 @@
             if (this.is_app == 1) {
                 initOpenApp();
             }
+        },
+        mounted() {
+            var btn = document.getElementById('launch-btn');
+            btn.addEventListener('launch', function (e) {
+                console.log('success');
+            });
+            btn.addEventListener('error', function (e) {
+                console.log('fail', e.detail);
+            });
         },
         methods: {
             // 获取详情

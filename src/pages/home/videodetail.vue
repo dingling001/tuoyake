@@ -40,6 +40,8 @@
 </template>
 
 <script>
+    import {initOpenApp} from "../../assets/js/utils";
+
     export default {
         name: "videodetail",
         data() {
@@ -81,7 +83,10 @@
                 this.$router.replace('/')
             }
             var ua = navigator.userAgent.toLowerCase();
-            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger"
+            this.showshare = ua.match(/MicroMessenger/i) == "micromessenger";
+            if (this.is_app == 1) {
+                initOpenApp();
+            }
         },
         methods: {
             _GetVideoInfo() {

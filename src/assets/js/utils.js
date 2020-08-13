@@ -255,6 +255,7 @@ export const ModalHelper = (() => {
     };
 })()
 import {Dialog} from 'vant'
+import Clipboard from 'clipboard';
 
 export const $baseRed = '#FE5722';
 export const initOpenApp = () => {
@@ -263,40 +264,35 @@ export const initOpenApp = () => {
     var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
     var ua = navigator.userAgent.toLowerCase();
     var iswx = ua.match(/MicroMessenger/i) == "micromessenger";
+    // var Clipboard=
     if (iswx) {
         Dialog.alert({
-            title: '打开app',
-            message: '请在默认浏览器中打开',
+            title: '打开托亚克APP',
+            message: '请在默认浏览器中打开,直接打开托亚克app',
+            theme: 'round-button',
         }).then(() => {
-
+            // //这个是安卓操作系统
+            if (isAndroid) {
+                //安卓app的scheme协议
+                // window.location.href ="scheme://com.yt.tyk";
+                let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+                if (typeof hidden == "undefined" || hidden == false) {
+                    //应用宝下载地址
+                    window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk";
+                }
+                return
+            }
+            //这个是ios操作系统
+            if (isIOS) {
+                //ios的scheme协议
+                let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
+                if (typeof hidden == "undefined" || hidden == false) {
+                    //App store下载地址
+                    window.location.href = "https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960";
+                }
+            }
         })
-        return
     } else {
         window.location.href = "com.yt.tyk://";
-
-    }
-    // //这个是安卓操作系统
-    if (isAndroid) {
-        //安卓app的scheme协议
-        // window.location.href ="scheme://com.yt.tyk";
-        setTimeout(function () {
-            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
-            if (typeof hidden == "undefined" || hidden == false) {
-                //应用宝下载地址
-                window.location.href = "https://a.app.qq.com/o/simple.jsp?pkgname=com.yt.tyk";
-            }
-        }, 2500);
-    }
-    //这个是ios操作系统
-    if (isIOS) {
-        //ios的scheme协议
-        setTimeout(function () {
-            let hidden = window.document.hidden || window.document.mozHidden || window.document.msHidden || window.document.webkitHidden
-            if (typeof hidden == "undefined" || hidden == false) {
-                //App store下载地址
-                window.location.href = "https://apps.apple.com/cn/app/%E6%89%98%E4%BA%9A%E5%85%8B/id1486551960";
-            }
-        }, 2500);
-        return false;
     }
 };
