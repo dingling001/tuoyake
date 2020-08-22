@@ -4,7 +4,7 @@
             <!--<img :src="comdata.info.album_images[0]" alt="">-->
             <van-image
                     v-if="comdata.info.album_images[0]"
-                    height="238px"
+                    width="100%"
                     fit="cover"
                     :src="comdata.info.album_images[0]"
             />

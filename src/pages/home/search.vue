@@ -12,16 +12,16 @@
                 <van-button size="mini" v-else color="transparent" type="default" @click="backindex">取消</van-button>
             </div>
         </van-sticky>
-        <div class="search_his">
+        <div class="search_his" v-if="slist.length" >
             <div><span class="iconfont icontime-circle"></span>搜索历史</div>
-            <div v-if="slist.length" @click="_SearchClear"><span class="iconfont iconshanchu"></span>清空</div>
+            <div @click="_SearchClear"><span class="iconfont iconshanchu"></span>清空</div>
         </div>
         <div class="hislist" v-if="slist.length">
             <span v-for="(item,index) in slist" :key="index" @click="keywordfn(item)">{{item}}</span>
         </div>
-        <van-sticky v-if="total>0" :offset="inputH">
-            <div class="total">共{{total}}条搜索记录</div>
-        </van-sticky>
+        <!--<van-sticky  :offset="inputH">-->
+        <!--</van-sticky>-->
+        <div class="total" v-if="total>0">共{{total}}条搜索记录</div>
         <van-pull-refresh v-model="isDownLoading" @refresh="onRefresh" v-if="flag&&netlist.length&&type==0">
             <van-list
                     v-model="isUpLoading" :finished="finished" @load="onLoad" class="clist" :offset="offset"
@@ -464,8 +464,9 @@
                 }
 
             }
-            /deep/ .van-button{
-                color: rgba(255,255,255,.72)!important;
+
+            /deep/ .van-button {
+                color: rgba(255, 255, 255, .72) !important;
             }
         }
 
@@ -506,7 +507,7 @@
             color: #999999;
             font-size: 12px;
             /*px*/
-            padding: 20px;
+            padding:20px;
         }
 
         .clist {
